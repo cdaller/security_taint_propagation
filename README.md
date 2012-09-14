@@ -1,5 +1,4 @@
-Dynamic Security Taint Propagation in Java via Java Aspects
-===========================================================
+# Dynamic Security Taint Propagation in Java via Java Aspects
 
 This project defines some java aspects that allow to follow tainted strings from a
 source to a sink to find security leaks in software (SQL-Injection, Cross-Site-Scripting (XSS)).
@@ -14,24 +13,21 @@ Some "cleaner" or "sanitizer" methods can be used to remove the tainted flag. E.
 you want to protect your application from XSS, a cleaner method would escape all
 characters that may be interpreted by the browser (especially the "<" sign).
 
-Background knowledge
---------------------
+## Background knowledge
 
 I found two papers about this topic:
 * Vivek Haldar, Deepak Chandra, Michael Franz: Dynamic Taint Propagation for Java at
 http://www.acsac.org/2005/papers/45.pdf
 * A presentation at blackhat security conference: http://www.blackhat.com/presentations/bh-dc-08/Chess-West/Presentation/bh-dc-08-chess-west.pdf
 
-Note
-----
+## Note
 This project is in a early stage (but works!), do not expect an easy to use pluginable thing you
 can use without deeper knowledge!
 
 Everyone is welcome to help to improve this project.
 
 
-There are multiple parts in this project
-----------------------------------------
+## There are multiple parts in this project
 * security_taint_extension: contains aspects that extend java.lang.String (add property
   "tainted"). Therefore you need to weave the new aspect into the jdk's rt.jar (on OSX's
   1.6 jdk it is named classes.jar) and create a new "tainted-rt.jar". This new jar is
@@ -46,8 +42,7 @@ There are multiple parts in this project
   and sanitation of tainted strings. It needs to be deployed to an instrumented tomcat 
   server to work as expected (see readme in the project).
 
-Eclipse setup
--------------
+## Eclipse setup
 The projects can be used as maven nature projects. Beware that the tainted-rt-1.x.jar 
 alsways comes before the system lib (jre lib) as otherwise the java.lang.String modification
 will not be found! Use the projects properties, "Java Build Path"/"Order and Export" to put the
@@ -60,3 +55,6 @@ Do a "mvn package" first, so the modificed rt.jar will be found in eclipse.
 Please note that the security_taint_extension project will not build correctly in eclipse, as 
 it needs the modified rt.jar which it produces (hen/egg problem). In maven it works.
 Use maven to package.
+
+## License
+This project is licensed under [Apache 2.0](http://opensource.org/licenses/apache2.0)
