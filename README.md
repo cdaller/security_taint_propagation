@@ -22,12 +22,13 @@ I found two papers about this topic:
 http://www.acsac.org/2005/papers/45.pdf
 * A presentation at blackhat security conference: http://www.blackhat.com/presentations/bh-dc-08/Chess-West/Presentation/bh-dc-08-chess-west.pdf
 
-
-_Note_:
-This project is in a early stage, do not expect an easy to use pluginable thing you
+Note
+----
+This project is in a early stage (but works!), do not expect an easy to use pluginable thing you
 can use without deeper knowledge!
 
-Everyone is welcome to improve this project.
+Everyone is welcome to help to improve this project.
+
 
 There are multiple parts in this project
 ----------------------------------------
