@@ -16,9 +16,8 @@ characters that may be interpreted by the browser (especially the "<" sign).
 ## Background knowledge
 
 I found two papers about this topic:
-* Vivek Haldar, Deepak Chandra, Michael Franz: Dynamic Taint Propagation for Java at
-http://www.acsac.org/2005/papers/45.pdf
-* A presentation at blackhat security conference: http://www.blackhat.com/presentations/bh-dc-08/Chess-West/Presentation/bh-dc-08-chess-west.pdf
+* [Vivek Haldar, Deepak Chandra, Michael Franz: Dynamic Taint Propagation for Java](http://www.acsac.org/2005/papers/45.pdf)
+* [A presentation at blackhat security conference](http://www.blackhat.com/presentations/bh-dc-08/Chess-West/Presentation/bh-dc-08-chess-west.pdf)
 
 ## Note
 This project is in a early stage (but works!), do not expect an easy to use pluginable thing you
