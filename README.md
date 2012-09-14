@@ -43,5 +43,11 @@ There are multiple parts in this project
   Additionally it holds some definitions of sinks and sources.
 * security_taint_propagation_http: holds sources for web applications
 * security_taint_webapp: very simple example webapp that demonstrates sources, sinks
-  and sanitation of tainted strings.
+  and sanitation of tainted strings. It needs to be deployed to an instrumented tomcat 
+  server to work as expected (see readme in the project).
 
+Eclipse setup
+-------------
+The projects can be used as maven nature projects. Beware that the tainted-rt-1.x.jar 
+alsways comes before the system lib (jre lib) as otherwise the java.lang.String modification
+will not be found!
