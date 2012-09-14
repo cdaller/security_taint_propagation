@@ -55,5 +55,6 @@ will not be found! Use the projects properties, "Java Build Path"/"Order and Exp
 
 Do a "mvn package" first, so the modificed rt.jar will be found in eclipse.
 
-Please note that the security_taint_extension project will not build correctly in eclipse.
+Please note that the security_taint_extension project will not build correctly in eclipse, as 
+it needs the modified rt.jar which it produces (hen/egg problem). In maven it works.
 Use maven to package.
