@@ -7,8 +7,8 @@
   <version>0.0.1-SNAPSHOT</version>
   <packaging>war</packaging>
 
-  <name>taintwebapp</name>
-
+  <name>security.taint.webapp</name>
+  
   <parent>
     <groupId>at.dallermassl.ap</groupId>
     <artifactId>security.taint.propagation-reactor</artifactId>
@@ -26,7 +26,7 @@
   </dependencies>
 
   <build>
-    <finalName>${project.name}</finalName>
+    <finalName>taintwebapp</finalName>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
