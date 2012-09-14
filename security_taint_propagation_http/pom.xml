@@ -13,7 +13,7 @@
   </parent>
 
   <properties>
-    <bootclasspath>../security_taint_extension/tainted-rt-${compiler.version}.jar</bootclasspath>
+    <bootclasspath>../security_taint_extension/target/tainted-rt-${compiler.version}.jar</bootclasspath>
   </properties>
   <dependencies>
     <dependency>

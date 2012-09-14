@@ -22,18 +22,46 @@
       <artifactId>lib.rt</artifactId>
       <version>${compiler.version}</version>
       <scope>system</scope>
-      <!-- usually this <systemPath>${java.home}/lib/rt.jar</systemPath> 
-        on osx for 1.6 this: TODO: use profile to set this! -->
-      <systemPath>${java.home}/../Classes/classes.jar</systemPath>
+      <systemPath>${lib-rt-jar}</systemPath>
     </dependency>
     <dependency>
       <groupId>org.aspectj</groupId>
       <artifactId>aspectjrt</artifactId>
       <version>${aspectj.version}</version>
     </dependency>
+    <dependency>
+      <groupId>org.aspectj</groupId>
+      <artifactId>aspectjtools</artifactId>
+      <version>${aspectj.version}</version>
+    </dependency>
   </dependencies>
 
-
+<profiles>
+    <profile>
+        <id>default-profile</id>
+        <activation>
+            <activeByDefault>true</activeByDefault>
+            <file>
+                <exists>${java.home}/lib/rt.jar</exists>
+            </file>
+        </activation>
+        <properties>
+            <lib-rt-jar>${java.home}/lib/rt.jar</lib-rt-jar>
+        </properties>
+    </profile>
+    <profile>
+        <id>mac-profile</id>
+        <activation>
+            <activeByDefault>false</activeByDefault>
+            <file>
+                <exists>${java.home}/../Classes/classes.jar</exists>
+            </file>
+        </activation>
+        <properties>
+            <lib-rt-jar>${java.home}/../Classes/classes.jar</lib-rt-jar>
+        </properties>
+    </profile>
+</profiles>
   <build>
     <pluginManagement>
       <plugins>
@@ -76,6 +104,8 @@
         <version>1.2.1</version>
         <executions>
           <execution>
+            <id>create instrumented rt.jar</id>
+            <phase>package</phase>
             <goals>
               <goal>exec</goal>
             </goals>
@@ -83,72 +113,18 @@
         </executions>
         <configuration>
           <executable>java</executable>
-          <!-- optional -->
-          <workingDirectory>/tmp</workingDirectory>
           <arguments>
-            <argument>-X</argument>
-            <argument>myproject:dist</argument>
-            ...
+            <argument>-Xmx1024m</argument>
+            <argument>-classpath</argument>
+            <classpath />
+            <argument>org.aspectj.tools.ajc.Main</argument>
+            <argument>-inpath</argument>
+            <argument>${lib-rt-jar}</argument>
+            <argument>-outjar</argument>
+            <argument>target/tainted-rt-${compiler.version}.jar</argument>
+            <argument>-${compiler.version}</argument>
+            <argument>src/main/java/at/dallermassl/ap/security/taint/extension/java/lang/*.aj</argument>
           </arguments>
-        </configuration>
-      </plugin>
-      <plugin>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>2.3.2</version>
-        <configuration>
-          <source>${compiler.version}</source>
-          <target>${compiler.version}</target>
-          <compilerArguments>
-            <bootclasspath>${bootclasspath}</bootclasspath>
-          </compilerArguments>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>aspectj-maven-plugin</artifactId>
-        <version>1.4</version>
-        <configuration>
-          <showWeaveInfo>false</showWeaveInfo>
-          <source>${compiler.version}</source>
-          <target>${compiler.version}</target>
-          <!-- Xlint>ignore</Xlint -->
-          <complianceLevel>${compiler.version}</complianceLevel>
-          <encoding>UTF-8</encoding>
-          <verbose>true</verbose>
-          <weaveDependencies>
-            <weaveDependency>
-              <groupId>sun.jdk</groupId>
-              <artifactId>lib.rt</artifactId>
-            </weaveDependency>
-          </weaveDependencies>
-        </configuration>
-        <executions>
-          <execution>
-            <goals>
-              <goal>compile</goal>
-              <goal>test-compile</goal>
-            </goals>
-          </execution>
-        </executions>
-        <dependencies>
-          <dependency>
-            <groupId>org.aspectj</groupId>
-            <artifactId>aspectjrt</artifactId>
-            <version>${aspectj.version}</version>
-          </dependency>
-          <dependency>
-            <groupId>org.aspectj</groupId>
-            <artifactId>aspectjtools</artifactId>
-            <version>${aspectj.version}</version>
-          </dependency>
-        </dependencies>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <version>2.12.3</version>
-        <configuration>
-          <argLine>-Xbootclasspath/p:${bootclasspath}</argLine>
         </configuration>
       </plugin>
     </plugins>
