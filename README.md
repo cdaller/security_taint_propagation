@@ -50,4 +50,10 @@ Eclipse setup
 -------------
 The projects can be used as maven nature projects. Beware that the tainted-rt-1.x.jar 
 alsways comes before the system lib (jre lib) as otherwise the java.lang.String modification
-will not be found!
+will not be found! Use the projects properties, "Java Build Path"/"Order and Export" to put the
+"JRE System Library" to the bottom.
+
+Do a "mvn package" first, so the modificed rt.jar will be found in eclipse.
+
+Please note that the security_taint_extension project will not build correctly in eclipse.
+Use maven to package.
