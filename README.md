@@ -1,5 +1,5 @@
-Security Taint Propagation in Java via Java Aspects
-===================================================
+Dynamic Security Taint Propagation in Java via Java Aspects
+===========================================================
 
 This project defines some java aspects that allow to follow tainted strings from a
 source to a sink to find security leaks in software (SQL-Injection, Cross-Site-Scripting (XSS)).
