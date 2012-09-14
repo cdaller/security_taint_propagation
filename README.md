@@ -14,6 +14,15 @@ Some "cleaner" or "sanitizer" methods can be used to remove the tainted flag. E.
 you want to protect your application from XSS, a cleaner method would escape all
 characters that may be interpreted by the browser (especially the "<" sign).
 
+Background knowledge
+--------------------
+
+I found two papers about this topic:
+* Vivek Haldar, Deepak Chandra, Michael Franz: Dynamic Taint Propagation for Java at
+http://www.acsac.org/2005/papers/45.pdf
+* A presentation at blackhat security conference: http://www.blackhat.com/presentations/bh-dc-08/Chess-West/Presentation/bh-dc-08-chess-west.pdf
+
+
 _Note_:
 This project is in a early stage, do not expect an easy to use pluginable thing you
 can use without deeper knowledge!
@@ -34,3 +43,4 @@ There are multiple parts in this project
 * security_taint_propagation_http: holds sources for web applications
 * security_taint_webapp: very simple example webapp that demonstrates sources, sinks
   and sanitation of tainted strings.
+
