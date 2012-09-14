@@ -1,0 +1,42 @@
+package at.dallermassl.ap.security.taint.propagation;
+
+import java.util.Locale;
+
+/**
+ * @author cdaller
+ *
+ */
+public privileged aspect StringTaintPropagationAspect {
+    // TODO: replace and replaceAll...
+
+    /** Aspect for constructor {@link String(String)} or methods using a string as param */    
+    after(String value) returning (String returnObject): args(value) && (
+                    call(String.new(String)) ||
+                    call(public String String.concat(String))
+                    ) {
+        returnObject.setTainted(value.isTainted());
+    }
+        
+    /** Aspect for {@link String#toString() or similar} */
+    after(String targetObject) returning (String returnObject): target(targetObject) && (
+                    call(public String String.toString()) ||
+                    call(public String String.trim()) ||
+                    call(public String String.toLowerCase()) ||
+                    call(public String String.toLowerCase(Locale)) ||
+                    call(public String String.toUpperCase()) ||
+                    call(public String String.toUpperCase(Locale))
+                    ) {
+        returnObject.setTainted(targetObject.isTainted());
+    }
+
+    /** Aspect for {@link String#toString() or similar} */
+    after(String targetObject) returning (String[] returnObjects): target(targetObject) && (
+                    call(public String[] String.split(String)) ||
+                    call(public String[] String.split(String, int))
+                    ) {
+        for (String returnObject : returnObjects) {
+            returnObject.setTainted(targetObject.isTainted());
+        }
+    }
+
+}
