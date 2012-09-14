@@ -55,5 +55,7 @@ Please note that the security_taint_extension project will not build correctly i
 it needs the modified rt.jar which it produces (hen/egg problem). In maven it works.
 Use maven to package.
 
+Add the aspect-Nature to the project: Right click on project, Configure, Convert to AspectJ Project
+
 ## License
 This project is licensed under [Apache 2.0](http://opensource.org/licenses/apache2.0)
