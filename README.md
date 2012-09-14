@@ -27,7 +27,7 @@ Everyone is welcome to help to improve this project.
 
 
 ## There are multiple parts in this project
-* security_taint_extension: contains aspects that extend java.lang.String (add property
+* [security_taint_extension]: contains aspects that extend java.lang.String (add property
   "tainted"). Therefore you need to weave the new aspect into the jdk's rt.jar (on OSX's
   1.6 jdk it is named classes.jar) and create a new "tainted-rt.jar". This new jar is
   used in the bootclasspath of all projects that use the aspects (and the application
