@@ -13,6 +13,7 @@ import java.util.Map.Entry;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.Cookie;
 
 import at.dallermassl.ap.security.taint.source.TaintedSourceInfo;
 
@@ -123,42 +124,14 @@ public aspect HttpRequestAspect {
         return Collections.enumeration(taintedNames);
     }
 
-    after() returning (String returnObject): call(public String HttpServletRequest.getPathInfo()) {
-        if (returnObject != null) {
-            returnObject.setTainted(true);
-            returnObject.addTaintedSourceId(HTTP_URL_SOURCE_ID);
-        }
-    }
 
-    after() returning (String returnObject): call(public String HttpServletRequest.getPathTranslated()) {
-        if (returnObject != null) {
-            returnObject.setTainted(true);
-            returnObject.addTaintedSourceId(HTTP_URL_SOURCE_ID);
-        }
-    }    
-
-    after() returning (String returnObject): call(public String HttpServletRequest.getQueryString()) {
-        if (returnObject != null) {
-            returnObject.setTainted(true);
-            returnObject.addTaintedSourceId(HTTP_URL_SOURCE_ID);
-        }
-    }    
-
-    after() returning (String returnObject): call(public String HttpServletRequest.getRequestURI()) {
-        if (returnObject != null) {
-            returnObject.setTainted(true);
-            returnObject.addTaintedSourceId(HTTP_URL_SOURCE_ID);
-        }
-    }
-
-    after() returning (StringBuffer returnObject): call(public String HttpServletRequest.getRequestURL()) {
-        if (returnObject != null) {
-            returnObject.setTainted(true);
-            returnObject.addTaintedSourceId(HTTP_URL_SOURCE_ID);
-        }
-    }
-
-    after() returning (String returnObject): call(public String HttpServletRequest.getServletPath()) {
+    after() returning (String returnObject): 
+        call(public String HttpServletRequest.getServletPath()) ||
+        call(public String HttpServletRequest.getRequestURL()) ||
+        call(public String HttpServletRequest.getRequestURI()) ||
+        call(public String HttpServletRequest.getQueryString()) ||
+        call(public String HttpServletRequest.getPathTranslated()) ||
+        call(public String HttpServletRequest.getPathInfo()) {
         if (returnObject != null) {
             returnObject.setTainted(true);
             returnObject.addTaintedSourceId(HTTP_URL_SOURCE_ID);
@@ -166,35 +139,12 @@ public aspect HttpRequestAspect {
     }
     
     // cookie
-    after() returning (String returnObject): call(public String Cookie.getComment()) {
-        if (returnObject != null) {
-            returnObject.setTainted(true);        
-            returnObject.addTaintedSourceId(HTTP_COOKIE_SOURCE_ID);
-        }
-    }
-
-    after() returning (String returnObject): call(public String Cookie.getDomain()) {
-        if (returnObject != null) {
-            returnObject.setTainted(true);        
-            returnObject.addTaintedSourceId(HTTP_COOKIE_SOURCE_ID);
-        }
-    }
-
-    after() returning (String returnObject): call(public String Cookie.getName()) {
-        if (returnObject != null) {
-            returnObject.setTainted(true);        
-            returnObject.addTaintedSourceId(HTTP_COOKIE_SOURCE_ID);
-        }
-    }
-
-    after() returning (String returnObject): call(public String Cookie.getPath()) {
-        if (returnObject != null) {
-            returnObject.setTainted(true);        
-            returnObject.addTaintedSourceId(HTTP_COOKIE_SOURCE_ID);
-        }
-    }
-
-    after() returning (String returnObject): call(public String Cookie.getValue()) {
+    after() returning (String returnObject): 
+        call(public String Cookie.getValue()) ||
+        call(public String Cookie.getPath()) ||
+        call(public String Cookie.getName()) ||
+        call(public String Cookie.getDomain()) ||
+        call(public String Cookie.getComment()) {
         if (returnObject != null) {
             returnObject.setTainted(true);
             returnObject.addTaintedSourceId(HTTP_COOKIE_SOURCE_ID);

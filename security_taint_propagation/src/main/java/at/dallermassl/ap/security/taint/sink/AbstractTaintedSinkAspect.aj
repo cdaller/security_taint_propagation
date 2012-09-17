@@ -50,13 +50,23 @@ public abstract aspect AbstractTaintedSinkAspect {
             sourceIdInfos.append(TaintedSourceInfo.getSourceInfo(sourceId));
             prefix = ", ";
         }
-        String message = "SECURITY-TAINT-WARNING: Tainted value will be printed in " 
-          + joinPoint.getSourceLocation() + ": '" + value + "', sourceInfo=" + sourceIdInfos;
+        StringBuilder messageBuilder = new StringBuilder("SECURITY-TAINT-WARNING: Tainted value will be used in a sink!");
+        messageBuilder.append("[");
+        messageBuilder.append(" source code: ");
+        messageBuilder.append(joinPoint.getSourceLocation());
+        messageBuilder.append(",");
+        messageBuilder.append( "tainted sources: ");
+        messageBuilder.append(sourceIdInfos);
+        messageBuilder.append(",");
+        messageBuilder.append(" value: '");
+        messageBuilder.append(value);
+        messageBuilder.append("'");
+        messageBuilder.append("]");
         if (isBlockTainted()) {
             value.setTainted(true);        
-            throw new SecurityException(message);
+            throw new SecurityException(messageBuilder.toString());
         } else {
-            System.err.println(message);
+            System.err.println(messageBuilder.toString());
         }
         value.setTainted(true);        
     }

@@ -226,7 +226,50 @@ public class JdbcSinkTest {
         } finally {
             JdbcSinkAspect.setBlockTainted(blockTainted);
         }
+    }
+    
+    @Test
+    public void testResultSetSouce() throws SQLException {
+        boolean blockTainted = JdbcSinkAspect.isBlockTainted();
+        JdbcSinkAspect.setBlockTainted(true);
 
+        try {
+            Statement stmt;
+            PreparedStatement pstmt;
+            ResultSet rs;
+            // fill table
+            pstmt = conn.prepareStatement("insert into test (intvalue, stringvalue) values (1, 'foo1')");
+            pstmt.execute();
+            pstmt = conn.prepareStatement("insert into test (intvalue, stringvalue) values (2, 'foo2')");
+            pstmt.execute();
+            
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery("select intValue, stringValue from test");
+            if (!rs.next()) {
+                Assert.fail("no results returned");
+            }
+            Assert.assertTrue("Resultset.getString() is tainted", rs.getString(1).isTainted());
+            // Feature not supported by derby: 
+            // Assert.assertTrue("Resultset.getString() is tainted", rs.getNString(2).isTainted());
+            rs.close();
+            stmt.close();
+
+            pstmt = conn.prepareStatement("select intValue, stringValue from test where id < ?");
+            pstmt.setInt(1, 100);
+            rs = pstmt.executeQuery();
+            if (!rs.next()) {
+                Assert.fail("no results returned");
+            }
+            Assert.assertTrue("Resultset.getString() is tainted", rs.getString(1).isTainted());
+            // Feature not supported by derby: 
+            // Assert.assertTrue("Resultset.getString() is tainted", rs.getNString(2).isTainted());
+            
+            rs.close();
+            pstmt.close();
+        } finally {
+            JdbcSinkAspect.setBlockTainted(blockTainted);
+        }
+        
     }
 
 
