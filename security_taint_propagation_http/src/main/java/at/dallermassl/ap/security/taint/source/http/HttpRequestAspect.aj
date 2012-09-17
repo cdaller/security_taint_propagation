@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 public aspect HttpRequestAspect {
     // ServletRequest
     after() returning (String returnObject): call(public String ServletRequest.getParameter(String)) {
-        System.out.println(thisJoinPoint.getSignature());
+//        System.out.println(thisJoinPoint.getSignature());
         if (returnObject != null) {
             returnObject.setTainted(true);
         }
@@ -71,11 +71,15 @@ public aspect HttpRequestAspect {
 
     // HttpServletRequest
     after() returning (String returnObject): call(public String HttpServletRequest.getContextPath()) {
-        returnObject.setTainted(true);
+        if (returnObject != null) {
+            returnObject.setTainted(true);
+        }
     }
     
     after() returning (String returnObject): call(public String HttpServletRequest.getHeader(String)) {
-        returnObject.setTainted(true);
+        if (returnObject != null) {
+            returnObject.setTainted(true);
+        }
     }    
 
     Enumeration<String> around(HttpServletRequest original): call(public String[] HttpServletRequest.getHeaderNames()) && target(original) {
