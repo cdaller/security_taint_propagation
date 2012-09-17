@@ -166,6 +166,30 @@ public class StringBuilderPropagationTest {
     }
 
     @Test
+    public void testSourceIdPropagationStringBuilderStringBufferTrueTrue() {
+        StringBuilder foo = new StringBuilder("foo");
+        StringBuffer bar = new StringBuffer("bar");
+        int sourceId1 = TaintedSourceInfo.addSourceInfo("Test1");
+        int sourceId2 = TaintedSourceInfo.addSourceInfo("Test2");
+
+        foo.setTainted(true);
+        bar.setTainted(true);
+        foo.addTaintedSourceId(sourceId1);
+        bar.addTaintedSourceId(sourceId2);
+        
+        StringBuilder baz = foo.append(bar);
+        int[] sourceIds = baz.getTaintedSourceIds();
+        Assert.assertNotNull("source ids must be not null", sourceIds);
+
+        List<Integer> idList = new ArrayList<Integer>();
+        for (int id : sourceIds) {
+            idList.add(id);
+        }       
+        Assert.assertTrue("source ids must be merged", idList.contains(sourceId1));
+        Assert.assertTrue("source ids must be merged", idList.contains(sourceId2));
+    }
+
+    @Test
     public void testSourceIdPropagation2() {
         StringBuilder foo = new StringBuilder("foo");
         String bar = "bar";
