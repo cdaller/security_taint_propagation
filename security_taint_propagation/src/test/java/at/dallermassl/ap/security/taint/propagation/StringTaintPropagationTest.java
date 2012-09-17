@@ -54,6 +54,13 @@ public class StringTaintPropagationTest {
         
         foo.setTainted(true);
         Assert.assertTrue("concat tainted and tainted", foo.concat(bar).isTainted());
+        
+        foo.setTainted(true);
+        bar.setTainted(false);
+        Assert.assertTrue("concat tainted and tainted", foo.concat(bar).isTainted());
+        Assert.assertTrue("concat tainted and tainted", foo.concat(null).isTainted());
+        
+        
     }
     
     @Test
@@ -179,9 +186,10 @@ public class StringTaintPropagationTest {
        bar.addTaintedSourceId(sourceId2);
        
        String baz = foo.concat(bar);
-       Assert.assertNotNull("source ids must be not null", baz.getTaintedSourceIds());
-       Assert.assertTrue("source ids must be merged", Arrays.asList(baz.getTaintedSourceIds()).contains(sourceId1));
-       Assert.assertTrue("source ids must be merged", Arrays.asList(baz.getTaintedSourceIds()).contains(sourceId2));
+       int[] sourceIds = baz.getTaintedSourceIds();
+       Assert.assertNotNull("source ids must be not null", sourceIds);
+       Assert.assertTrue("source ids must be merged", Arrays.asList(sourceIds).contains(sourceId1));
+       Assert.assertTrue("source ids must be merged", Arrays.asList(sourceIds).contains(sourceId2));
    }
 
 }

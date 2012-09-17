@@ -14,8 +14,10 @@ public privileged aspect StringTaintPropagationAspect {
                     call(String.new(String)) ||
                     call(public String String.concat(String))
                     ) {
-        returnObject.setTainted(value.isTainted());
-        returnObject.addTaintedSourceIds(value.getTaintedSourceIds());
+        if (value != null) {
+            returnObject.setTainted(value.isTainted());
+            returnObject.addTaintedSourceIds(value.getTaintedSourceIds());
+        }
     }
         
     /** Aspect for {@link String#toString() or similar} */
@@ -27,8 +29,10 @@ public privileged aspect StringTaintPropagationAspect {
                     call(public String String.toUpperCase()) ||
                     call(public String String.toUpperCase(Locale))
                     ) {
-        returnObject.setTainted(targetObject.isTainted());
-        returnObject.addTaintedSourceIds(targetObject.getTaintedSourceIds());
+        if (targetObject != null) {
+            returnObject.setTainted(targetObject.isTainted());
+            returnObject.addTaintedSourceIds(targetObject.getTaintedSourceIds());
+        }
     }
 
     /** Aspect for {@link String#toString() or similar} */
