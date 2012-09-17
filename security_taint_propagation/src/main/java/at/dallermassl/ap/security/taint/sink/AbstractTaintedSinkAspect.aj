@@ -55,6 +55,9 @@ public abstract aspect AbstractTaintedSinkAspect {
         messageBuilder.append(" source code: ");
         messageBuilder.append(joinPoint.getSourceLocation());
         messageBuilder.append(",");
+        messageBuilder.append(" sink code: ");
+        messageBuilder.append(joinPoint.toShortString());
+        messageBuilder.append(",");
         messageBuilder.append( "tainted sources: ");
         messageBuilder.append(sourceIdInfos);
         messageBuilder.append(",");
