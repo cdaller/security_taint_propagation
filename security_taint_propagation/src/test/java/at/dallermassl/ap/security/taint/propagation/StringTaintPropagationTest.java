@@ -1,12 +1,14 @@
 package at.dallermassl.ap.security.taint.propagation;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Locale;
+import java.util.Set;
 
 import org.junit.Assert;
 import org.junit.Test;
-/**
- * 
- */
+
+import at.dallermassl.ap.security.taint.source.TaintedSourceInfo;
 
 
 
@@ -164,5 +166,22 @@ public class StringTaintPropagationTest {
             Assert.assertTrue("split tainted", part.isTainted());            
         }
     }
+    
+   @Test
+   public void testSourceIdPropagation() {
+       String foo = "foo";
+       String bar = "bar";
+       foo.setTainted(true);
+       bar.setTainted(true);
+       int sourceId1 = TaintedSourceInfo.addSourceInfo("Test1");
+       int sourceId2 = TaintedSourceInfo.addSourceInfo("Test2");
+       foo.addTaintedSourceId(sourceId1);
+       bar.addTaintedSourceId(sourceId2);
+       
+       String baz = foo.concat(bar);
+       Assert.assertNotNull("source ids must be not null", baz.getTaintedSourceIds());
+       Assert.assertTrue("source ids must be merged", Arrays.asList(baz.getTaintedSourceIds()).contains(sourceId1));
+       Assert.assertTrue("source ids must be merged", Arrays.asList(baz.getTaintedSourceIds()).contains(sourceId2));
+   }
 
 }

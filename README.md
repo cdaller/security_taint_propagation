@@ -22,7 +22,7 @@ I found two papers about this topic:
 * [A presentation at blackhat security conference](http://www.blackhat.com/presentations/bh-dc-08/Chess-West/Presentation/bh-dc-08-chess-west.pdf)
 
 ## Note
-This project is in a early stage (but works!), do not expect an easy to use pluginable thing you
+This project is in a early stage (but works!), do not expect an easy to use plugable thing you
 can use without deeper knowledge!
 
 Everyone is welcome to help to improve this project.
@@ -45,19 +45,23 @@ Everyone is welcome to help to improve this project.
 
 ## Eclipse setup
 The projects can be used as maven nature projects. Beware that the tainted-rt-1.x.jar 
-alsways comes before the system lib (jre lib) as otherwise the java.lang.String modification
+always comes before the system lib (jre lib) as otherwise the java.lang.String modification
 will not be found! Use the projects properties, "Java Build Path"/"Order and Export" to put the
-"JRE System Library" to the bottom.
+"JRE System Library" to the bottom. This needs to be done every time after "Maven/Update Project"
+was executed.
 
 Set the default jre to 1.6 (only tested with 1.6, might work with oters JREs as well).
 
-Do a "mvn package" first, so the modificed rt.jar will be found in eclipse.
+Do a "mvn package" first, so the modified rt.jar will be found in eclipse.
 
 Please note that the security_taint_extension project will not build correctly in eclipse, as 
 it needs the modified rt.jar which it produces (hen/egg problem). In maven it works.
 Use maven to package.
 
 Add the aspect-Nature to the project: Right click on project, Configure, Convert to AspectJ Project
+
+If you cannot start any unit tests in eclipse after modification in the aspects, remove all
+Run-Configurations of the tests!
 
 ## License
 This project is licensed under [Apache 2.0](http://opensource.org/licenses/apache2.0)

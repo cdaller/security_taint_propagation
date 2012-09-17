@@ -3,7 +3,11 @@
  */
 package at.dallermassl.ap.security.taint.sink;
 
+import java.util.Set;
+
 import org.aspectj.lang.JoinPoint;
+
+import at.dallermassl.ap.security.taint.source.TaintedSourceInfo;
 
 /**
  * Defines the behavior when a tainted content is passed to an armoured sink.
@@ -38,7 +42,16 @@ public abstract aspect AbstractTaintedSinkAspect {
      */
     public void handleTaintedSink(JoinPoint joinPoint, String value) {
         value.setTainted(false);        
-        String message = "Tainted value will be printed in " + joinPoint.getSourceLocation() + ": '" + value + "'";
+        int[] sourceIds = value.getTaintedSourceIds();
+        StringBuilder sourceIdInfos = new StringBuilder();
+        String prefix = "";
+        for (int sourceId : sourceIds) {
+            sourceIdInfos.append(prefix);
+            sourceIdInfos.append(TaintedSourceInfo.getSourceInfo(sourceId));
+            prefix = ", ";
+        }
+        String message = "SECURITY-TAINT-WARNING: Tainted value will be printed in " 
+          + joinPoint.getSourceLocation() + ": '" + value + "', sourceInfo=" + sourceIdInfos;
         if (isBlockTainted()) {
             value.setTainted(true);        
             throw new SecurityException(message);

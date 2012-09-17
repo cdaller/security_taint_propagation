@@ -12,14 +12,17 @@ public privileged aspect StringBufferTaintPropagationAspect {
             if (value instanceof String) {
                 if (((String)value).isTainted()) {
                     returnObject.setTainted(true);
+                    returnObject.addTaintedSourceIds(((String) value).getTaintedSourceIds());
                 }            
             } else if (value instanceof StringBuilder) {
                 if (((StringBuilder)value).isTainted()) {
                     returnObject.setTainted(true);
+                    returnObject.addTaintedSourceIds(((StringBuilder) value).getTaintedSourceIds());
                 }            
             } else if (value instanceof StringBuffer) {
                 if (((StringBuffer)value).isTainted()) {
                     returnObject.setTainted(true);
+                    returnObject.addTaintedSourceIds(((StringBuffer) value).getTaintedSourceIds());
                 }            
             }
         }
@@ -29,6 +32,7 @@ public privileged aspect StringBufferTaintPropagationAspect {
     after(String value) returning (StringBuffer returnObject): call(StringBuffer.new(String)) && args(value) {
         if (value != null && value.isTainted()) {
             returnObject.setTainted(value.isTainted());
+            returnObject.addTaintedSourceIds(value.getTaintedSourceIds());
         }
     }
     
@@ -36,6 +40,7 @@ public privileged aspect StringBufferTaintPropagationAspect {
     after(String value) returning (StringBuffer returnObject): call(public StringBuffer StringBuffer.append(String)) && args(value) {
         if (value != null && value.isTainted()) {
             returnObject.setTainted(true);
+            returnObject.addTaintedSourceIds(value.getTaintedSourceIds());
         }
     }
 
@@ -43,6 +48,7 @@ public privileged aspect StringBufferTaintPropagationAspect {
     after(StringBuffer value) returning (StringBuffer returnObject): call(public StringBuffer StringBuffer.append(StringBuffer)) && args(value) {
         if (value != null && value.isTainted()) {
             returnObject.setTainted(true);
+            returnObject.addTaintedSourceIds(value.getTaintedSourceIds());
         }
     }
 
@@ -50,6 +56,7 @@ public privileged aspect StringBufferTaintPropagationAspect {
     after(int index, String value) returning (StringBuffer returnObject): call(public StringBuffer StringBuffer.insert(int, String)) && args(index, value) {
         if (value != null && value.isTainted()) {
             returnObject.setTainted(true);
+            returnObject.addTaintedSourceIds(value.getTaintedSourceIds());
         }
     }
 
@@ -57,12 +64,14 @@ public privileged aspect StringBufferTaintPropagationAspect {
     after(int index, int len, String value) returning (StringBuffer returnObject): call(public StringBuffer StringBuffer.replace(int, int, String)) && args(index, len, value) {
         if (value != null && value.isTainted()) {
             returnObject.setTainted(true);
+            returnObject.addTaintedSourceIds(value.getTaintedSourceIds());
         }
     }
     
     /** Aspect for {@link String#toString()} */
     after(StringBuffer targetObject) returning (String returnObject): call(public String StringBuffer.toString()) && target(targetObject) {
         returnObject.setTainted(targetObject.isTainted());
+        returnObject.addTaintedSourceIds(targetObject.getTaintedSourceIds());
     }
 
 }

@@ -12,19 +12,27 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.servlet.ServletRequest;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+
+import at.dallermassl.ap.security.taint.source.TaintedSourceInfo;
 
 /**
  * @author cdaller
  * TODO: Source: System.getenv(), Db-Statements, File Reads, ...
  */
 public aspect HttpRequestAspect {
+    
+    private int HTTP_PARAMETER_SOURCE_ID = TaintedSourceInfo.addSourceInfo("Http Servlet Request Parameter");
+    private int HTTP_COOKIE_SOURCE_ID = TaintedSourceInfo.addSourceInfo("Http Servlet Request Cookie");
+    private int HTTP_HEADER_SOURCE_ID = TaintedSourceInfo.addSourceInfo("Http Servlet Request Header");
+    private int HTTP_URL_SOURCE_ID = TaintedSourceInfo.addSourceInfo("Http Servlet Request Url");
+    
     // ServletRequest
     after() returning (String returnObject): call(public String ServletRequest.getParameter(String)) {
 //        System.out.println(thisJoinPoint.getSignature());
         if (returnObject != null) {
             returnObject.setTainted(true);
+            returnObject.addTaintedSourceId(HTTP_PARAMETER_SOURCE_ID);
         }
     }
 
@@ -32,6 +40,7 @@ public aspect HttpRequestAspect {
         if (returnObject != null) {
             for(String value : returnObject) {
                 value.setTainted(true);
+                value.addTaintedSourceId(HTTP_PARAMETER_SOURCE_ID);
             }
         }
     }
@@ -49,6 +58,7 @@ public aspect HttpRequestAspect {
                 values = entry.getValue();
                 for (String value : values) {
                     value.setTainted(true);
+                    value.addTaintedSourceId(HTTP_PARAMETER_SOURCE_ID);
                 }
                 taintedMap.put(key, values);
             } 
@@ -64,6 +74,7 @@ public aspect HttpRequestAspect {
         while(paramNames.hasMoreElements()) {
            value = paramNames.nextElement();
            value.setTainted(true);
+           value.addTaintedSourceId(HTTP_PARAMETER_SOURCE_ID);
            taintedNames.add(value);
         }
         return Collections.enumeration(taintedNames);
@@ -73,12 +84,14 @@ public aspect HttpRequestAspect {
     after() returning (String returnObject): call(public String HttpServletRequest.getContextPath()) {
         if (returnObject != null) {
             returnObject.setTainted(true);
+            returnObject.addTaintedSourceId(HTTP_URL_SOURCE_ID);
         }
     }
     
     after() returning (String returnObject): call(public String HttpServletRequest.getHeader(String)) {
         if (returnObject != null) {
             returnObject.setTainted(true);
+            returnObject.addTaintedSourceId(HTTP_HEADER_SOURCE_ID);
         }
     }    
 
@@ -90,6 +103,7 @@ public aspect HttpRequestAspect {
         while(paramNames.hasMoreElements()) {
            value = paramNames.nextElement();
            value.setTainted(true);
+           value.addTaintedSourceId(HTTP_HEADER_SOURCE_ID);
            taintedNames.add(value);
         }
         return Collections.enumeration(taintedNames);
@@ -103,6 +117,7 @@ public aspect HttpRequestAspect {
         while(paramNames.hasMoreElements()) {
            value = paramNames.nextElement();
            value.setTainted(true);
+           value.addTaintedSourceId(HTTP_HEADER_SOURCE_ID);
            taintedNames.add(value);
         }
         return Collections.enumeration(taintedNames);
@@ -111,70 +126,79 @@ public aspect HttpRequestAspect {
     after() returning (String returnObject): call(public String HttpServletRequest.getPathInfo()) {
         if (returnObject != null) {
             returnObject.setTainted(true);
+            returnObject.addTaintedSourceId(HTTP_URL_SOURCE_ID);
         }
     }
 
     after() returning (String returnObject): call(public String HttpServletRequest.getPathTranslated()) {
         if (returnObject != null) {
             returnObject.setTainted(true);
+            returnObject.addTaintedSourceId(HTTP_URL_SOURCE_ID);
         }
     }    
 
     after() returning (String returnObject): call(public String HttpServletRequest.getQueryString()) {
         if (returnObject != null) {
             returnObject.setTainted(true);
+            returnObject.addTaintedSourceId(HTTP_URL_SOURCE_ID);
         }
     }    
 
     after() returning (String returnObject): call(public String HttpServletRequest.getRequestURI()) {
         if (returnObject != null) {
             returnObject.setTainted(true);
+            returnObject.addTaintedSourceId(HTTP_URL_SOURCE_ID);
         }
     }
 
     after() returning (StringBuffer returnObject): call(public String HttpServletRequest.getRequestURL()) {
         if (returnObject != null) {
             returnObject.setTainted(true);
+            returnObject.addTaintedSourceId(HTTP_URL_SOURCE_ID);
         }
     }
 
     after() returning (String returnObject): call(public String HttpServletRequest.getServletPath()) {
         if (returnObject != null) {
             returnObject.setTainted(true);
+            returnObject.addTaintedSourceId(HTTP_URL_SOURCE_ID);
         }
     }
-
-
+    
     // cookie
     after() returning (String returnObject): call(public String Cookie.getComment()) {
         if (returnObject != null) {
             returnObject.setTainted(true);        
+            returnObject.addTaintedSourceId(HTTP_COOKIE_SOURCE_ID);
         }
     }
 
     after() returning (String returnObject): call(public String Cookie.getDomain()) {
         if (returnObject != null) {
             returnObject.setTainted(true);        
+            returnObject.addTaintedSourceId(HTTP_COOKIE_SOURCE_ID);
         }
     }
 
     after() returning (String returnObject): call(public String Cookie.getName()) {
         if (returnObject != null) {
             returnObject.setTainted(true);        
+            returnObject.addTaintedSourceId(HTTP_COOKIE_SOURCE_ID);
         }
     }
 
     after() returning (String returnObject): call(public String Cookie.getPath()) {
         if (returnObject != null) {
             returnObject.setTainted(true);        
+            returnObject.addTaintedSourceId(HTTP_COOKIE_SOURCE_ID);
         }
     }
 
     after() returning (String returnObject): call(public String Cookie.getValue()) {
         if (returnObject != null) {
             returnObject.setTainted(true);
+            returnObject.addTaintedSourceId(HTTP_COOKIE_SOURCE_ID);
         }
     }
-
 
 }

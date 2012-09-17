@@ -15,6 +15,11 @@
     <version>0.0.1-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
+  
+  <properties>
+    <bootclasspath>${basedir}/target/tainted-rt-${compiler.version}.jar</bootclasspath>
+  </properties>
+  
 
   <dependencies>
     <dependency>
@@ -34,6 +39,13 @@
       <artifactId>aspectjtools</artifactId>
       <version>${aspectj.version}</version>
     </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.10</version>
+      <scope>test</scope>
+    </dependency>
+    
   </dependencies>
 
 <profiles>
@@ -105,7 +117,7 @@
         <executions>
           <execution>
             <id>create instrumented rt.jar</id>
-            <phase>package</phase>
+            <phase>process-classes</phase>
             <goals>
               <goal>exec</goal>
             </goals>
@@ -121,11 +133,29 @@
             <argument>-inpath</argument>
             <argument>${lib-rt-jar}</argument>
             <argument>-outjar</argument>
-            <argument>target/tainted-rt-${compiler.version}.jar</argument>
+            <argument>${bootclasspath}</argument>
             <argument>-${compiler.version}</argument>
-            <argument>src/main/java/at/dallermassl/ap/security/taint/extension/java/lang/*.aj</argument>
+            <argument>src/main/java/at/dallermassl/ap/security/taint/extension/*.java</argument>
+            <argument>src/main/java/at/dallermassl/ap/security/taint/extension/*.aj</argument>
           </arguments>
         </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>2.12.3</version>
+        <configuration>
+          <argLine>-Xbootclasspath/p:${bootclasspath}</argLine>
+        </configuration>
+        <dependencies>
+        <dependency>
+          <groupId>at.dallermassl.ap.security</groupId>
+          <artifactId>tainted.rt</artifactId>
+          <version>${compiler.version}</version>
+          <scope>system</scope>
+          <systemPath>${bootclasspath}</systemPath>
+        </dependency>
+        </dependencies>
       </plugin>
     </plugins>
   </build>
