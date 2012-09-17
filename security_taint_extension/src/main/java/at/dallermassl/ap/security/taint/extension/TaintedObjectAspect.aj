@@ -68,6 +68,13 @@ public aspect TaintedObjectAspect implements TaintedObject {
     /**
      * {@inheritDoc}
      */
+    public final void TaintedObject.addTaintedSourceIdBits(int sourceIds) {
+        sourceIdBitField = sourceIdBitField | sourceIds;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
     public void TaintedObject.addTaintedSourceId(int sourceId) {
         if (sourceId > 30) {
             throw new IllegalArgumentException("Source id must be <= 30!");

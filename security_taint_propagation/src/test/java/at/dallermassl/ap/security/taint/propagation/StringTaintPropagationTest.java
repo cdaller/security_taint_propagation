@@ -1,9 +1,9 @@
 package at.dallermassl.ap.security.taint.propagation;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Locale;
-import java.util.Set;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -21,14 +21,15 @@ public class StringTaintPropagationTest {
     @Test
     public void constructorTest() {
         String foo = new String("fooConstructorTest");
+        foo.setTainted(false);
         Assert.assertFalse("default is untainted", foo.isTainted());
 
         String bar = new String(foo);
         Assert.assertFalse("copy constructor propagates tainted", bar.isTainted());        
         
         foo.setTainted(true);
-        bar = new String(foo);
-        Assert.assertTrue("copy constructor propagates tainted", bar.isTainted());        
+        String baz = new String(foo);
+        Assert.assertTrue("copy constructor propagates tainted", baz.isTainted());        
     }
     
     @Test
@@ -58,7 +59,8 @@ public class StringTaintPropagationTest {
         foo.setTainted(true);
         bar.setTainted(false);
         Assert.assertTrue("concat tainted and tainted", foo.concat(bar).isTainted());
-        Assert.assertTrue("concat tainted and tainted", foo.concat(null).isTainted());
+        // concat does not allow null to be added!
+        //Assert.assertTrue("concat tainted and tainted", foo.concat(null).isTainted());
         
         
     }
@@ -188,8 +190,13 @@ public class StringTaintPropagationTest {
        String baz = foo.concat(bar);
        int[] sourceIds = baz.getTaintedSourceIds();
        Assert.assertNotNull("source ids must be not null", sourceIds);
-       Assert.assertTrue("source ids must be merged", Arrays.asList(sourceIds).contains(sourceId1));
-       Assert.assertTrue("source ids must be merged", Arrays.asList(sourceIds).contains(sourceId2));
+
+       List<Integer> idList = new ArrayList<Integer>();
+       for (int id : sourceIds) {
+           idList.add(id);
+       }       
+       Assert.assertTrue("source ids must be merged", idList.contains(sourceId1));
+       Assert.assertTrue("source ids must be merged", idList.contains(sourceId2));
    }
 
 }

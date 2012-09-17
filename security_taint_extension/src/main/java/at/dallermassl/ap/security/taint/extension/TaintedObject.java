@@ -27,7 +27,17 @@ public interface TaintedObject {
      */
     int[] getTaintedSourceIds();
 
+    /**
+     * Returns the 32bit mask holding the source ids.
+     * @return the 32bit mask holding the source ids.
+     */
     int getTaintedSourceIdBits();
+    
+    /**
+     * Adds all source ids given in the 32bit mask.
+     * @param sourceIds the 32bit mask to add.
+     */
+    void addTaintedSourceIdBits(int sourceIds);
 
     /**
      * Set the id of the tainted source.

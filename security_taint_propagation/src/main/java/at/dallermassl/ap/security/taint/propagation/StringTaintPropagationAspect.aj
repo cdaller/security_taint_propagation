@@ -11,15 +11,30 @@ public privileged aspect StringTaintPropagationAspect {
 
     /** Aspect for constructor {@link String(String)} or methods using a string as param */    
     after(String value) returning (String returnObject): args(value) && (
-                    call(String.new(String)) ||
-                    call(public String String.concat(String))
+                    call(String.new(String))
                     ) {
         if (value != null) {
             returnObject.setTainted(value.isTainted());
-            returnObject.addTaintedSourceIds(value.getTaintedSourceIds());
+            returnObject.addTaintedSourceIdBits(value.getTaintedSourceIdBits());
         }
     }
-        
+
+    /** Aspect for constructor {@link String(String)} or methods using a string as param */    
+    after(String value, String targetObject) returning (String returnObject): args(value) && target(targetObject) && (
+                    call(public String String.concat(String))
+                    ) {
+        if (value != null) {
+            boolean valueTainted = value.isTainted();
+            boolean targetTainted = targetObject.isTainted();
+            boolean result = valueTainted || targetTainted;
+            int valueIds = value.getTaintedSourceIdBits();
+            int retIds = returnObject.getTaintedSourceIdBits();
+            returnObject.setTainted(value.isTainted() || targetObject.isTainted());
+            returnObject.addTaintedSourceIdBits(value.getTaintedSourceIdBits());
+            returnObject.addTaintedSourceIdBits(targetObject.getTaintedSourceIdBits());
+        }
+    }
+
     /** Aspect for {@link String#toString() or similar} */
     after(String targetObject) returning (String returnObject): target(targetObject) && (
                     call(public String String.toString()) ||
@@ -31,7 +46,7 @@ public privileged aspect StringTaintPropagationAspect {
                     ) {
         if (targetObject != null) {
             returnObject.setTainted(targetObject.isTainted());
-            returnObject.addTaintedSourceIds(targetObject.getTaintedSourceIds());
+            returnObject.addTaintedSourceIdBits(targetObject.getTaintedSourceIdBits());
         }
     }
 
@@ -42,7 +57,7 @@ public privileged aspect StringTaintPropagationAspect {
                     ) {
         for (String returnObject : returnObjects) {
             returnObject.setTainted(targetObject.isTainted());
-            returnObject.addTaintedSourceIds(targetObject.getTaintedSourceIds());
+            returnObject.addTaintedSourceIdBits(targetObject.getTaintedSourceIdBits());
         }
     }
 
