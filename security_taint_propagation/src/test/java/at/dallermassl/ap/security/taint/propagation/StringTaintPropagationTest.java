@@ -198,5 +198,22 @@ public class StringTaintPropagationTest {
        Assert.assertTrue("source ids must be merged", idList.contains(sourceId1));
        Assert.assertTrue("source ids must be merged", idList.contains(sourceId2));
    }
+   
+   @Test
+   public void testReplace() {
+       String foo = "foo";
+       
+       foo.setTainted(true);
+       Assert.assertTrue("replace chars propagates tainted", foo.replace('o', 'x').isTainted());
+       Assert.assertTrue("replace charsequence propagates tainted", foo.replace("o", "x").isTainted());
+       Assert.assertTrue("replaceAll regexp propagates tainted", foo.replaceAll("o", "x").isTainted());
+       Assert.assertTrue("replaceFirst regexp propagates tainted", foo.replaceFirst("o", "x").isTainted());
+
+       foo.setTainted(false);
+       Assert.assertFalse("replace chars propagates tainted", foo.replace('o', 'x').isTainted());
+       Assert.assertFalse("replace charsequence propagates tainted", foo.replace("o", "x").isTainted());
+       Assert.assertFalse("replaceAll regepx propagates tainted", foo.replaceAll("o", "x").isTainted());
+       Assert.assertFalse("replaceFirst regexp propagates tainted", foo.replaceFirst("o", "x").isTainted());
+   }
 
 }

@@ -52,10 +52,9 @@ public abstract aspect AbstractTaintedSinkAspect {
         }
         StringBuilder messageBuilder = new StringBuilder("SECURITY-TAINT-WARNING: Tainted value will be used in a sink!");
         messageBuilder.append("[");
-        messageBuilder.append(" source code: ");
-        messageBuilder.append(joinPoint.getSourceLocation());
-        messageBuilder.append(",");
         messageBuilder.append(" sink code: ");
+        messageBuilder.append(joinPoint.getSourceLocation());
+        messageBuilder.append("/");
         messageBuilder.append(joinPoint.toShortString());
         messageBuilder.append(",");
         messageBuilder.append( "tainted sources: ");
