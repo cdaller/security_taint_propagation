@@ -135,6 +135,7 @@
             <argument>-outjar</argument>
             <argument>${bootclasspath}</argument>
             <argument>-${compiler.version}</argument>
+            <argument>-Xlint:ignore</argument>
             <argument>src/main/java/at/dallermassl/ap/security/taint/extension/*.java</argument>
             <argument>src/main/java/at/dallermassl/ap/security/taint/extension/*.aj</argument>
           </arguments>

@@ -82,12 +82,12 @@ public aspect HttpRequestAspect {
     }
 
     // HttpServletRequest
-    after() returning (String returnObject): call(public String HttpServletRequest.getContextPath()) {
-        if (returnObject != null) {
-            returnObject.setTainted(true);
-            returnObject.addTaintedSourceId(HTTP_URL_SOURCE_ID);
-        }
-    }
+//    after() returning (String returnObject): call(public String HttpServletRequest.getContextPath()) {
+//        if (returnObject != null) {
+//            returnObject.setTainted(true);
+//            returnObject.addTaintedSourceId(HTTP_URL_SOURCE_ID);
+//        }
+//    }
     
     after() returning (String returnObject): call(public String HttpServletRequest.getHeader(String)) {
         if (returnObject != null) {

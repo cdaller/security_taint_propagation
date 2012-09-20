@@ -100,7 +100,7 @@
           <showWeaveInfo>false</showWeaveInfo>
           <source>${compiler.version}</source>
           <target>${compiler.version}</target>
-          <!-- Xlint>ignore</Xlint -->
+          <Xlint>ignore</Xlint>
           <complianceLevel>${compiler.version}</complianceLevel>
           <encoding>UTF-8</encoding>
           <verbose>true</verbose>

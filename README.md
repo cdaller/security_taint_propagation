@@ -40,11 +40,11 @@ Everyone is welcome to help to improve this project.
   Additionally it holds some definitions of sinks and sources.
 * [security_taint_propagation_http]((security_taint_propagation_http): holds sources for web applications
 * [security_taint_webapp](security_taint_webapp): very simple example webapp that demonstrates sources, sinks
-  and sanitation of tainted strings. It needs to be deployed to an instrumented tomcat 
+  and sanitation of tainted strings. It needs to be deployed to an instrumented tomcat
   server to work as expected (see readme in the project).
 
 ## Eclipse setup
-The projects can be used as maven nature projects. Beware that the tainted-rt-1.x.jar 
+The projects can be used as maven nature projects. Beware that the tainted-rt-1.x.jar
 always comes before the system lib (jre lib) as otherwise the java.lang.String modification
 will not be found! Use the projects properties, "Java Build Path"/"Order and Export" to put the
 "JRE System Library" to the bottom. This needs to be done every time after "Maven/Update Project"
@@ -54,7 +54,7 @@ Set the default jre to 1.6 (only tested with 1.6, might work with oters JREs as 
 
 Do a "mvn package" first, so the modified rt.jar will be found in eclipse.
 
-Please note that the security_taint_extension project will not build correctly in eclipse, as 
+Please note that the security_taint_extension project will not build correctly in eclipse, as
 it needs the modified rt.jar which it produces (hen/egg problem). In maven it works.
 Use maven to package.
 
@@ -62,6 +62,12 @@ Add the aspect-Nature to the project: Right click on project, Configure, Convert
 
 If you cannot start any unit tests in eclipse after modification in the aspects, remove all
 Run-Configurations of the tests!
+
+Sometimes eclipse gets confused and reports hundreds of errors:
+* delete the files .classpath and .project
+* in eclipse update maven nature: Maven/Update Project
+* move the JRE System Library to the bottom (Properties/Java Build Path/Order and Export)
+* remove AspectJ Nature and add it again
 
 ## License
 This project is licensed under [Apache 2.0](http://opensource.org/licenses/apache2.0)
