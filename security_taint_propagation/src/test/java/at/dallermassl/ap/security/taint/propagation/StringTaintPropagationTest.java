@@ -8,6 +8,7 @@ import java.util.Locale;
 import org.junit.Assert;
 import org.junit.Test;
 
+import at.dallermassl.ap.security.taint.extension.TaintedObject;
 import at.dallermassl.ap.security.taint.source.TaintedSourceInfo;
 
 
@@ -214,6 +215,57 @@ public class StringTaintPropagationTest {
        Assert.assertFalse("replace charsequence propagates tainted", foo.replace("o", "x").isTainted());
        Assert.assertFalse("replaceAll regepx propagates tainted", foo.replaceAll("o", "x").isTainted());
        Assert.assertFalse("replaceFirst regexp propagates tainted", foo.replaceFirst("o", "x").isTainted());
+   }
+   
+   @Test
+   public void testValueOf() {
+       String foo = "foo";
+       foo.setTainted(true);
+       String bar = String.valueOf(foo);
+       Assert.assertTrue("valueOf propagates tainted", bar.isTainted());
+
+       foo.setTainted(false);
+       bar = String.valueOf(foo);
+       Assert.assertFalse("valueOf propagates tainted", bar.isTainted());
+   }
+   
+   @Test
+   public void testSubstring() {
+       String foo = "foobar";
+       foo.setTainted(true);
+       Assert.assertTrue("substring propagates tainted", foo.substring(0, 3).isTainted());
+
+       foo.setTainted(false);
+       Assert.assertFalse("substring propagates tainted", foo.substring(0, 3).isTainted());       
+   }
+
+   @Test
+   public void testSubsequence() {
+       String foo = "foobar";
+       foo.setTainted(true);
+       CharSequence seq = foo.subSequence(0,  3);
+       if (seq instanceof TaintedObject) {
+         Assert.assertTrue("subSequence propagates tainted", ((TaintedObject) seq).isTainted());
+       }
+
+       foo.setTainted(false);
+       seq = foo.subSequence(0,  3);
+       if (seq instanceof TaintedObject) {
+         Assert.assertFalse("subSequence propagates tainted", ((TaintedObject) seq).isTainted());       
+       }
+   }
+
+   
+   @Test
+   public void testEmptyString() {
+       String foo = "foo";
+       foo.setTainted(true);
+       foo = foo.substring(0, 0);
+       
+       Assert.assertTrue("Result is empty but tainted", foo.isTainted());
+       
+       String bar = "";
+       Assert.assertFalse("Empty string is not tainted", bar.isTainted());
    }
 
 }

@@ -6,6 +6,8 @@ package at.dallermassl.ap.security.taint.propagation;
 import org.junit.Assert;
 import org.junit.Test;
 
+import at.dallermassl.ap.security.taint.extension.TaintedObject;
+
 /**
  * @author cdaller
  *
@@ -119,5 +121,22 @@ public class StringBufferPropagationTest {
         foo.setTainted(true);
         Assert.assertTrue("toString of tainted propagates taintedness", foo.toString().isTainted());
     }
+    
+    @Test
+    public void testSubsequence() {
+        StringBuffer foo = new StringBuffer("foobar");
+        foo.setTainted(true);
+        CharSequence seq = foo.subSequence(0,  3);
+        if (seq instanceof TaintedObject) {
+          Assert.assertTrue("subSequence propagates tainted", ((TaintedObject) seq).isTainted());
+        }
+
+        foo.setTainted(false);
+        seq = foo.subSequence(0,  3);
+        if (seq instanceof TaintedObject) {
+          Assert.assertFalse("subSequence propagates tainted", ((TaintedObject) seq).isTainted());       
+        }
+    }
+
 
 }

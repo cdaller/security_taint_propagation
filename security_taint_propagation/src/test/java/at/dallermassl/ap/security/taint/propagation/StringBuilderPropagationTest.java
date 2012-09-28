@@ -9,6 +9,7 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 
+import at.dallermassl.ap.security.taint.extension.TaintedObject;
 import at.dallermassl.ap.security.taint.source.TaintedSourceInfo;
 
 /**
@@ -140,6 +141,23 @@ public class StringBuilderPropagationTest {
         foo.setTainted(true);
         Assert.assertTrue("toString of tainted propagates taintedness", foo.toString().isTainted());
     }
+    
+    @Test
+    public void testSubsequence() {
+        StringBuilder foo = new StringBuilder("foobar");
+        foo.setTainted(true);
+        CharSequence seq = foo.subSequence(0,  3);
+        if (seq instanceof TaintedObject) {
+          Assert.assertTrue("subSequence propagates tainted", ((TaintedObject) seq).isTainted());
+        }
+
+        foo.setTainted(false);
+        seq = foo.subSequence(0,  3);
+        if (seq instanceof TaintedObject) {
+          Assert.assertFalse("subSequence propagates tainted", ((TaintedObject) seq).isTainted());       
+        }
+    }
+
     
     @Test
     public void testSourceIdPropagation1() {

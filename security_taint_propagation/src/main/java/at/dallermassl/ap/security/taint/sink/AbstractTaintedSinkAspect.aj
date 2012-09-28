@@ -3,8 +3,6 @@
  */
 package at.dallermassl.ap.security.taint.sink;
 
-import java.util.Set;
-
 import org.aspectj.lang.JoinPoint;
 
 import at.dallermassl.ap.security.taint.source.TaintedSourceInfo;

@@ -39,9 +39,20 @@ public privileged aspect StringTaintPropagationAspect {
                     call(public String String.toLowerCase()) ||
                     call(public String String.toLowerCase(Locale)) ||
                     call(public String String.toUpperCase()) ||
-                    call(public String String.toUpperCase(Locale))
+                    call(public String String.toUpperCase(Locale)) ||
+                    call(public String String.substring(..))
                     ) {
         if (targetObject != null) {
+            returnObject.setTainted(targetObject.isTainted());
+            returnObject.addTaintedSourceIdBits(targetObject.getTaintedSourceIdBits());
+        }
+    }
+
+    /** Aspect for {@link CharSequence#subSequence()} */
+    after(TaintedObject targetObject) returning (TaintedObject returnObject): target(targetObject) && (
+                    call(public CharSequence CharSequence.subSequence(..))
+                    ) {
+        if (targetObject != null && returnObject instanceof TaintedObject) {
             returnObject.setTainted(targetObject.isTainted());
             returnObject.addTaintedSourceIdBits(targetObject.getTaintedSourceIdBits());
         }
