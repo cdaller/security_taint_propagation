@@ -38,7 +38,7 @@ Everyone is welcome to help to improve this project.
   String to StringBuffer and StringBuilder objects (e.g. copy a tainted String into
   a StringBuilder, the new StringBuilder has to be flagged as tainted as well).
   Additionally it holds some definitions of sinks and sources.
-* [security_taint_propagation_http]((security_taint_propagation_http): holds sources for web applications
+* [security_taint_propagation_http]((security_taint_propagation_http): holds taint sources and sinks for web applications
 * [security_taint_webapp](security_taint_webapp): very simple example webapp that demonstrates sources, sinks
   and sanitation of tainted strings. It needs to be deployed to an instrumented tomcat
   server to work as expected (see readme in the project).
