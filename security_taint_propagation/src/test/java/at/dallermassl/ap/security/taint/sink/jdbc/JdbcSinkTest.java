@@ -171,14 +171,12 @@ public class JdbcSinkTest {
         try {
             String foo = "foo";
             foo.setTainted(true);
-            PreparedStatement stmt;
-            ResultSet rs;
             // test if it works at all:
-            stmt = conn.prepareStatement("insert into test (intvalue, stringvalue) values (1, 'foobar')");
+            conn.prepareStatement("insert into test (intvalue, stringvalue) values (1, 'foobar')");
 
             try {                
                 // test execute with tainted string:
-                stmt = conn.prepareStatement("insert into test (intvalue, stringvalue) values (2, '" + foo + "')");
+                conn.prepareStatement("insert into test (intvalue, stringvalue) values (2, '" + foo + "')");
                 Assert.fail("sql with tainted string must throw a SecurityException");
             } catch (SecurityException e) {
                 Assert.assertTrue("Security exception was thrown", true);
@@ -186,7 +184,7 @@ public class JdbcSinkTest {
 
             try {                
                 // test execute with tainted string:
-                stmt = conn.prepareStatement("insert into test (intvalue, stringvalue) values (2, '" + foo + "')", 1);
+                conn.prepareStatement("insert into test (intvalue, stringvalue) values (2, '" + foo + "')", 1);
                 Assert.fail("sql with tainted string must throw a SecurityException");
             } catch (SecurityException e) {
                 Assert.assertTrue("Security exception was thrown", true);
@@ -194,7 +192,7 @@ public class JdbcSinkTest {
             
             try {                
                 // test execute with tainted string:
-                stmt = conn.prepareStatement("insert into test (intvalue, stringvalue) values (2, '" + foo + "')", 1, 2);
+                conn.prepareStatement("insert into test (intvalue, stringvalue) values (2, '" + foo + "')", 1, 2);
                 Assert.fail("sql with tainted string must throw a SecurityException");
             } catch (SecurityException e) {
                 Assert.assertTrue("Security exception was thrown", true);
@@ -202,7 +200,7 @@ public class JdbcSinkTest {
 
             try {                
                 // test execute with tainted string:
-                stmt = conn.prepareStatement("insert into test (intvalue, stringvalue) values (2, '" + foo + "')", 1, 2, 3);
+                conn.prepareStatement("insert into test (intvalue, stringvalue) values (2, '" + foo + "')", 1, 2, 3);
                 Assert.fail("sql with tainted string must throw a SecurityException");
             } catch (SecurityException e) {
                 Assert.assertTrue("Security exception was thrown", true);
@@ -210,7 +208,7 @@ public class JdbcSinkTest {
 
             try {                
                 // test execute with tainted string:
-                stmt = conn.prepareStatement("insert into test (intvalue, stringvalue) values (2, '" + foo + "')", new int[] {1, 2});
+                conn.prepareStatement("insert into test (intvalue, stringvalue) values (2, '" + foo + "')", new int[] {1, 2});
                 Assert.fail("sql with tainted string must throw a SecurityException");
             } catch (SecurityException e) {
                 Assert.assertTrue("Security exception was thrown", true);
@@ -218,7 +216,7 @@ public class JdbcSinkTest {
 
             try {                
                 // test execute with tainted string:
-                stmt = conn.prepareStatement("insert into test values (intvalue, stringvalue) (2, '" + foo + "')", new String[] {"intvalue"});
+                conn.prepareStatement("insert into test values (intvalue, stringvalue) (2, '" + foo + "')", new String[] {"intvalue"});
                 Assert.fail("sql with tainted string must throw a SecurityException");
             } catch (SecurityException e) {
                 Assert.assertTrue("Security exception was thrown", true);

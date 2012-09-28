@@ -4,7 +4,6 @@
 package at.dallermassl.ap.security.taint.extension;
 
 import java.util.Arrays;
-import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Test;

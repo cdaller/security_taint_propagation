@@ -1,7 +1,6 @@
 package at.dallermassl.ap.security.taint.propagation;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
