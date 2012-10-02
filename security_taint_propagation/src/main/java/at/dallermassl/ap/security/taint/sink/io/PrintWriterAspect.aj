@@ -14,15 +14,10 @@ import at.dallermassl.ap.security.taint.sink.AbstractTaintedSinkAspect;
 public aspect PrintWriterAspect extends AbstractTaintedSinkAspect {
     
     /** Aspect for {@link PrintWriter#print(String)} */
-    before(String value): call(public void PrintWriter.print(String)) && args(value) {
-        if (value != null && value.isTainted()) {
-            handleTaintedSink(thisJoinPoint, value);
-        }
-    }
-
-    /** Aspect for {@link PrintWriter#print(String)} */
-    before(String value): call(public void PrintWriter.println(String)) && args(value) {
-        //System.out.println(thisJoinPoint.toLongString());
+    before(String value): args(value) && (
+                    call(public void PrintWriter.print(String)) ||
+                    call(public void PrintWriter.println(String))
+                    ){
         if (value != null && value.isTainted()) {
             handleTaintedSink(thisJoinPoint, value);
         }

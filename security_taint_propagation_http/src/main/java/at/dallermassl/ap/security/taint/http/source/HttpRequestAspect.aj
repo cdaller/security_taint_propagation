@@ -1,7 +1,7 @@
 /**
  * 
  */
-package at.dallermassl.ap.security.taint.source.http;
+package at.dallermassl.ap.security.taint.http.source;
 
 import java.util.ArrayList;
 import java.util.Collections;

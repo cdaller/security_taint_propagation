@@ -13,18 +13,13 @@ import at.dallermassl.ap.security.taint.sink.AbstractTaintedSinkAspect;
  */
 public aspect JspWriterAspect extends AbstractTaintedSinkAspect {
 
-    /** Aspect for {@link JspWriter#print(String)} */
-    before(String value): call(public void JspWriter.print(String)) && args(value) {
+    /** Aspect for {@link JspWriter#print*(String)} */
+    before(String value): args(value) && (
+                    call(public void JspWriter.print(String)) || 
+                    call(public void JspWriter.println(String)) 
+                    ){
         if (value != null && value.isTainted()) {
             handleTaintedSink(thisJoinPoint, value);
         }
     }
-    
-    /** Aspect for {@link JspWriter#println(String)} */
-    before(String value): call(public void JspWriter.println(String)) && args(value) {
-        if (value != null && value.isTainted()) {
-            handleTaintedSink(thisJoinPoint, value);
-        }
-    }
-
 }
