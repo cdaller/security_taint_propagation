@@ -1,7 +1,7 @@
 /**
  * 
  */
-package at.dallermassl.ap.security.taint.http.sink;
+package at.dallermassl.ap.security.taint.sink.http;
 
 import javax.servlet.jsp.JspWriter;
 
