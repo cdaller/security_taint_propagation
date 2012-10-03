@@ -9,7 +9,6 @@ import at.dallermassl.ap.security.taint.extension.TaintedObject;
  *
  */
 public privileged aspect StringTaintPropagationAspect {
-    // TODO: replace and replaceAll...
 
     /** Aspect for constructor {@link String(String)} or methods using a string as param */    
     after(String value) returning (String returnObject): args(value) && (

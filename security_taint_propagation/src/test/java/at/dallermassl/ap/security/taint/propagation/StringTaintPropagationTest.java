@@ -262,6 +262,7 @@ public class StringTaintPropagationTest {
        foo = foo.substring(0, 0);
        
        Assert.assertTrue("Result is empty but tainted", foo.isTainted());
+       foo.intern();
        
        String bar = "";
        Assert.assertFalse("Empty string is not tainted", bar.isTainted());
