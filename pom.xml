@@ -1,9 +1,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <!-- ATTENTION: this configuration is only for certified gwt developers -->
   <modelVersion>4.0.0</modelVersion>
-  <groupId>at.dallermassl.security</groupId>
+  <groupId>at.dallermassl</groupId>
   <artifactId>security.taint.propagation-reactor</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>0.0.2-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>Taint Propagation build reactor</name>
@@ -49,7 +48,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <compiler.version>1.6</compiler.version>
     <aspectj.version>1.7.0</aspectj.version>
-    <scm.http.url>http://github.com/cdaller/security-taint-propagation</scm.http.url>
+    <scm.http.url>https://github.com/cdaller/security_taint_propagation.git</scm.http.url>
   </properties>
 
   <scm>

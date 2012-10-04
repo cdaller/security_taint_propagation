@@ -2,7 +2,6 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <artifactId>security.taint.webapp</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
   <packaging>war</packaging>
 
   <name>security.taint.webapp</name>
@@ -10,9 +9,14 @@
   <parent>
     <groupId>at.dallermassl</groupId>
     <artifactId>security.taint.propagation-reactor</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.2-SNAPSHOT</version>
 	<relativePath>../pom.xml</relativePath>
   </parent>
+  
+  <properties>
+    <bootclasspath>${basedir}/../security_taint_extension/target/tainted-rt-${compiler.version}.jar</bootclasspath>
+  </properties>
+  
 
   <dependencies>
     <dependency>
@@ -21,6 +25,19 @@
       <version>2.3</version>
       <scope>provided</scope>
     </dependency>
+        <dependency>
+      <groupId>at.dallermassl</groupId>
+      <artifactId>security.tainted.rt</artifactId>
+      <version>${compiler.version}</version>
+      <scope>system</scope>
+      <systemPath>${bootclasspath}</systemPath>
+    </dependency>
+    <dependency>
+      <groupId>at.dallermassl</groupId>
+      <artifactId>security.taint.propagation.http</artifactId>
+      <version>0.0.2-SNAPSHOT</version>
+    </dependency>
+    
   </dependencies>
 
   <build>
