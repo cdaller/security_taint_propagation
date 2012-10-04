@@ -55,10 +55,8 @@ public privileged aspect StringBuilderTaintPropagationAspect {
     after(CharSequence value, StringBuilder targetObject) returning (StringBuilder returnObject): 
         call(public StringBuilder StringBuilder.append(CharSequence)) && args(value) && target(targetObject) {
         if (value != null && value instanceof TaintedObject && ((TaintedObject)value).isTainted()) {
-            if (((TaintedObject)value).isTainted()) {
-                returnObject.setTainted(true);
-                returnObject.addTaintedSourceIdBits(((TaintedObject) value).getTaintedSourceIdBits());
-            }            
+            returnObject.setTainted(true);
+            returnObject.addTaintedSourceIdBits(((TaintedObject) value).getTaintedSourceIdBits());
         }
         if (targetObject.isTainted()) {
             returnObject.setTainted(true);
