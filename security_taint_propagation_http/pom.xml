@@ -5,7 +5,7 @@
   <version>0.0.2-SNAPSHOT</version>
 
   <parent>
-    <groupId>at.dallermassl.ap</groupId>
+    <groupId>at.dallermassl</groupId>
     <artifactId>security.taint.propagation-reactor</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 	<relativePath>../pom.xml</relativePath>
@@ -33,14 +33,14 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>at.dallermassl.ap.security</groupId>
-      <artifactId>tainted.rt</artifactId>
+      <groupId>at.dallermassl</groupId>
+      <artifactId>security.tainted.rt</artifactId>
       <version>${compiler.version}</version>
       <scope>system</scope>
       <systemPath>${bootclasspath}</systemPath>
     </dependency>
     <dependency>
-      <groupId>at.dallermassl.ap</groupId>
+      <groupId>at.dallermassl</groupId>
       <artifactId>security.taint.propagation</artifactId>
       <version>0.0.2-SNAPSHOT</version>
     </dependency>

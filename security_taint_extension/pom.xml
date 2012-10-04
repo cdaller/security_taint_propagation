@@ -5,20 +5,21 @@
   <artifactId>security.taint.extension</artifactId>
   <packaging>jar</packaging>
   <version>1.0-SNAPSHOT</version>
+
   <name>security.taint.extension</name>
   <url>http://maven.apache.org</url>
 
   <parent>
-    <groupId>at.dallermassl.ap</groupId>
+    <groupId>at.dallermassl</groupId>
     <artifactId>security.taint.propagation-reactor</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
-  
+
   <properties>
     <bootclasspath>${basedir}/target/tainted-rt-${compiler.version}.jar</bootclasspath>
   </properties>
-  
+
 
   <dependencies>
     <dependency>
@@ -44,7 +45,7 @@
       <version>4.10</version>
       <scope>test</scope>
     </dependency>
-    
+
   </dependencies>
 
 <profiles>
@@ -76,9 +77,9 @@
   <build>
     <pluginManagement>
       <plugins>
-        <!--This plugin's configuration is used to store Eclipse m2e settings 
-          only. It has no influence on the Maven build itself. Prevents eclipse problems 
-          like "Plugin execution not covered by lifecycle configuration" when this 
+        <!--This plugin's configuration is used to store Eclipse m2e settings
+          only. It has no influence on the Maven build itself. Prevents eclipse problems
+          like "Plugin execution not covered by lifecycle configuration" when this
           project used as a maven project nature: http://stackoverflow.com/questions/6352208/how-to-solve-plugin-execution-not-covered-by-lifecycle-configuration-for-sprin -->
         <plugin>
           <groupId>org.eclipse.m2e</groupId>
@@ -149,8 +150,8 @@
         </configuration>
         <dependencies>
         <dependency>
-          <groupId>at.dallermassl.ap.security</groupId>
-          <artifactId>tainted.rt</artifactId>
+          <groupId>at.dallermassl</groupId>
+          <artifactId>security.tainted.rt</artifactId>
           <version>${compiler.version}</version>
           <scope>system</scope>
           <systemPath>${bootclasspath}</systemPath>
