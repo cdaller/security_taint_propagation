@@ -41,7 +41,7 @@ Everyone is welcome to help to improve this project.
 * [security_taint_propagation_http]((security_taint_propagation_http): holds taint sources and sinks for web applications
 * [security_taint_webapp](security_taint_webapp): very simple example webapp that demonstrates sources, sinks
   and sanitation of tainted strings. It needs to be deployed to an instrumented tomcat
-  server to work as expected (see [security_taint_webapp/Readme.md](readme in the project)).
+  server to work as expected (see [readme in the project](security_taint_webapp/Readme.md)).
 
 ## Eclipse setup
 The projects can be used as maven nature projects. Beware that the tainted-rt-1.x.jar
