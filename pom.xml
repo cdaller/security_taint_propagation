@@ -15,35 +15,6 @@
     <module>security_taint_webapp</module>
   </modules>
 
-<!--
-  <repositories>
-    <repository>
-      <id>central</id>
-      <name>Unycom Internal Repository</name>
-      <url>http://maven.unycom.com/repo</url>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-    </repository>
-  </repositories>
-
-  <pluginRepositories>
-    <pluginRepository>
-      <id>central</id>
-      <name>Unycom Internal Repository</name>
-      <url>http://maven.unycom.com/repo</url>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-    </pluginRepository>
-  </pluginRepositories>
--->
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <compiler.version>1.6</compiler.version>
@@ -57,52 +28,4 @@
     <url>${scm.http.url}</url>
   </scm>
 
-  <distributionManagement>
-    <site>
-      <id>${siteIdName}</id>
-      <url>scp://${siteHostname}:/var/www/maven-sites/trunk</url>
-    </site>
-  </distributionManagement>
-
-  <reporting>
-    <plugins>
-
-      <!-- StatSCM Plugin: http://stat-scm.sourceforge.net/, see http://www.statsvn.org/ -->
-      <plugin>
-        <groupId>net.sf</groupId>
-        <artifactId>stat-scm</artifactId>
-        <configuration>
-            <nonDeveloperLogins>
-                <nonDeveloperLogin>hudson</nonDeveloperLogin>
-                <nonDeveloperLogin>maven</nonDeveloperLogin>
-            </nonDeveloperLogins>
-            <excludes>
-                <exclude>**/ipms-webapp/src/main/i18n/**</exclude>
-                <exclude>**/*.uml</exclude>
-            </excludes>
-        </configuration>
-      </plugin>
-
-      <!-- Maven Javadoc Plugin: http://maven.apache.org/plugins/maven-javadoc-plugin/ -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <configuration>
-          <failOnError>false</failOnError>
-          <encoding>UTF-8</encoding>
-          <minmemory>256m</minmemory>
-          <maxmemory>1024m</maxmemory>
-          <executions>
-              <execution>
-                <id>aggregate</id>
-                <goals>
-                  <goal>aggregate</goal>
-                </goals>
-                <phase>site</phase>
-              </execution>
-          </executions>
-        </configuration>
-      </plugin>
-    </plugins>
-  </reporting>
 </project>

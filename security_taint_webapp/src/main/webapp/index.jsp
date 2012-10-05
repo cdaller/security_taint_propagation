@@ -9,7 +9,7 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>Safe parameters - sanitation is done!</h1>
+        <h1>Dynamic Taint Propagation Test Page</h1>
 
         <%
             String user;
@@ -43,29 +43,45 @@
                 pass = Sanitizer.sanitize(pass);
             }
         %>
+
+        <p>
+        The parameters are passed to the jsp page again. The jsp page sanitizes the request
+        parameters on demand (checkbox). If the web application is instrumented
+        with the taint-propagation aspects and the parameters are not sanitized, the taint
+        propagation sink aspects will print a warning message to the console as soon as the
+        tainted strings will be printed to the jsp writer. Actually it is not important what 
+        the sanitizer does. The aspects will remove the tainted flag whenever the sanitation method
+        is invoked.
+        </p>
+        <p>
+        If you cannot see anything on the console (sanitation off), the application server is
+        not correctly instrumented with the aspects!
+        </p>
         
+        <h2>Input parameters</h2>
+        <p>
         <form name="input" action="./" method="get">
-          <input type="text" name="username" value="<%=user%>"/><br/>
-          <input type="text" name="password" value="<%=pass%>"/><br/>
+          Username: <input type="text" name="username" value="<%=user%>" size="60"/><br/>
+          Password: <input type="text" name="password" value="<%=pass%>" size="60"/><br/>
           <input type="radio" name="sanitize" value="true" <%=checkedString%>/> Sanitize input on server<br/>
           <input type="radio" name="sanitize" value="false"  <%=notCheckedString%>/> Do not sanitize input on server<br/>
           <input type="submit" value="Submit"/>
         </form>
+        </p>
 
-        List of parameters:
+        <h2>Output parameters</h2>
+        <h3>List of parameters printed with  "&lt;%= variablename %&gt;"</h3>
         <ul>
           <li>User: <%=user%></li>
           <li>Password: <%=pass%></li>
         </ul>
-        
-        List of parameters printed directly to PrintWriter
+        <h3>List of parameters printed directly to PrintWriter "out"</h3>
         <ul>
         <%
         out.println("<li>User: " + user + "</li>");
         out.println("<li>Password: " + pass + "</li>");
         %>
         </ul>
-        
         <!-- add image as test (was a bug) -->
         <img src="images/gear-clock_small.jpg"/>
     </body>

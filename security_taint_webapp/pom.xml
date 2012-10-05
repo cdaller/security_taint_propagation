@@ -13,11 +13,6 @@
 	<relativePath>../pom.xml</relativePath>
   </parent>
   
-  <properties>
-    <bootclasspath>${basedir}/../security_taint_extension/target/tainted-rt-${compiler.version}.jar</bootclasspath>
-  </properties>
-  
-
   <dependencies>
     <dependency>
       <groupId>javax.servlet</groupId>
@@ -25,33 +20,36 @@
       <version>2.3</version>
       <scope>provided</scope>
     </dependency>
-        <dependency>
+    <!-- dependency for jetty:run: include taint-propagation aspects -->
+    <dependency>
       <groupId>at.dallermassl</groupId>
-      <artifactId>security.tainted.rt</artifactId>
-      <version>${compiler.version}</version>
-      <scope>system</scope>
-      <systemPath>${bootclasspath}</systemPath>
+      <artifactId>security.taint.propagation</artifactId>
+      <version>${project.version}</version>
+      <scope>runtime</scope>
     </dependency>
     <dependency>
       <groupId>at.dallermassl</groupId>
       <artifactId>security.taint.propagation.http</artifactId>
-      <version>0.0.2-SNAPSHOT</version>
+      <version>${project.version}</version>
+      <scope>runtime</scope>
     </dependency>
-    
   </dependencies>
 
   <build>
     <finalName>taintwebapp</finalName>
     <plugins>
+      <!-- compile -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>2.3.2</version>
         <configuration>
-          <source>1.6</source>
-          <target>1.6</target>
+          <source>${compiler.version}</source>
+          <target>${compiler.version}</target>
         </configuration>
       </plugin>
+      
+      <!-- create war file -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-war-plugin</artifactId>
@@ -60,6 +58,22 @@
           <failOnMissingWebXml>false</failOnMissingWebXml>
         </configuration>
       </plugin>
+            
+      <plugin>
+        <groupId>org.mortbay.jetty</groupId>
+        <artifactId>maven-jetty-plugin</artifactId>
+        <version>6.1.26</version>
+        <configuration>
+          <scanIntervalSeconds>10</scanIntervalSeconds>
+          <connectors>
+            <connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">
+              <port>8080</port>
+              <maxIdleTime>60000</maxIdleTime>
+            </connector>
+          </connectors>
+        </configuration>
+      </plugin>
+      
     </plugins>
   </build>
 

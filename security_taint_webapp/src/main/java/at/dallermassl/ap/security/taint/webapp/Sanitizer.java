@@ -13,6 +13,7 @@ public class Sanitizer {
             return null;
         }
         String secure = value.replace("<", "&lt");
+        secure = secure.replace("\"", "&quot;");
         return new String(secure);
     }
 
