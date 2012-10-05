@@ -29,19 +29,19 @@ Everyone is welcome to help to improve this project.
 
 
 ## There are multiple parts in this project
-* [security_taint_extension](security_taint_extension/Readme.md): contains aspects that extend java.lang.String (add property
+* **security_taint_extension**: contains aspects that extend java.lang.String (add property
   "tainted"). Therefore you need to weave the new aspect into the jdk's rt.jar (on OSX's
   1.6 jdk it is named classes.jar) and create a new "tainted-rt.jar". This new jar is
   used in the bootclasspath of all projects that use the aspects (and the application
   itself as well!).
-* [security_taint_propagation](security_taint_propagation): holds aspects that propagate the tainted flag from
+* **security_taint_propagation**: holds aspects that propagate the tainted flag from
   String to StringBuffer and StringBuilder objects (e.g. copy a tainted String into
   a StringBuilder, the new StringBuilder has to be flagged as tainted as well).
   Additionally it holds some definitions of sinks and sources.
-* [security_taint_propagation_http]((security_taint_propagation_http): holds taint sources and sinks for web applications
-* [security_taint_webapp](security_taint_webapp): very simple example webapp that demonstrates sources, sinks
+* **security_taint_propagation_http**: holds taint sources and sinks for web applications
+* **security_taint_webapp**: very simple example webapp that demonstrates sources, sinks
   and sanitation of tainted strings. It needs to be deployed to an instrumented tomcat
-  server to work as expected (see [readme in the project](security_taint_webapp/Readme.md)).
+  server to work as expected (see Readme.md in the project).
 
 ## Eclipse setup
 The projects can be used as maven nature projects. Beware that the tainted-rt-1.x.jar
