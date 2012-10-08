@@ -5,6 +5,7 @@ package at.dallermassl.ap.security.taint.sink;
 
 import org.aspectj.lang.JoinPoint;
 
+import at.dallermassl.ap.security.taint.extension.TaintedObject;
 import at.dallermassl.ap.security.taint.source.TaintedSourceInfo;
 
 /**
@@ -36,9 +37,10 @@ public abstract aspect AbstractTaintedSinkAspect {
     
     /**
      * Method called if a tainted value should be used.
+     * @param joinPoint the joinPoint that triggered the taint event.
      * @param value the value to be used.
      */
-    public void handleTaintedSink(JoinPoint joinPoint, String value) {
+    public void handleTaintedSink(JoinPoint joinPoint, TaintedObject value) {
         value.setTainted(false);        
         int[] sourceIds = value.getTaintedSourceIds();
         StringBuilder sourceIdInfos = new StringBuilder();
@@ -46,6 +48,9 @@ public abstract aspect AbstractTaintedSinkAspect {
         for (int sourceId : sourceIds) {
             sourceIdInfos.append(prefix);
             sourceIdInfos.append(TaintedSourceInfo.getSourceInfo(sourceId));
+            sourceIdInfos.append("(");
+            sourceIdInfos.append(sourceId);
+            sourceIdInfos.append(")");
             prefix = ", ";
         }
         StringBuilder messageBuilder = new StringBuilder("SECURITY-TAINT-WARNING: Tainted value will be used in a sink!");

@@ -5,13 +5,14 @@ package at.dallermassl.ap.security.taint.source.sql;
 
 import java.sql.ResultSet;
 
+import at.dallermassl.ap.security.taint.source.AbstractTaintedSourceAspect;
 import at.dallermassl.ap.security.taint.source.TaintedSourceInfo;
 
 /**
  * @author cdaller
  * TODO: Source: System.getenv(), File Reads, ...
  */
-public aspect JdbcSourceAspect {
+public aspect JdbcSourceAspect extends AbstractTaintedSourceAspect {
     
     private int JDBC_RESULTSET_SOURCE_ID = TaintedSourceInfo.addSourceInfo("JDBC Sql Result Set");    
     
@@ -22,6 +23,7 @@ public aspect JdbcSourceAspect {
             returnObject.setTainted(true);
             returnObject.addTaintedSourceId(JDBC_RESULTSET_SOURCE_ID);
         }
+        postProcessTaintedSource(thisJoinPoint, returnObject);
     }
 
 

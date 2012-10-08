@@ -15,13 +15,14 @@ import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Cookie;
 
+import at.dallermassl.ap.security.taint.source.AbstractTaintedSourceAspect;
 import at.dallermassl.ap.security.taint.source.TaintedSourceInfo;
 
 /**
  * @author cdaller
  * TODO: Source: System.getenv(), Db-Statements, File Reads, ...
  */
-public aspect HttpRequestAspect {
+public aspect HttpRequestAspect extends AbstractTaintedSourceAspect {
     
     private int HTTP_PARAMETER_SOURCE_ID = TaintedSourceInfo.addSourceInfo("Http Servlet Request Parameter");
     private int HTTP_COOKIE_SOURCE_ID = TaintedSourceInfo.addSourceInfo("Http Servlet Request Cookie");
@@ -35,6 +36,7 @@ public aspect HttpRequestAspect {
             returnObject.setTainted(true);
             returnObject.addTaintedSourceId(HTTP_PARAMETER_SOURCE_ID);
         }
+        postProcessTaintedSource(thisJoinPoint, returnObject);
     }
 
     after() returning (String[] returnObject): call(public String[] ServletRequest.getParameterValues(String)) {
@@ -42,6 +44,7 @@ public aspect HttpRequestAspect {
             for(String value : returnObject) {
                 value.setTainted(true);
                 value.addTaintedSourceId(HTTP_PARAMETER_SOURCE_ID);
+                postProcessTaintedSource(thisJoinPoint, value);
             }
         }
     }
@@ -60,6 +63,7 @@ public aspect HttpRequestAspect {
                 for (String value : values) {
                     value.setTainted(true);
                     value.addTaintedSourceId(HTTP_PARAMETER_SOURCE_ID);
+                    postProcessTaintedSource(thisJoinPoint, value);
                 }
                 taintedMap.put(key, values);
             } 
@@ -76,6 +80,7 @@ public aspect HttpRequestAspect {
            value = paramNames.nextElement();
            value.setTainted(true);
            value.addTaintedSourceId(HTTP_PARAMETER_SOURCE_ID);
+           postProcessTaintedSource(thisJoinPoint, value);
            taintedNames.add(value);
         }
         return Collections.enumeration(taintedNames);
@@ -94,6 +99,7 @@ public aspect HttpRequestAspect {
             returnObject.setTainted(true);
             returnObject.addTaintedSourceId(HTTP_HEADER_SOURCE_ID);
         }
+        postProcessTaintedSource(thisJoinPoint, returnObject);
     }    
 
     Enumeration<String> around(HttpServletRequest original): call(public String[] HttpServletRequest.getHeaderNames()) && target(original) {
@@ -105,6 +111,7 @@ public aspect HttpRequestAspect {
            value = paramNames.nextElement();
            value.setTainted(true);
            value.addTaintedSourceId(HTTP_HEADER_SOURCE_ID);
+           postProcessTaintedSource(thisJoinPoint, value);
            taintedNames.add(value);
         }
         return Collections.enumeration(taintedNames);
@@ -119,6 +126,7 @@ public aspect HttpRequestAspect {
            value = paramNames.nextElement();
            value.setTainted(true);
            value.addTaintedSourceId(HTTP_HEADER_SOURCE_ID);
+           postProcessTaintedSource(thisJoinPoint, value);
            taintedNames.add(value);
         }
         return Collections.enumeration(taintedNames);
@@ -136,6 +144,7 @@ public aspect HttpRequestAspect {
             returnObject.setTainted(true);
             returnObject.addTaintedSourceId(HTTP_URL_SOURCE_ID);
         }
+        postProcessTaintedSource(thisJoinPoint, returnObject);
     }
     
     // cookie
@@ -149,6 +158,7 @@ public aspect HttpRequestAspect {
             returnObject.setTainted(true);
             returnObject.addTaintedSourceId(HTTP_COOKIE_SOURCE_ID);
         }
+        postProcessTaintedSource(thisJoinPoint, returnObject);
     }
 
 }
