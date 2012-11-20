@@ -12,7 +12,7 @@
     <version>0.0.2-SNAPSHOT</version>
 	<relativePath>../pom.xml</relativePath>
   </parent>
-  
+
   <dependencies>
     <dependency>
       <groupId>javax.servlet</groupId>
@@ -33,6 +33,12 @@
       <version>${project.version}</version>
       <scope>runtime</scope>
     </dependency>
+    <dependency>
+      <groupId>org.aspectj</groupId>
+      <artifactId>aspectjweaver</artifactId>
+      <version>${aspectj.version}</version>
+      <scope>runtime</scope>
+    </dependency>
   </dependencies>
 
   <build>
@@ -48,7 +54,7 @@
           <target>${compiler.version}</target>
         </configuration>
       </plugin>
-      
+
       <!-- create war file -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -58,7 +64,7 @@
           <failOnMissingWebXml>false</failOnMissingWebXml>
         </configuration>
       </plugin>
-            
+
       <plugin>
         <groupId>org.mortbay.jetty</groupId>
         <artifactId>maven-jetty-plugin</artifactId>
@@ -73,7 +79,7 @@
           </connectors>
         </configuration>
       </plugin>
-      
+
     </plugins>
   </build>
 
