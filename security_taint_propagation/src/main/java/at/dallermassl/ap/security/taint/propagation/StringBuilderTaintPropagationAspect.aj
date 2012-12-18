@@ -92,7 +92,8 @@ public privileged aspect StringBuilderTaintPropagationAspect {
 
     
     /** Aspect for {@link String#toString()} */
-    after(StringBuilder targetObject) returning (String returnObject): call(public String StringBuilder.toString()) && target(targetObject) {
+    after(StringBuilder targetObject) returning (String returnObject): 
+        call(public String Object.toString()) && target(targetObject) && target(StringBuilder) {
         returnObject.setTainted(targetObject.isTainted());
         returnObject.addTaintedSourceIdBits(targetObject.getTaintedSourceIdBits());
     }

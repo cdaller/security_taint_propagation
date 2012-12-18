@@ -66,8 +66,7 @@ public privileged aspect StringBufferTaintPropagationAspect {
     /** Aspect for {@link StringBuffer#replace(int, int String)} */
     after(int index, int len, String value, StringBuffer targetObject) returning (StringBuffer returnObject): 
         call(public StringBuffer StringBuffer.replace(int, int, String)) && 
-        args(index, len, value) && 
-        target(targetObject) {
+        args(index, len, value) && target(targetObject)  {
         if (value != null && value.isTainted()) {
             returnObject.setTainted(true);
             returnObject.addTaintedSourceIdBits(value.getTaintedSourceIdBits());
@@ -79,7 +78,8 @@ public privileged aspect StringBufferTaintPropagationAspect {
     }
     
     /** Aspect for {@link String#toString()} */
-    after(StringBuffer targetObject) returning (String returnObject): call(public String StringBuffer.toString()) && target(targetObject) {
+    after(StringBuffer targetObject) returning (String returnObject): 
+        call(public String Object.toString()) && target(targetObject) && target(java.lang.StringBuffer) {
         returnObject.setTainted(targetObject.isTainted());
         returnObject.addTaintedSourceIdBits(targetObject.getTaintedSourceIdBits());
     }

@@ -32,8 +32,8 @@ public privileged aspect StringTaintPropagationAspect {
     }
 
     /** Aspect for {@link String#toString() or similar} */
-    after(String targetObject) returning (String returnObject): target(targetObject) && (
-                    call(public String String.toString()) ||
+    after(String targetObject) returning (String returnObject): target(targetObject) && target(java.lang.String) && (
+                    call(public String Object.toString()) ||
                     call(public String String.trim()) ||
                     call(public String String.toLowerCase()) ||
                     call(public String String.toLowerCase(Locale)) ||
