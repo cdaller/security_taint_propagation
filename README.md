@@ -52,7 +52,7 @@ was executed.
 
 Set the default jre to 1.6 (only tested with 1.6, might work with oters JREs as well).
 
-Do a "mvn package" first, so the modified rt.jar will be found in eclipse.
+Do a "mvn package" first, so the modified tainted-rt-1.6.jar will be found in eclipse.
 
 Please note that the security_taint_extension project will not build correctly in eclipse, as
 it needs the modified rt.jar which it produces (hen/egg problem). In maven it works.
