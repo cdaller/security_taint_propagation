@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package at.dallermassl.ap.security.taint.webapp;
 

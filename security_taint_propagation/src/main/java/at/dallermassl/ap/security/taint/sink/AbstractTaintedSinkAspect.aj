@@ -16,6 +16,15 @@ import at.dallermassl.ap.security.taint.source.TaintedSourceInfo;
 public abstract aspect AbstractTaintedSinkAspect {
 
     private static boolean blockTainted = false;
+    private String sinkType;
+    
+    public AbstractTaintedSinkAspect() {
+        this("unknown");
+    }
+    
+    public AbstractTaintedSinkAspect(String sinkType) {
+        this.sinkType = sinkType;
+    }
 
     /**
      * Returns <code>true</code> if a sink should throw an exception when received tainted content.
@@ -55,7 +64,9 @@ public abstract aspect AbstractTaintedSinkAspect {
         }
         StringBuilder messageBuilder = new StringBuilder("SECURITY-TAINT-WARNING: Tainted value will be used in a sink!");
         messageBuilder.append("[");
-        messageBuilder.append(" sink code: ");
+        messageBuilder.append(" type: ");
+        messageBuilder.append(sinkType);
+        messageBuilder.append(", sink code: ");
         messageBuilder.append(joinPoint.getSourceLocation());
         messageBuilder.append("/");
         messageBuilder.append(joinPoint.toShortString());

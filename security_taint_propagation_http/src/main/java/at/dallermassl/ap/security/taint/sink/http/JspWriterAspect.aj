@@ -12,6 +12,10 @@ import at.dallermassl.ap.security.taint.sink.AbstractTaintedSinkAspect;
  *
  */
 public aspect JspWriterAspect extends AbstractTaintedSinkAspect {
+    
+    public JspWriterAspect() {
+        super("XSS");
+    }
 
     /** Aspect for {@link JspWriter#print*(String)} */
     before(String value): args(value) && (

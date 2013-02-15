@@ -15,6 +15,10 @@ import at.dallermassl.ap.security.taint.sink.AbstractTaintedSinkAspect;
  */
 public aspect JdbcSinkAspect extends AbstractTaintedSinkAspect {
     
+    public JdbcSinkAspect() {
+        super("SQL-Injection");
+    }
+    
     before(String value): args(value, ..) && (
                     call(public * Statement.execute*(String, ..)) ||
                     call(public * Statement.execute*(String, ..)) ||

@@ -13,6 +13,10 @@ import at.dallermassl.ap.security.taint.sink.AbstractTaintedSinkAspect;
  */
 public aspect PrintWriterAspect extends AbstractTaintedSinkAspect {
     
+    public PrintWriterAspect() {
+        super("XSS");
+    }
+    
     /** Aspect for {@link PrintWriter#print(String)} */
     before(String value): args(value) && (
                     call(public void PrintWriter.print(String)) ||

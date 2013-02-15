@@ -11,6 +11,10 @@ import at.dallermassl.ap.security.taint.sink.AbstractTaintedSinkAspect;
  */
 public aspect ProcessExecutorSinkAspect extends AbstractTaintedSinkAspect {
     
+    public ProcessExecutorSinkAspect() {
+        super("Command-Injection");
+    }
+    
     before(String cmd): call(public void Runtime.exec(String)) && args(cmd) {
         if (cmd != null && cmd.isTainted()) {
             handleTaintedSink(thisJoinPoint, cmd);
