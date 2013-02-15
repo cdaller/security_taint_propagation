@@ -5,8 +5,12 @@ import org.junit.Test;
 
 public class TraceTest {
     
-    public String someMethod(String one, String two) {
-        return (one + two).trim();
+    public String trimMethod(String one) {
+        return one.trim();
+    }
+
+    public String concatAndTrimMethod(String one, String two) {
+        return trimMethod(one) + trimMethod(two);
     }
 
 
@@ -14,7 +18,7 @@ public class TraceTest {
     public void traceTest() {
         String foo = new String(" foo ");
         foo.setTainted(true);
-        String bar = someMethod(foo, foo);
+        String bar = concatAndTrimMethod(foo, foo);
         Assert.assertTrue(bar.isTainted());
     }
 
