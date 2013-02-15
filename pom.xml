@@ -12,6 +12,7 @@
     <module>security_taint_extension</module>
     <module>security_taint_propagation</module>
     <module>security_taint_propagation_http</module>
+    <module>security_taint_propagation_trace</module>
     <module>security_taint_webapp</module>
   </modules>
 

@@ -132,7 +132,7 @@ public class StringTaintPropagationTest {
         foo.setTainted(false);
         Assert.assertFalse("trim untainted", foo.trim().isTainted());
         foo.setTainted(true);
-        Assert.assertTrue("trim tainted", foo.trim().isTainted());
+        Assert.assertTrue("trim tainted", foo.trim().isTainted());        
     }
     
     @Test
