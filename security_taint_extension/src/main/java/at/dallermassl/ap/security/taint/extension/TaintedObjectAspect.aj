@@ -18,26 +18,19 @@ public aspect TaintedObjectAspect implements TaintedObject {
     
     private boolean TaintedObject.tainted = false;
     // bit field of sources: cannot use any other types than "int" -> vm will not start otherwise!
-    private int TaintedObject.sourceIdBitField = 0; 
+    private int TaintedObject.sourceIdBitField = 0;
+    private int TaintedObject.taintedObjectId = 0;
 
-    /**
-     * {@inheritDoc}
-     */
+
     public final boolean TaintedObject.isTainted() {
         return tainted;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public final void TaintedObject.setTainted(boolean tainted) {
 //        System.out.println("set tainted to " + tainted);
         this.tainted = tainted;
     }
     
-    /**
-     * {@inheritDoc}
-     */
     public final int TaintedObject.getTaintedSourceIdBits() {
         return sourceIdBitField;
     }
@@ -65,24 +58,16 @@ public aspect TaintedObjectAspect implements TaintedObject {
         return ids;
     }
     
-    /**
-     * {@inheritDoc}
-     */
     public final void TaintedObject.addTaintedSourceIdBits(int sourceIds) {
         sourceIdBitField = sourceIdBitField | sourceIds;
     }
     
-    /**
-     * {@inheritDoc}
-     */
+
     public final void TaintedObject.setTaintedSourceIdBits(int sourceIds) {
         sourceIdBitField = sourceIds;
     }
 
-    
-    /**
-     * {@inheritDoc}
-     */
+
     public final void TaintedObject.addTaintedSourceId(int sourceId) {
         if (sourceId > 30) {
             throw new IllegalArgumentException("Source id must be <= 30!");
@@ -91,9 +76,6 @@ public aspect TaintedObjectAspect implements TaintedObject {
         sourceIdBitField = sourceIdBitField | mask;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public final void TaintedObject.addTaintedSourceIds(int... sourceIds) {
         if (sourceIds != null) {
             for (int sourceId : sourceIds) {
@@ -102,11 +84,16 @@ public aspect TaintedObjectAspect implements TaintedObject {
         }
     }
     
-    /**
-     * {@inheritDoc}
-     */
     public final void TaintedObject.clearTaintedSourceIds() {
         sourceIdBitField = 0;
+    }
+
+    public final int TaintedObject.getTaintedObjectId() {
+        return taintedObjectId;
+    }
+
+    public final void TaintedObject.setTaintedObjectId(int taintedObjectId) {
+        this.taintedObjectId = taintedObjectId;
     }
 
 }

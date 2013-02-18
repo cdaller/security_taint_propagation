@@ -65,5 +65,16 @@ public interface TaintedObject {
      * Removes all tainted source ids.
      */
     void clearTaintedSourceIds();
+    
+    /**
+     * Set the unique id for this tainted object.
+     * @return the unique id.
+     */
+    int getTaintedObjectId();
+    
+    /**
+     * Set the tainted object id.
+     */
+    void setTaintedObjectId(int taintedObjectId);
 
 }
