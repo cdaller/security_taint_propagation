@@ -41,7 +41,6 @@ public abstract aspect AbstractIndentedLoggingAspect {
      * @return the object returned by the instrumented method.
      */
     Object around(): loggingOperations() {
-        StringBuffer sb = new StringBuffer(); 
         indentationlevel++;
         beforeLog(indentationlevel, thisJoinPoint);
         Object result = null;
