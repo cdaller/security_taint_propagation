@@ -3,6 +3,7 @@ package at.dallermassl.ap.security.taint.extension;
 
 
 
+
 /**
  * This aspect holds additional info about the taint state that cannot be held in the TaintedObject itself
  * (due to JVM limitations).
@@ -15,7 +16,7 @@ package at.dallermassl.ap.security.taint.extension;
  *
  */
 public aspect TaintInfoAspect perthis(setTaintedExecution(TaintedObject, boolean)) {
-    declare precedence: TaintedObjectAspect, TaintInfoAspect,*;
+    declare precedence: TaintInfoAspect, TaintedObjectAspect, *;
 
     private final static boolean enabled = false;
     
