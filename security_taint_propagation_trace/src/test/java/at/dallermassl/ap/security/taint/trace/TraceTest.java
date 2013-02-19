@@ -46,10 +46,19 @@ public class TraceTest {
     @Test
     public void sourceTest() {
         System.out.println("sourcetest");
+        TestTainted test = new TestTainted();
+        Assert.assertFalse(Aspects.hasAspect(PerObjAspect.class, test));
+        test.setTainted(false);
+        Assert.assertFalse(Aspects.hasAspect(PerObjAspect.class, test));
+        test.setTainted(true);
+        Assert.assertTrue(Aspects.hasAspect(PerObjAspect.class, test));
+        test.setTainted(true);
+        
         for (int i = 0; i < 10; i++) {
             TestTainted foo = source();
-            System.out.println(Aspects.aspectOf(PerObjAspect.class, foo).getIndex());
+            if (Aspects.hasAspect(PerObjAspect.class, foo)) {
+                System.out.println(Aspects.aspectOf(PerObjAspect.class, foo).getIndex());
+            }
         }
-    }
-
+    }    
 }

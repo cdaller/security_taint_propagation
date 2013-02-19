@@ -55,11 +55,12 @@ public class TestTainted implements TaintedObject {
     @Override
     public void setTainted(boolean arg0) {
         tainted = arg0;
-
     }
 
     @Override
     public void setTaintedObjectId(int arg0) {
+        // TODO Auto-generated method stub
+
     }
 
     @Override

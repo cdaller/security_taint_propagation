@@ -1,0 +1,52 @@
+package at.dallermassl.ap.security.taint.extension;
+
+
+
+
+/**
+ * This aspect holds additional info about the taint state that cannot be held in the TaintedObject itself
+ * (due to JVM limitations).
+ * This is a per instance aspect!
+ * http://di002.edv.uniovi.es/~lourdes/Cap4.pdf
+ * Test object with <code>Aspects.hasAspect(TaintInfoAspect.class, taintedObject)</code>.
+ * Access aspect values with <code>Aspects.aspectOf(TaintInfoAspect.class, taintedObject).methodName()</code>.
+ * 
+ * @author christof.dallermassl
+ *
+ */
+public aspect TaintInfoAspect perthis(setTaintedExecution(TaintedObject, boolean)) {
+    declare precedence: TaintedObjectAspect, TaintInfoAspect,*;
+
+    private final static boolean enabled = false;
+    
+    private static int count = 0;
+    private int index = 0;
+
+    /**
+     * Pointcut matches all calls to the {@link TaintedObject#setTainted(boolean)} method.
+     * @param taintedObject the tainted object.
+     * @param value the value of the setTainted method (always true due to additional if test).
+     */
+    pointcut setTaintedExecution(TaintedObject taintedObject, boolean value) 
+    : execution(* TaintedObject+.setTainted(boolean)) && args(value) && target(taintedObject) && if(value) && if(enabled); 
+
+    /**
+     * Business logic to handle the internal state of this aspect whenever a TaintedObject is set to tainted.
+     * @param taintedObject the tainted object itself.
+     * @param value the value of the setTainted method (always true due to pointcut).
+     */
+    after(TaintedObject taintedObject, boolean value)
+    : setTaintedExecution(taintedObject, value) {
+        if (value) {
+            if (index == 0) { // test if called first time or multiple times afterwards.
+                index = count++;
+            }
+        }
+    }
+
+    public int getIndex() {
+        return index;
+    }
+
+
+}

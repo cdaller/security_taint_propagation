@@ -13,7 +13,7 @@ public aspect PerObjAspect perthis(setTaintedExecution(TaintedObject, boolean)) 
     }
     
     pointcut setTaintedExecution(TaintedObject taintedObject, boolean value) 
-       : execution(* *.setTainted(boolean)) && args(value) && target(taintedObject); 
+       : execution(* TaintedObject+.setTainted(boolean)) && args(value) && target(taintedObject) && if(value); 
     
     before(TaintedObject taintedObject, boolean value)
        : setTaintedExecution(taintedObject, value) {
