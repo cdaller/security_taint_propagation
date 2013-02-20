@@ -73,8 +73,8 @@ public interface TaintedObject {
     int getTaintedObjectId();
     
     /**
-     * Set the tainted object id.
+     * Init the tainted object id.
      */
-    void setTaintedObjectId(int taintedObjectId);
+    void initTaintedObjectId();
 
 }

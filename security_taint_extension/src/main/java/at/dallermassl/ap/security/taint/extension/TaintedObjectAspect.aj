@@ -20,6 +20,7 @@ public aspect TaintedObjectAspect implements TaintedObject {
     // bit field of sources: cannot use any other types than "int" -> vm will not start otherwise!
     private int TaintedObject.sourceIdBitField = 0;
     private int TaintedObject.taintedObjectId = 0;
+    private static int objectCounter = 0;
 
 
     public final boolean TaintedObject.isTainted() {
@@ -92,8 +93,10 @@ public aspect TaintedObjectAspect implements TaintedObject {
         return taintedObjectId;
     }
 
-    public final void TaintedObject.setTaintedObjectId(int taintedObjectId) {
-        this.taintedObjectId = taintedObjectId;
+    public final void TaintedObject.initTaintedObjectId() {
+        if (this.taintedObjectId == 0) {           
+            taintedObjectId = objectCounter++;
+        }
     }
 
 }

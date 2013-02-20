@@ -13,6 +13,7 @@ public privileged aspect StringBufferTaintPropagationAspect {
         if (value != null && value instanceof TaintedObject && ((TaintedObject)value).isTainted()) {
             returnObject.setTainted(true);
             returnObject.addTaintedSourceIdBits(((TaintedObject) value).getTaintedSourceIdBits());
+            returnObject.initTaintedObjectId();
         }            
     }
     
@@ -21,6 +22,7 @@ public privileged aspect StringBufferTaintPropagationAspect {
         if (value != null && value.isTainted()) {
             returnObject.setTainted(value.isTainted());
             returnObject.addTaintedSourceIdBits(value.getTaintedSourceIdBits());
+            returnObject.initTaintedObjectId();
         }
     }
     
@@ -30,10 +32,12 @@ public privileged aspect StringBufferTaintPropagationAspect {
         if (value != null && value.isTainted()) {
             returnObject.setTainted(true);
             returnObject.addTaintedSourceIdBits(value.getTaintedSourceIdBits());
+            returnObject.initTaintedObjectId();
         }
         if (targetObject.isTainted()) {
             returnObject.setTainted(true);
             returnObject.addTaintedSourceIdBits(targetObject.getTaintedSourceIdBits());
+            returnObject.initTaintedObjectId();
         }
     }
 
@@ -43,10 +47,12 @@ public privileged aspect StringBufferTaintPropagationAspect {
         if (value != null && value.isTainted()) {
             returnObject.setTainted(true);
             returnObject.addTaintedSourceIdBits(value.getTaintedSourceIdBits());
+            returnObject.initTaintedObjectId();
         }
         if (targetObject.isTainted()) {
             returnObject.setTainted(true);
             returnObject.addTaintedSourceIdBits(targetObject.getTaintedSourceIdBits());
+            returnObject.initTaintedObjectId();
         }
     }
 
@@ -56,10 +62,12 @@ public privileged aspect StringBufferTaintPropagationAspect {
         if (value != null && value.isTainted()) {
             returnObject.setTainted(true);
             returnObject.addTaintedSourceIdBits(value.getTaintedSourceIdBits());
+            returnObject.initTaintedObjectId();
         }
         if (targetObject.isTainted()) {
             returnObject.setTainted(true);
             returnObject.addTaintedSourceIdBits(targetObject.getTaintedSourceIdBits());
+            returnObject.initTaintedObjectId();
         }
     }
 
@@ -70,10 +78,12 @@ public privileged aspect StringBufferTaintPropagationAspect {
         if (value != null && value.isTainted()) {
             returnObject.setTainted(true);
             returnObject.addTaintedSourceIdBits(value.getTaintedSourceIdBits());
+            returnObject.initTaintedObjectId();
         }
         if (targetObject.isTainted()) {
             returnObject.setTainted(true);
             returnObject.addTaintedSourceIdBits(targetObject.getTaintedSourceIdBits());
+            returnObject.initTaintedObjectId();
         }
     }
     
@@ -82,6 +92,7 @@ public privileged aspect StringBufferTaintPropagationAspect {
         call(public String Object.toString()) && target(targetObject) && target(java.lang.StringBuffer) {
         returnObject.setTainted(targetObject.isTainted());
         returnObject.addTaintedSourceIdBits(targetObject.getTaintedSourceIdBits());
+        returnObject.initTaintedObjectId();
     }
 
 }

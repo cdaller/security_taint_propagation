@@ -17,6 +17,7 @@ public privileged aspect StringTaintPropagationAspect {
         if (value != null) {
             returnObject.setTainted(value.isTainted());
             returnObject.addTaintedSourceIdBits(value.getTaintedSourceIdBits());
+            returnObject.initTaintedObjectId();
         }
     }
 
@@ -28,6 +29,7 @@ public privileged aspect StringTaintPropagationAspect {
             returnObject.setTainted(value.isTainted() || targetObject.isTainted());
             returnObject.addTaintedSourceIdBits(value.getTaintedSourceIdBits());
             returnObject.addTaintedSourceIdBits(targetObject.getTaintedSourceIdBits());
+            returnObject.initTaintedObjectId();
         }
     }
 
@@ -44,6 +46,7 @@ public privileged aspect StringTaintPropagationAspect {
         if (targetObject != null) {
             returnObject.setTainted(targetObject.isTainted());
             returnObject.addTaintedSourceIdBits(targetObject.getTaintedSourceIdBits());
+            returnObject.initTaintedObjectId();
         }
     }
 
@@ -54,6 +57,7 @@ public privileged aspect StringTaintPropagationAspect {
         if (targetObject != null && returnObject instanceof TaintedObject) {
             returnObject.setTainted(targetObject.isTainted());
             returnObject.addTaintedSourceIdBits(targetObject.getTaintedSourceIdBits());
+            returnObject.initTaintedObjectId();
         }
     }
 
@@ -65,6 +69,7 @@ public privileged aspect StringTaintPropagationAspect {
         for (String returnObject : returnObjects) {
             returnObject.setTainted(targetObject.isTainted());
             returnObject.addTaintedSourceIdBits(targetObject.getTaintedSourceIdBits());
+            returnObject.initTaintedObjectId();
         }
     }
 
@@ -74,6 +79,7 @@ public privileged aspect StringTaintPropagationAspect {
                     ) {
             returnObject.setTainted(targetObject.isTainted());
             returnObject.addTaintedSourceIdBits(targetObject.getTaintedSourceIdBits());
+            returnObject.initTaintedObjectId();
     }
 
     /** Aspect for methods using a string as param */    
@@ -85,6 +91,7 @@ public privileged aspect StringTaintPropagationAspect {
             returnObject.setTainted(((TaintedObject) replacement).isTainted() || targetObject.isTainted());
             returnObject.addTaintedSourceIdBits(((TaintedObject) replacement).getTaintedSourceIdBits());
             returnObject.addTaintedSourceIdBits(targetObject.getTaintedSourceIdBits());
+            returnObject.initTaintedObjectId();
             }
         }
     }
@@ -100,6 +107,7 @@ public privileged aspect StringTaintPropagationAspect {
             returnObject.setTainted(((TaintedObject) replacement).isTainted() || targetObject.isTainted());
             returnObject.addTaintedSourceIdBits(((TaintedObject) replacement).getTaintedSourceIdBits());
             returnObject.addTaintedSourceIdBits(targetObject.getTaintedSourceIdBits());
+            returnObject.initTaintedObjectId();
             }
         }
     }

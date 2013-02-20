@@ -57,16 +57,17 @@ public class TestTainted implements TaintedObject {
         tainted = arg0;
     }
 
-    @Override
-    public void setTaintedObjectId(int arg0) {
-        // TODO Auto-generated method stub
-
-    }
 
     @Override
     public void setTaintedSourceIdBits(int arg0) {
         // TODO Auto-generated method stub
 
+    }
+
+    @Override
+    public void initTaintedObjectId() {
+        // TODO Auto-generated method stub
+        
     }
 
 }

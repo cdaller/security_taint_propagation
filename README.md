@@ -69,5 +69,38 @@ Sometimes eclipse gets confused and reports hundreds of errors:
 * move the JRE System Library to the bottom (Properties/Java Build Path/Order and Export)
 * remove AspectJ Nature and add it again
 
+## Working with Taint Propagation
+
+### Tomcat setup
+Some libraries are needed to "arm" tomcat:
+* the load time weaver of aspectj (as a java agent on startup)
+* the modified String class (in tainted-rt.jar) as bootclasspath (replaces the original rt.jar from the jdk)
+* the aspect that ensures that the tainted flag is propagated on string operations (security.taint.propagation...jar)
+* the aspect instrumenting http sources and sinks (security.taint.propagation.http...jar)
+
+If you want to start tomcat in eclipse with taint propagation you have to
+1. create a new tomcat server named "Tomcat 6 tainted" (or similar)
+2. start tomcat once (to get an entry in "Run/Debug configurations")
+3. settings in "Run/Debug configurations"
+  * Arguments:
+-Xbootclasspath/p:D:/PATH_TO/tainted-rt-1.6.jar
+-javaagent:D:/PATH_TO/aspectjweaver-1.7.0.jar
+  * Classpath tab: Add the two jar files in "User Entries": security.taint.propagation-VERSION.jar, security.taint.propagation.http-VERSION.jar
+
+### Output
+The tools are configured to print a warning to system.out whenever a security leak was detected:
+<code>
+SECURITY-TAINT-WARNING: Tainted value will be used in a sink![ type: XSS, sink code: org.apache.jsp.test_jsp:123/call(JspWriter.print(..)),tainted sources: JDBC Sql Result Set(5), value: '<TABLE CELLSPACING="0" ... &nbsp;</td></TR></TABLE>']
+</code>
+This means that a tainted string (coming from a insecure source (user input, database)) was detected to be used in a defined sink (jsp writer, database query).
+
+## Problems
+Some problems make working with taint propagation sometimes cumbersome:
+* If a jsp page is the sink (JSP Writer) only the line number in the compiled jsp servlet is printed. So the developer has to find the java code of the jsp page, find the code and then try to find the corresponding line in the jsp file. In eclipse the java classes are placed into $ECLIPSE_WORKSPACE/.metadata/.plugins/org.eclipse.wst.server.core/tmpX/work/Catalina/localhost/$WEBAPPNAME/org/apache/jsp
+* The final tainted string is sometimes a concatenation of lots of parts and it is sometimes difficult to find the tainted string. 
+* It would be helpful to see the different tainted parts of the final string and their way through the code to detect if there really is a security leak or not.
+
+Apart from that the tool works quite reliable.
+
 ## License
 This project is licensed under [Apache 2.0](http://opensource.org/licenses/apache2.0)
