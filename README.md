@@ -84,7 +84,7 @@ If you want to start tomcat in eclipse with taint propagation you have to
 3. settings in "Run/Debug configurations"
   * Arguments:
 -Xbootclasspath/p:D:/PATH_TO/tainted-rt-1.6.jar
--javaagent:D:/PATH_TO/aspectjweaver-1.7.0.jar
+-javaagent:D:/PATH_TO/aspectjweaver-1.7.1.jar
   * Classpath tab: Add the two jar files in "User Entries": security.taint.propagation-VERSION.jar, security.taint.propagation.http-VERSION.jar
 
 ### Output
@@ -99,7 +99,7 @@ This means that a tainted string (coming from a insecure source (user input, dat
 ## Problems
 Some problems make working with taint propagation sometimes cumbersome:
 * If a jsp page is the sink (JSP Writer) only the line number in the compiled jsp servlet is printed. So the developer has to find the java code of the jsp page, find the code and then try to find the corresponding line in the jsp file. In eclipse the java classes are placed into $ECLIPSE_WORKSPACE/.metadata/.plugins/org.eclipse.wst.server.core/tmpX/work/Catalina/localhost/$WEBAPPNAME/org/apache/jsp
-* The final tainted string is sometimes a concatenation of lots of parts and it is sometimes difficult to find the tainted string. 
+* The final tainted string is sometimes a concatenation of lots of parts and it is sometimes difficult to find the tainted string.
 * It would be helpful to see the different tainted parts of the final string and their way through the code to detect if there really is a security leak or not.
 
 Apart from that the tool works quite reliable.
