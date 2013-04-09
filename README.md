@@ -90,9 +90,11 @@ If you want to start tomcat in eclipse with taint propagation you have to
 ### Output
 The tools are configured to print a warning to system.out whenever a security leak was detected (line breaks added for better readability):
 ```
-SECURITY-TAINT-WARNING: Tainted value will be used in a sink!
-  [ type: XSS, sink code: org.apache.jsp.test_jsp:123/call(JspWriter.print(..)),
-  tainted sources: JDBC Sql Result Set(5), value: '<TABLE CELLSPACING="0" ... &nbsp;</td></TR></TABLE> ' ]
+SECURITY-TAINT-WARNING: Tainted value will be used in a sink![ 
+  type: XSS, sink code: org.apache.jsp.xxx.jsp:136/call(JspWriter.print(..)),
+  tainted sources: JDBC Sql Result Set(5),
+  value: '<TABLE><tr><td>Hugo von Hofmannsthal</td></tr></TABLE>'
+]
 ```
 This means that a tainted string (coming from a insecure source (user input, database)) was detected to be used in a defined sink (jsp writer, database query).
 
