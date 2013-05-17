@@ -17,9 +17,11 @@ Christof Dallermassl (christof at dallermassl dot at)
 
 ## Background knowledge
 
-I found two papers about this topic:
+I found some papers about this topic:
 * [Vivek Haldar, Deepak Chandra, Michael Franz: Dynamic Taint Propagation for Java](http://www.acsac.org/2005/papers/45.pdf)
 * [A presentation at blackhat security conference](http://www.blackhat.com/presentations/bh-dc-08/Chess-West/Presentation/bh-dc-08-chess-west.pdf)
+* [Towards Fully Automatic Placement of Security
+Sanitizers and Declassifiers](http://research.microsoft.com/en-us/um/people/livshits/papers/tr/autosani_tr.pdf)
 
 ## Note
 This project is in a early stage (but works!), do not expect an easy to use plugable thing you
