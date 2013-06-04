@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package at.dallermassl.ap.security.taint.sink;
 
@@ -10,18 +10,18 @@ import at.dallermassl.ap.security.taint.source.TaintedSourceInfo;
 
 /**
  * Defines the behavior when a tainted content is passed to an armoured sink.
- * 
+ *
  * @author cdaller
  */
 public abstract aspect AbstractTaintedSinkAspect {
 
     private static boolean blockTainted = false;
     private String sinkType;
-    
+
     public AbstractTaintedSinkAspect() {
         this("unknown");
     }
-    
+
     public AbstractTaintedSinkAspect(String sinkType) {
         this.sinkType = sinkType;
     }
@@ -33,24 +33,24 @@ public abstract aspect AbstractTaintedSinkAspect {
     public static boolean isBlockTainted() {
         return blockTainted;
     }
-    
+
     /**
-     * If set to <code>true</code> an exception is thrown if a tainted string is passed to a sink. 
-     * @param blockTainted if set to <code>true</code> an exception is thrown if a tainted string is 
+     * If set to <code>true</code> an exception is thrown if a tainted string is passed to a sink.
+     * @param blockTainted if set to <code>true</code> an exception is thrown if a tainted string is
      * passed to a sink.
      */
     public static void setBlockTainted(boolean blockTainted) {
         AbstractTaintedSinkAspect.blockTainted = blockTainted;
     }
 
-    
+
     /**
      * Method called if a tainted value should be used.
      * @param joinPoint the joinPoint that triggered the taint event.
      * @param value the value to be used.
      */
     public void handleTaintedSink(JoinPoint joinPoint, TaintedObject value) {
-        value.setTainted(false);        
+        value.setTainted(false);
         int[] sourceIds = value.getTaintedSourceIds();
         StringBuilder sourceIdInfos = new StringBuilder();
         String prefix = "";
@@ -71,7 +71,7 @@ public abstract aspect AbstractTaintedSinkAspect {
 //        messageBuilder.append("/");
         messageBuilder.append(joinPoint.getSourceLocation().getWithinType().getCanonicalName());
         messageBuilder.append(":");
-        messageBuilder.append(joinPoint.getSourceLocation().getLine());        
+        messageBuilder.append(joinPoint.getSourceLocation().getLine());
         messageBuilder.append("/");
         messageBuilder.append(joinPoint.toShortString());
         messageBuilder.append(",");
@@ -83,12 +83,12 @@ public abstract aspect AbstractTaintedSinkAspect {
         messageBuilder.append("'");
         messageBuilder.append("]");
         if (isBlockTainted()) {
-            value.setTainted(true);        
+            value.setTainted(true);
             throw new SecurityException(messageBuilder.toString());
         } else {
             System.err.println(messageBuilder.toString());
         }
-        value.setTainted(true);        
+        value.setTainted(true);
     }
 
 }
