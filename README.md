@@ -17,9 +17,11 @@ Christof Dallermassl (christof at dallermassl dot at)
 
 ## Background knowledge
 
-I found two papers about this topic:
+I found some papers about this topic:
 * [Vivek Haldar, Deepak Chandra, Michael Franz: Dynamic Taint Propagation for Java](http://www.acsac.org/2005/papers/45.pdf)
 * [A presentation at blackhat security conference](http://www.blackhat.com/presentations/bh-dc-08/Chess-West/Presentation/bh-dc-08-chess-west.pdf)
+* [Towards Fully Automatic Placement of Security
+Sanitizers and Declassifiers](http://research.microsoft.com/en-us/um/people/livshits/papers/tr/autosani_tr.pdf)
 
 ## Note
 This project is in a early stage (but works!), do not expect an easy to use plugable thing you
@@ -90,9 +92,11 @@ If you want to start tomcat in eclipse with taint propagation you have to
 ### Output
 The tools are configured to print a warning to system.out whenever a security leak was detected (line breaks added for better readability):
 ```
-SECURITY-TAINT-WARNING: Tainted value will be used in a sink!
-  [ type: XSS, sink code: org.apache.jsp.test_jsp:123/call(JspWriter.print(..)),
-  tainted sources: JDBC Sql Result Set(5), value: '<TABLE CELLSPACING="0" ... &nbsp;</td></TR></TABLE> ' ]
+SECURITY-TAINT-WARNING: Tainted value will be used in a sink![ 
+  type: XSS, sink code: org.apache.jsp.xxx.jsp:136/call(JspWriter.print(..)),
+  tainted sources: JDBC Sql Result Set(5),
+  value: '<TABLE><tr><td>Hugo von Hofmannsthal</td></tr></TABLE>'
+]
 ```
 This means that a tainted string (coming from a insecure source (user input, database)) was detected to be used in a defined sink (jsp writer, database query).
 
