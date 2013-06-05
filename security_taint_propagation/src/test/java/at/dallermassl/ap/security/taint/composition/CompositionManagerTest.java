@@ -21,10 +21,11 @@ public class CompositionManagerTest {
 
         String foobar = foo.concat("bar");
         String baz = foobar.concat(foobar);
-        //System.out.println(baz);
-
         System.out.println(CompositionManager.getInstance().getCompositionString(baz));
 
+        String bazoo = baz.concat("blabla");
+        bazoo = bazoo.substring(0,5);
+        System.out.println(CompositionManager.getInstance().getCompositionString(bazoo));
 
         /*
         "foobarfoobar" (3 baz)

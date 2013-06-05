@@ -36,7 +36,7 @@ public class CompositionManager {
         return instance;
     }
 
-    public void addCompositionNode(TaintedObject component, TaintedObject composite, String operation) {
+    public void addCompositionNode(TaintedObject component, TaintedObject composite) {
         String stackTraceInfo = TaintUtils.getStackTraceLines()[5]; // FIXME: hack: hardcoded line
         CompositionTreeNode componentNode = getNode(component, stackTraceInfo);
         CompositionTreeNode compositeNode = getNode(composite, stackTraceInfo);
