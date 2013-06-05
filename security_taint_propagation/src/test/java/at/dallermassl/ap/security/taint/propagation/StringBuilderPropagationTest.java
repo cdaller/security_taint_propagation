@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package at.dallermassl.ap.security.taint.propagation;
 
@@ -26,10 +26,10 @@ public class StringBuilderPropagationTest {
         StringBuilder builder = new StringBuilder(foo);
         Assert.assertFalse("constructor StringBuilder propagates untainted", builder.isTainted());
 
-        foo.setTainted(true);        
+        foo.setTainted(true);
         builder = new StringBuilder(foo);
         Assert.assertTrue("constructor StringBuilder propagates tainted", builder.isTainted());
-        
+
         StringBuilder initBuilder = new StringBuilder("bar");
         initBuilder.setTainted(false);
         builder = new StringBuilder(initBuilder);
@@ -56,7 +56,7 @@ public class StringBuilderPropagationTest {
         StringBuilder builder = new StringBuilder(bar).append(foo);
         Assert.assertFalse("append StringBuilder propagates untainted", builder.isTainted());
 
-        foo.setTainted(true);        
+        foo.setTainted(true);
         builder = new StringBuilder("bar").append(foo);
         Assert.assertTrue("append StringBuilder propagates tainted", builder.isTainted());
 
@@ -74,7 +74,7 @@ public class StringBuilderPropagationTest {
         builder2.setTainted(true);
         Assert.assertTrue("append StringBuilder propagates tainted", builder.append(builder2).isTainted());
 
-    
+
         builder = new StringBuilder("foo");
         StringBuffer buffer = new StringBuffer("bar");
         builder.setTainted(false);
@@ -88,7 +88,7 @@ public class StringBuilderPropagationTest {
         builder.setTainted(false);
         buffer.setTainted(true);
         Assert.assertTrue("append StringBuffer propagates tainted", builder.append(buffer).isTainted());
-        
+
         builder.setTainted(false);
         Assert.assertFalse("append StringBuffer null propagates tainted", builder.append((String) null).isTainted());
         builder.setTainted(true);
@@ -108,7 +108,7 @@ public class StringBuilderPropagationTest {
         foo.setTainted(true);
         builder.insert(0, foo);
         Assert.assertTrue("insert StringBuilder propagates tainted", builder.isTainted());
-        
+
         builder.setTainted(false);
         builder.insert(0, (String) null);
         Assert.assertFalse("insert StringBuilder propagates tainted", builder.isTainted());
@@ -124,15 +124,19 @@ public class StringBuilderPropagationTest {
         String foo = "foo";
         builder.setTainted(false);
         foo.setTainted(false);
+        // operation to test
         builder.replace(0, 2, foo);
         Assert.assertFalse("replace StringBuilder propagates untainted", builder.isTainted());
 
         foo.setTainted(true);
+
+        // operation to test
         builder.replace(0, 2, foo);
+
         Assert.assertTrue("replace StringBuilder propagates tainted", builder.isTainted());
     }
 
-    @Test 
+    @Test
     public void testToString() {
         StringBuilder foo = new StringBuilder("foo");
         foo.setTainted(false);
@@ -141,7 +145,7 @@ public class StringBuilderPropagationTest {
         foo.setTainted(true);
         Assert.assertTrue("toString of tainted propagates taintedness", foo.toString().isTainted());
     }
-    
+
     @Test
     public void testSubsequence() {
         StringBuilder foo = new StringBuilder("foobar");
@@ -152,13 +156,16 @@ public class StringBuilderPropagationTest {
         }
 
         foo.setTainted(false);
+
+        // operation to test
         seq = foo.subSequence(0,  3);
+
         if (seq instanceof TaintedObject) {
-          Assert.assertFalse("subSequence propagates tainted", ((TaintedObject) seq).isTainted());       
+          Assert.assertFalse("subSequence propagates tainted", ((TaintedObject) seq).isTainted());
         }
     }
 
-    
+
     @Test
     public void testSourceIdPropagation1() {
         StringBuilder foo = new StringBuilder("foo");
@@ -170,15 +177,17 @@ public class StringBuilderPropagationTest {
         bar.setTainted(true);
         foo.addTaintedSourceId(sourceId1);
         bar.addTaintedSourceId(sourceId2);
-        
+
+        // operation to test
         StringBuilder baz = foo.append(bar);
+
         int[] sourceIds = baz.getTaintedSourceIds();
         Assert.assertNotNull("source ids must be not null", sourceIds);
 
         List<Integer> idList = new ArrayList<Integer>();
         for (int id : sourceIds) {
             idList.add(id);
-        }       
+        }
         Assert.assertTrue("source ids must be merged", idList.contains(sourceId1));
         Assert.assertTrue("source ids must be merged", idList.contains(sourceId2));
     }
@@ -194,15 +203,17 @@ public class StringBuilderPropagationTest {
         bar.setTainted(true);
         foo.addTaintedSourceId(sourceId1);
         bar.addTaintedSourceId(sourceId2);
-        
+
+        // operation to test
         StringBuilder baz = foo.append(bar);
+
         int[] sourceIds = baz.getTaintedSourceIds();
         Assert.assertNotNull("source ids must be not null", sourceIds);
 
         List<Integer> idList = new ArrayList<Integer>();
         for (int id : sourceIds) {
             idList.add(id);
-        }       
+        }
         Assert.assertTrue("source ids must be merged", idList.contains(sourceId1));
         Assert.assertTrue("source ids must be merged", idList.contains(sourceId2));
     }
@@ -216,15 +227,17 @@ public class StringBuilderPropagationTest {
         foo.setTainted(false);
         bar.setTainted(true);
         bar.addTaintedSourceId(sourceId2);
-        
+
+        // operation to test
         StringBuilder baz = foo.append(bar);
+
         int[] sourceIds = baz.getTaintedSourceIds();
         Assert.assertNotNull("source ids must be not null", sourceIds);
 
         List<Integer> idList = new ArrayList<Integer>();
         for (int id : sourceIds) {
             idList.add(id);
-        }       
+        }
         Assert.assertTrue("source ids must be merged", idList.contains(sourceId2));
     }
 
@@ -238,15 +251,17 @@ public class StringBuilderPropagationTest {
         foo.setTainted(true);
         bar.setTainted(false);
         foo.addTaintedSourceId(sourceId1);
-        
+
+        // operation to test
         StringBuilder baz = foo.append(bar);
+
         int[] sourceIds = baz.getTaintedSourceIds();
         Assert.assertNotNull("source ids must be not null", sourceIds);
 
         List<Integer> idList = new ArrayList<Integer>();
         for (int id : sourceIds) {
             idList.add(id);
-        }       
+        }
         Assert.assertTrue("source ids must be merged", idList.contains(sourceId1));
     }
 }

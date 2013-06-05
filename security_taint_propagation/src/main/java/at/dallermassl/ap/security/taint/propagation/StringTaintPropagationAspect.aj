@@ -2,6 +2,8 @@ package at.dallermassl.ap.security.taint.propagation;
 
 import java.util.Locale;
 
+import at.dallermassl.ap.security.taint.Configuration;
+import at.dallermassl.ap.security.taint.composition.CompositionManager;
 import at.dallermassl.ap.security.taint.extension.TaintedObject;
 
 /**
@@ -10,26 +12,37 @@ import at.dallermassl.ap.security.taint.extension.TaintedObject;
  */
 public privileged aspect StringTaintPropagationAspect {
 
-    /** Aspect for constructor {@link String(String)} or methods using a string as param */    
+    /** Aspect for constructor {@link String(String)} or methods using a string as param */
     after(String value) returning (String returnObject): args(value) && (
                     call(String.new(String))
                     ) {
         if (value != null) {
-            returnObject.setTainted(value.isTainted());
-            returnObject.addTaintedSourceIdBits(value.getTaintedSourceIdBits());
-            returnObject.initTaintedObjectId();
+            if (value.isTainted()) {
+                returnObject.setTainted(true);
+                returnObject.addTaintedSourceIdBits(value.getTaintedSourceIdBits());
+                if (Configuration.TAINTED_COMPOSITION_TRACE_ENABLED) {
+                    CompositionManager.getInstance().addCompositionNode(returnObject, value, "constructor");
+                }
+            }
         }
     }
 
-    /** Aspect for methods using a string as param */    
-    after(String value, String targetObject) returning (String returnObject): args(value) && target(targetObject) && (
-                    call(public String String.concat(String))
+    /** Aspect for methods using a string as param */
+    after(String value, String targetObject) returning (String returnObject):
+        args(value) && target(targetObject) && !within(StringTaintPropagationAspect) && (
+                        call(public String String.concat(String))
                     ) {
         if (value != null) {
-            returnObject.setTainted(value.isTainted() || targetObject.isTainted());
-            returnObject.addTaintedSourceIdBits(value.getTaintedSourceIdBits());
-            returnObject.addTaintedSourceIdBits(targetObject.getTaintedSourceIdBits());
-            returnObject.initTaintedObjectId();
+            boolean tainted = value.isTainted() || targetObject.isTainted();
+            if (tainted) {
+                returnObject.setTainted(true);
+                returnObject.addTaintedSourceIdBits(value.getTaintedSourceIdBits());
+                returnObject.addTaintedSourceIdBits(targetObject.getTaintedSourceIdBits());
+                if (Configuration.TAINTED_COMPOSITION_TRACE_ENABLED) {
+                    CompositionManager.getInstance().addCompositionNode(returnObject, targetObject, "concat");
+                    CompositionManager.getInstance().addCompositionNode(returnObject, value, "concat");
+                }
+            }
         }
     }
 
@@ -43,10 +56,12 @@ public privileged aspect StringTaintPropagationAspect {
                     call(public String String.toUpperCase(Locale)) ||
                     call(public String String.substring(..))
                     ) {
-        if (targetObject != null) {
-            returnObject.setTainted(targetObject.isTainted());
+        if (targetObject != null && targetObject.isTainted()) {
+            returnObject.setTainted(true);
             returnObject.addTaintedSourceIdBits(targetObject.getTaintedSourceIdBits());
-            returnObject.initTaintedObjectId();
+            if (Configuration.TAINTED_COMPOSITION_TRACE_ENABLED) {
+//                CompositionManager.addComposite(returnObject.getTaintedObjectId(), targetObject.getTaintedObjectId());
+            }
         }
     }
 
@@ -54,10 +69,12 @@ public privileged aspect StringTaintPropagationAspect {
     after(TaintedObject targetObject) returning (TaintedObject returnObject): target(targetObject) && (
                     call(public CharSequence CharSequence.subSequence(..))
                     ) {
-        if (targetObject != null && returnObject instanceof TaintedObject) {
-            returnObject.setTainted(targetObject.isTainted());
+        if (targetObject != null && targetObject.isTainted() && returnObject instanceof TaintedObject) {
+            returnObject.setTainted(true);
             returnObject.addTaintedSourceIdBits(targetObject.getTaintedSourceIdBits());
-            returnObject.initTaintedObjectId();
+            if (Configuration.TAINTED_COMPOSITION_TRACE_ENABLED) {
+//                CompositionManager.addComposite(returnObject.getTaintedObjectId(), targetObject.getTaintedObjectId());
+            }
         }
     }
 
@@ -66,50 +83,77 @@ public privileged aspect StringTaintPropagationAspect {
                     call(public String[] String.split(String)) ||
                     call(public String[] String.split(String, int))
                     ) {
-        for (String returnObject : returnObjects) {
-            returnObject.setTainted(targetObject.isTainted());
-            returnObject.addTaintedSourceIdBits(targetObject.getTaintedSourceIdBits());
-            returnObject.initTaintedObjectId();
+        if (targetObject.isTainted()) {
+            for (String returnObject : returnObjects) {
+                returnObject.setTainted(true);
+                returnObject.addTaintedSourceIdBits(targetObject.getTaintedSourceIdBits());
+                if (Configuration.TAINTED_COMPOSITION_TRACE_ENABLED) {
+//                    CompositionManager.addComposite(returnObject.getTaintedObjectId(), targetObject.getTaintedObjectId());
+                }
+            }
         }
     }
 
-    /** Aspect for methods using a string as param */    
+    /** Aspect for methods using a string as param */
     after(String targetObject) returning (String returnObject): target(targetObject) && (
                     call(public String String.replace(char, char))
                     ) {
-            returnObject.setTainted(targetObject.isTainted());
+        if (targetObject.isTainted()) {
+            returnObject.setTainted(true);
             returnObject.addTaintedSourceIdBits(targetObject.getTaintedSourceIdBits());
-            returnObject.initTaintedObjectId();
+            if (Configuration.TAINTED_COMPOSITION_TRACE_ENABLED) {
+//                CompositionManager.addComposite(returnObject.getTaintedObjectId(), targetObject.getTaintedObjectId());
+            }
+        }
     }
 
-    /** Aspect for methods using a string as param */    
-    after(CharSequence regexp, CharSequence replacement, String targetObject) returning (String returnObject): 
+    /** Aspect for methods using a string as param */
+    after(CharSequence regexp, CharSequence replacement, String targetObject) returning (String returnObject):
       args(regexp, replacement) && target(targetObject) &&
       call(public String String.replace(CharSequence, CharSequence)) {
-        if (replacement != null) {
-            if (replacement instanceof TaintedObject) {
-            returnObject.setTainted(((TaintedObject) replacement).isTainted() || targetObject.isTainted());
-            returnObject.addTaintedSourceIdBits(((TaintedObject) replacement).getTaintedSourceIdBits());
-            returnObject.addTaintedSourceIdBits(targetObject.getTaintedSourceIdBits());
-            returnObject.initTaintedObjectId();
+        // <FIXXME date="04.06.2013" author="christof.dallermassl">
+        // FIXME: does not work if the regular expression replacement uses back references that return a tainted string!
+        if (replacement != null && replacement instanceof TaintedObject) {
+            boolean tainted = ((TaintedObject) replacement).isTainted() || targetObject.isTainted();
+            if (tainted) {
+                returnObject.setTainted(true);
+                returnObject.addTaintedSourceIdBits(((TaintedObject) replacement).getTaintedSourceIdBits());
+                returnObject.addTaintedSourceIdBits(targetObject.getTaintedSourceIdBits());
+                if (Configuration.TAINTED_COMPOSITION_TRACE_ENABLED) {
+                    if (targetObject.isTainted()) {
+//                        CompositionManager.addComposite(returnObject.getTaintedObjectId(), targetObject.getTaintedObjectId());
+                    }
+                    if (((TaintedObject) replacement).isTainted()) {
+//                        CompositionManager.addComposite(returnObject.getTaintedObjectId(), ((TaintedObject) replacement).getTaintedObjectId());
+                    }
+                }
+            }
+            // </FIXXME>
+        }
+    }
+
+    /** Aspect for methods using a string as param */
+    after(CharSequence regexp, CharSequence replacement, String targetObject) returning (String returnObject):
+      args(regexp, replacement) && target(targetObject) && (
+      call(public String String.replaceAll(String, String)) ||
+      call(public String String.replaceFirst(String, String))
+      ) {
+        if (replacement != null && replacement instanceof TaintedObject) {
+            boolean tainted = ((TaintedObject) replacement).isTainted() || targetObject.isTainted();
+            if (tainted) {
+                returnObject.setTainted(true);
+                returnObject.addTaintedSourceIdBits(((TaintedObject) replacement).getTaintedSourceIdBits());
+                returnObject.addTaintedSourceIdBits(targetObject.getTaintedSourceIdBits());
+                if (Configuration.TAINTED_COMPOSITION_TRACE_ENABLED) {
+                    if (targetObject.isTainted()) {
+//                        CompositionManager.addComposite(returnObject.getTaintedObjectId(), targetObject.getTaintedObjectId());
+                    }
+                    if (((TaintedObject) replacement).isTainted()) {
+//                        CompositionManager.addComposite(returnObject.getTaintedObjectId(), ((TaintedObject) replacement).getTaintedObjectId());
+                    }
+                }
             }
         }
     }
 
-    /** Aspect for methods using a string as param */    
-    after(CharSequence regexp, CharSequence replacement, String targetObject) returning (String returnObject): 
-      args(regexp, replacement) && target(targetObject) && (
-      call(public String String.replaceAll(String, String)) || 
-      call(public String String.replaceFirst(String, String)) 
-      ) {
-        if (replacement != null) {
-            if (replacement instanceof TaintedObject) {
-            returnObject.setTainted(((TaintedObject) replacement).isTainted() || targetObject.isTainted());
-            returnObject.addTaintedSourceIdBits(((TaintedObject) replacement).getTaintedSourceIdBits());
-            returnObject.addTaintedSourceIdBits(targetObject.getTaintedSourceIdBits());
-            returnObject.initTaintedObjectId();
-            }
-        }
-    }
-    
 }
