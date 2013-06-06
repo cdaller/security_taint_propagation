@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package at.dallermassl.ap.security.taint.extension;
 
@@ -7,10 +7,10 @@ package at.dallermassl.ap.security.taint.extension;
 /**
  * Interface for Taint information for String or similar objects. This interface allows to get/set
  * the tainted flag and to set/get some additional information of the taintedness.
- * 
- * The system follows the paper described by Vivek Haldar, Deepak Chandra, Michael Franz: 
+ *
+ * The system follows the paper described by Vivek Haldar, Deepak Chandra, Michael Franz:
  * Dynamic Taint Propagation for Java (http://www.acsac.org/2005/papers/45.pdf)
- * 
+ *
  * @author cdaller
  */
 public interface TaintedObject {
@@ -23,7 +23,7 @@ public interface TaintedObject {
      * @param tainted the tainted to set.
      */
     void setTainted(boolean tainted);
-    
+
     /**
      * Return the id of the tainted sources as a bit field.
      * @return the ids of the tainted source as an int array.
@@ -32,17 +32,17 @@ public interface TaintedObject {
 
     /**
      * Returns the 32bit mask holding the source ids -  (yes, I know, but I did not find another
-     * possibility!! 
+     * possibility!!
      * @return the 32bit mask holding the source ids.
      */
     int getTaintedSourceIdBits();
-    
+
     /**
      * Adds all source ids given in the 32bit mask.
      * @param sourceIds the 32bit mask to add.
      */
     void addTaintedSourceIdBits(int sourceIds);
-    
+
     /**
      * Sets (not adds) the given source ids given in the 32bit mask.
      * @param sourceIds the 32bit mask to set.
@@ -53,28 +53,28 @@ public interface TaintedObject {
      * Set the id of the tainted source.
      * @param sourceId the id of the tainted source.
      */
-    void addTaintedSourceId(int sourceId); 
-    
+    void addTaintedSourceId(int sourceId);
+
     /**
      * Add all source ids in the given set.
      * @param sourceIds the ids to add.
      */
     void addTaintedSourceIds(int... sourceIds);
-    
+
     /**
      * Removes all tainted source ids.
      */
     void clearTaintedSourceIds();
-    
+
     /**
      * Set the unique id for this tainted object.
      * @return the unique id.
      */
     int getTaintedObjectId();
-    
-    /**
-     * Init the tainted object id.
-     */
-    void initTaintedObjectId();
+
+//    /**
+//     * Init the tainted object id.
+//     */
+//    void initTaintedObjectId();
 
 }

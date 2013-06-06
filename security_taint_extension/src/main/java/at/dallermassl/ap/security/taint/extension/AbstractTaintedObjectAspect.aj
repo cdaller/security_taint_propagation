@@ -1,9 +1,7 @@
 /**
- * 
+ *
  */
 package at.dallermassl.ap.security.taint.extension;
-
-
 
 /**
  * Base implementation of TaintedObject interface.
@@ -11,7 +9,7 @@ package at.dallermassl.ap.security.taint.extension;
  *
  */
 public abstract aspect AbstractTaintedObjectAspect implements TaintedObject {
-    
+
     private boolean TaintedObject.tainted = false;
     // bit field of sources: cannot use any other types than "int" -> vm will not start otherwise!
     private int TaintedObject.sourceIdBitField = 0;
@@ -26,14 +24,19 @@ public abstract aspect AbstractTaintedObjectAspect implements TaintedObject {
     public final void TaintedObject.setTainted(boolean tainted) {
 //        System.out.println("set tainted to " + tainted);
         this.tainted = tainted;
+        if (tainted) {
+            initTaintedObjectId();
+        } else {
+
+        }
     }
-    
+
     public final int TaintedObject.getTaintedSourceIdBits() {
         return sourceIdBitField;
     }
-    
+
     /**
-     * Returns an int array of ids of the sources. The implementation uses the bit field 
+     * Returns an int array of ids of the sources. The implementation uses the bit field
      * and creates an int array from it using the real ids (0-31) instead of the bit field.
      * @return an int array of ids or an empty array.
      */
@@ -54,11 +57,11 @@ public abstract aspect AbstractTaintedObjectAspect implements TaintedObject {
         }
         return ids;
     }
-    
+
     public final void TaintedObject.addTaintedSourceIdBits(int sourceIds) {
         sourceIdBitField = sourceIdBitField | sourceIds;
     }
-    
+
 
     public final void TaintedObject.setTaintedSourceIdBits(int sourceIds) {
         sourceIdBitField = sourceIds;
@@ -80,7 +83,7 @@ public abstract aspect AbstractTaintedObjectAspect implements TaintedObject {
             }
         }
     }
-    
+
     public final void TaintedObject.clearTaintedSourceIds() {
         sourceIdBitField = 0;
     }
@@ -89,10 +92,14 @@ public abstract aspect AbstractTaintedObjectAspect implements TaintedObject {
         return taintedObjectId;
     }
 
-    public final void TaintedObject.initTaintedObjectId() {
-        if (this.taintedObjectId == 0) {           
-            taintedObjectId = objectCounter++;
+    private final void TaintedObject.initTaintedObjectId() {
+        if (taintedObjectId == 0) {
+            taintedObjectId = ++objectCounter;
         }
+    }
+
+    private final void TaintedObject.clearTaintedObjectId() {
+        taintedObjectId = 0;
     }
 
 }
