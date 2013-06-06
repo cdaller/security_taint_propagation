@@ -60,11 +60,36 @@ public class CompositionTreeNode {
         return composites;
     }
 
+    /**
+     * Returns a string representation of the node (not as debuggy as toString()).
+     * @return a string representation of the node (not as debuggy as toString()).
+     */
+    public String getNodeString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("\"");
+        builder.append(componentValue);
+        builder.append("\"").append(" (").append(objectId).append(") ");
+        if (objectId == 0) {
+            builder.append("not tainted");
+        } else {
+            builder.append("TAINTED!");
+        }
+        builder.append(" @ ").append(sourceCodeInfo);
+        return builder.toString();
+    }
+
 
     @Override
     public String toString() {
-        return "CompositionTreeNode [componentValue=" + componentValue + ", objectId=" + objectId + ", sourceCodeInfo="
-                        + sourceCodeInfo + "]";
+        List<Integer> compositeIds = new ArrayList<Integer>();
+        for (CompositionTreeNode compositeNode : composites) {
+            compositeIds.add(compositeNode.getObjectId());
+        }
+        return "CompositionTreeNode [componentValue=" + componentValue
+                        + ", objectId=" + objectId
+                        + ", composites =" + compositeIds
+                        + ", sourceCodeInfo=" + sourceCodeInfo
+                        + "]";
     }
 
 

@@ -1,17 +1,25 @@
 /**
  *
  */
-package at.dallermassl.ap.security.taint.composition;
-
-import java.io.PrintWriter;
+package at.dallermassl.ap.security.test.taint.composition;
 
 import org.junit.Test;
+
+import at.dallermassl.ap.security.taint.composition.CompositionManager;
 
 /**
  * @author christof.dallermassl
  *
  */
 public class CompositionManagerTest {
+
+
+    @Test
+    public void testSimple() {
+        String foo = "foo";
+        foo.setTainted(true);
+        System.out.println(CompositionManager.getInstance().getCompositionString(foo));
+    }
 
 
     @Test

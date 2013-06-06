@@ -1,12 +1,12 @@
 package at.dallermassl.ap.security.taint.composition;
 
-import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import at.dallermassl.ap.security.taint.TaintPropagationPackage;
 import at.dallermassl.ap.security.taint.extension.TaintedObject;
 import at.dallermassl.ap.security.taint.util.TaintUtils;
 
@@ -21,6 +21,7 @@ public class CompositionManager {
     private static Map<Integer, CompositionTreeNode> traceMap = new HashMap<Integer, CompositionTreeNode>();
 
     private static CompositionManager instance;
+    private static final String PACKAGE_NAME_FILTER = TaintPropagationPackage.class.getPackage().getName();
 
     private CompositionManager() {
     }
@@ -37,10 +38,28 @@ public class CompositionManager {
     }
 
     public void addCompositionNode(TaintedObject component, TaintedObject composite) {
-        String stackTraceInfo = TaintUtils.getStackTraceLines()[5]; // FIXME: hack: hardcoded line
-        CompositionTreeNode componentNode = getNode(component, stackTraceInfo);
-        CompositionTreeNode compositeNode = getNode(composite, stackTraceInfo);
+        CompositionTreeNode componentNode = getNode(component, getStackTraceLine());
+        CompositionTreeNode compositeNode = getNode(composite, getStackTraceLine());
         componentNode.addComposite(compositeNode);
+    }
+
+    public void addCallerStackTrace(TaintedObject component) {
+        CompositionTreeNode node = getNode(component, getStackTraceLine());
+    }
+
+
+    private String getStackTraceLine() {
+        String[] traces = TaintUtils.getStackTraceLines();
+//        return traces[6];
+        String trace;
+        // start with 1 as first line is java.lang.Throwable
+        for (int index = 1; index < traces.length; index++) {
+            trace = traces[index];
+            if (!trace.contains(PACKAGE_NAME_FILTER)) {
+                return trace;
+            }
+        }
+        return traces[0];
     }
 
     /**
@@ -70,17 +89,26 @@ public class CompositionManager {
         if (node == null) {
             return "no info available";
         }
-        StringBuilder result = getCompositionString(node, new StringBuilder(), "");
+//        addCallerStackTrace(component); // add stack trace line from last caller
+        StringBuilder result = getCompositionString(node, new StringBuilder(), "", new HashSet<CompositionTreeNode>());
         return result.toString();
     }
 
-    protected StringBuilder getCompositionString(CompositionTreeNode componentNode, StringBuilder out, String prefix) {
+    protected StringBuilder getCompositionString(CompositionTreeNode componentNode, StringBuilder out, String prefix,
+                    Set<CompositionTreeNode> allComposites) {
         out.append(prefix);
-        out.append(componentNode);
+        out.append(componentNode.getNodeString());
         out.append("\n");
-        List<CompositionTreeNode> composites = componentNode.getComposites();
-        for (CompositionTreeNode node : composites) {
-            out = getCompositionString(node, out, prefix + "  ");
+        // prevent infinite loop for self referencing nodes (only in one line in the tree):
+        if (allComposites.contains(componentNode)) {
+            out.append(prefix).append("  ").append("[self modificiation]").append("\n");
+        } else {
+            allComposites.add(componentNode);
+            List<CompositionTreeNode> composites = componentNode.getComposites();
+            for (CompositionTreeNode node : composites) {
+                out = getCompositionString(node, out, prefix + "  ", allComposites);
+            }
+            allComposites.remove(componentNode);
         }
         return out;
     }
