@@ -11,7 +11,7 @@
   <parent>
     <groupId>at.dallermassl</groupId>
     <artifactId>security.taint.propagation-reactor</artifactId>
-    <version>0.0.2-SNAPSHOT</version>
+    <version>0.0.3-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 

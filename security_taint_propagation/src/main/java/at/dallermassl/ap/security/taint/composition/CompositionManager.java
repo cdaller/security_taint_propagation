@@ -6,8 +6,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.management.MBeanServer;
+
 import at.dallermassl.ap.security.taint.TaintPropagationPackage;
 import at.dallermassl.ap.security.taint.extension.TaintedObject;
+import at.dallermassl.ap.security.taint.mbean.MBeanStartup;
 import at.dallermassl.ap.security.taint.util.TaintUtils;
 
 /**
@@ -22,6 +25,10 @@ public class CompositionManager {
 
     private static CompositionManager instance;
     private static final String PACKAGE_NAME_FILTER = TaintPropagationPackage.class.getPackage().getName();
+
+    static {
+        MBeanStartup.startUp();
+    }
 
     private CompositionManager() {
     }

@@ -8,6 +8,7 @@ import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import at.dallermassl.ap.security.taint.Configuration;
 import at.dallermassl.ap.security.taint.composition.CompositionManager;
 import at.dallermassl.ap.security.taint.composition.CompositionTreeNode;
 import at.dallermassl.ap.security.taint.extension.TaintedObject;
@@ -30,6 +31,9 @@ public class CompositionManagerTest {
 
 
     private void checkComposition(TaintedObject composite, String ... directComponents) {
+        if (!Configuration.isTaintCompositionEnabled()) {
+            return;
+        }
         // test composite:
         CompositionTreeNode node = manager.getNode(composite);
         Assert.assertNotNull(node);
@@ -48,6 +52,9 @@ public class CompositionManagerTest {
 
     @Test
     public void testNodeCreation() {
+        if (!Configuration.isTaintCompositionEnabled()) {
+            return;
+        }
         String foo = "foo";
         foo.setTainted(true);
 
@@ -57,6 +64,9 @@ public class CompositionManagerTest {
 
     @Test
     public void testNodeConstructor() {
+        if (!Configuration.isTaintCompositionEnabled()) {
+            return;
+        }
         String foo = "foo";
         foo.setTainted(true);
 
@@ -70,6 +80,9 @@ public class CompositionManagerTest {
 
     @Test
     public void testStringConcat() {
+        if (!Configuration.isTaintCompositionEnabled()) {
+            return;
+        }
         String foo = "foo";
         foo.setTainted(true);
 
@@ -87,6 +100,9 @@ public class CompositionManagerTest {
 
     @Test
     public void testStringSubstring() {
+        if (!Configuration.isTaintCompositionEnabled()) {
+            return;
+        }
         String foobar = "foobar";
         foobar.setTainted(true);
         String foo = foobar.substring(0, 3);
@@ -97,6 +113,9 @@ public class CompositionManagerTest {
 
     @Test
     public void testStringSequence() {
+        if (!Configuration.isTaintCompositionEnabled()) {
+            return;
+        }
         String foobar = "foobar";
         foobar.setTainted(true);
         CharSequence foo = foobar.subSequence(0, 3);
@@ -107,6 +126,9 @@ public class CompositionManagerTest {
 
     @Test
     public void testStringSplit() {
+        if (!Configuration.isTaintCompositionEnabled()) {
+            return;
+        }
         String foobar = "foo,bar,baz";
         foobar.setTainted(true);
         String[] split = foobar.split(",");
