@@ -24,15 +24,17 @@ public class CompositionManagerTest {
     public void initCompositionManager() {
         if (manager == null) {
             manager = CompositionManager.getInstance();
+            Configuration.setTaintCompositionEnabled(true);
         } else {
             manager.clear();
         }
+
     }
 
 
     private void checkComposition(TaintedObject composite, String ... directComponents) {
         if (!Configuration.isTaintCompositionEnabled()) {
-            return;
+            Assert.fail("taint composition is not enabled!");
         }
         // test composite:
         CompositionTreeNode node = manager.getNode(composite);
@@ -53,7 +55,7 @@ public class CompositionManagerTest {
     @Test
     public void testNodeCreation() {
         if (!Configuration.isTaintCompositionEnabled()) {
-            return;
+            Assert.fail("taint composition is not enabled!");
         }
         String foo = "foo";
         foo.setTainted(true);
@@ -65,7 +67,7 @@ public class CompositionManagerTest {
     @Test
     public void testNodeConstructor() {
         if (!Configuration.isTaintCompositionEnabled()) {
-            return;
+            Assert.fail("taint composition is not enabled!");
         }
         String foo = "foo";
         foo.setTainted(true);
@@ -81,7 +83,7 @@ public class CompositionManagerTest {
     @Test
     public void testStringConcat() {
         if (!Configuration.isTaintCompositionEnabled()) {
-            return;
+            Assert.fail("taint composition is not enabled!");
         }
         String foo = "foo";
         foo.setTainted(true);
@@ -101,7 +103,7 @@ public class CompositionManagerTest {
     @Test
     public void testStringSubstring() {
         if (!Configuration.isTaintCompositionEnabled()) {
-            return;
+            Assert.fail("taint composition is not enabled!");
         }
         String foobar = "foobar";
         foobar.setTainted(true);
@@ -114,7 +116,7 @@ public class CompositionManagerTest {
     @Test
     public void testStringSequence() {
         if (!Configuration.isTaintCompositionEnabled()) {
-            return;
+            Assert.fail("taint composition is not enabled!");
         }
         String foobar = "foobar";
         foobar.setTainted(true);
@@ -127,7 +129,7 @@ public class CompositionManagerTest {
     @Test
     public void testStringSplit() {
         if (!Configuration.isTaintCompositionEnabled()) {
-            return;
+            Assert.fail("taint composition is not enabled!");
         }
         String foobar = "foo,bar,baz";
         foobar.setTainted(true);

@@ -16,7 +16,7 @@ public class MBeanStartup {
         if (startedUp) {
             return;
         }
-        System.out.println("starting up mbean server");
+        //System.out.println("Starting up taint propagation mbean");
         MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
         ObjectName name;
         try {

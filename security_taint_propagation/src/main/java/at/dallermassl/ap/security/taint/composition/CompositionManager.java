@@ -48,14 +48,8 @@ public class CompositionManager {
         componentNode.addComposite(compositeNode);
     }
 
-//    public void addCallerStackTrace(TaintedObject component) {
-//        CompositionTreeNode node = retrieveNode(component, getStackTraceLine());
-//    }
-
-
     private String getStackTraceLine() {
         String[] traces = TaintUtils.getStackTraceLines();
-//        return traces[6];
         String trace;
         // start with 1 as first line is java.lang.Throwable
         for (int index = 1; index < traces.length; index++) {
@@ -88,12 +82,10 @@ public class CompositionManager {
     }
 
     public String getCompositionString(TaintedObject component) {
-        // using printwriter to prevent taint propagation during creation of the output string :-(
         CompositionTreeNode node = traceMap.get(component.getTaintedObjectId());
         if (node == null) {
             return "no info available";
         }
-//        addCallerStackTrace(component); // add stack trace line from last caller
         StringBuilder result = getCompositionString(node, new StringBuilder(), "", new HashSet<CompositionTreeNode>());
         return result.toString();
     }

@@ -2,6 +2,7 @@ package at.dallermassl.ap.security.taint.propagation;
 
 import at.dallermassl.ap.security.taint.Configuration;
 import at.dallermassl.ap.security.taint.composition.CompositionManager;
+import at.dallermassl.ap.security.taint.composition.CompositionTreeNode;
 import at.dallermassl.ap.security.taint.extension.TaintedObject;
 import at.dallermassl.ap.security.taint.mbean.MBeanStartup;
 
@@ -10,6 +11,8 @@ public abstract aspect AbstractTaintPropagationAspect {
     static {
         MBeanStartup.startUp();
     }
+
+    pointcut notInMyAdvice() : !within(CompositionManager) && !within(CompositionTreeNode);
 
     public void propagateTainted(CharSequence sourceObject, TaintedObject destinationObject) {
         if (sourceObject != null && sourceObject instanceof TaintedObject) {

@@ -14,14 +14,14 @@ public privileged aspect StringTaintPropagationAspect extends AbstractTaintPropa
 
     /** Aspect for constructor {@link String(String)} or methods using a string as param */
     after(String value) returning (String returnObject):
-    args(value) && !within(CompositionManager) && !within(CompositionTreeNode) && (
+    args(value) && notInMyAdvice() && (
     call(String.new(String))) {
         propagateTainted(value, returnObject);
     }
 
     /** Aspect for methods using a string as param */
     after(String value, String targetObject) returning (String returnObject):
-    args(value) && target(targetObject) && !within(CompositionManager) && !within(CompositionTreeNode) && (
+    args(value) && target(targetObject) && notInMyAdvice() && (
     call(public String String.concat(String))) {
         propagateTainted(targetObject, returnObject, value);
     }
@@ -43,7 +43,7 @@ public privileged aspect StringTaintPropagationAspect extends AbstractTaintPropa
 
     /** Aspect for {@link CharSequence#subSequence()} */
     after(TaintedObject targetObject) returning (TaintedObject returnObject):
-    target(targetObject) && !within(CompositionManager) && !within(CompositionTreeNode) && (
+    target(targetObject) && notInMyAdvice() && (
       call(public CharSequence CharSequence.subSequence(..))
     ) {
         propagateTainted(targetObject, returnObject, null);
@@ -51,7 +51,7 @@ public privileged aspect StringTaintPropagationAspect extends AbstractTaintPropa
 
     /** Aspect for {@link String#toString() or similar} */
     after(String targetObject) returning (String[] returnObjects):
-    target(targetObject) && !within(CompositionManager) && !within(CompositionTreeNode) && (
+    target(targetObject) && notInMyAdvice() && (
       call(public String[] String.split(String)) ||
       call(public String[] String.split(String, int))
     ) {
@@ -64,7 +64,7 @@ public privileged aspect StringTaintPropagationAspect extends AbstractTaintPropa
 
     /** Aspect for methods using a string as param */
     after(String targetObject) returning (String returnObject):
-    target(targetObject) && !within(CompositionManager) && !within(CompositionTreeNode) && (
+    target(targetObject) && notInMyAdvice() && (
       call(public String String.replace(char, char))
     ) {
         propagateTainted(targetObject, returnObject);
@@ -73,7 +73,7 @@ public privileged aspect StringTaintPropagationAspect extends AbstractTaintPropa
     /** Aspect for methods using a string as param */
     after(CharSequence regexp, CharSequence replacement, String targetObject) returning (String returnObject):
       args(regexp, replacement) && target(targetObject)
-      && !within(CompositionManager) && !within(CompositionTreeNode) && (
+      && notInMyAdvice() && (
         call(public String String.replace(CharSequence, CharSequence)) ||
         call(public String String.replaceAll(String, String)) ||
         call(public String String.replaceFirst(String, String))
