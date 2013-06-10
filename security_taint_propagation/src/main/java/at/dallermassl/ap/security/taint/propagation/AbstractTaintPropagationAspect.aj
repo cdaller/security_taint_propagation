@@ -3,8 +3,13 @@ package at.dallermassl.ap.security.taint.propagation;
 import at.dallermassl.ap.security.taint.Configuration;
 import at.dallermassl.ap.security.taint.composition.CompositionManager;
 import at.dallermassl.ap.security.taint.extension.TaintedObject;
+import at.dallermassl.ap.security.taint.mbean.MBeanStartup;
 
 public abstract aspect AbstractTaintPropagationAspect {
+
+    static {
+        MBeanStartup.startUp();
+    }
 
     public void propagateTainted(CharSequence sourceObject, TaintedObject destinationObject) {
         if (sourceObject != null && sourceObject instanceof TaintedObject) {
@@ -25,7 +30,7 @@ public abstract aspect AbstractTaintPropagationAspect {
             destinationObject.setTainted(true);
             destinationObject.addTaintedSourceIdBits(sourceObject.getTaintedSourceIdBits());
         }
-        if (sourceObject.isTainted() && Configuration.TAINTED_COMPOSITION_TRACE_ENABLED) {
+        if (sourceObject.isTainted() && Configuration.isTaintCompositionEnabled()) {
             CompositionManager.getInstance().addCompositionNode(destinationObject, sourceObject);
         }
     }
@@ -40,7 +45,7 @@ public abstract aspect AbstractTaintPropagationAspect {
             destinationObject.addTaintedSourceIdBits(sourceObject.getTaintedSourceIdBits());
         }
         if ((sourceObject.isTainted() || (additionalObject !=null && additionalObject.isTainted()))
-                        && Configuration.TAINTED_COMPOSITION_TRACE_ENABLED) {
+                        && Configuration.isTaintCompositionEnabled()) {
             CompositionManager.getInstance().addCompositionNode(destinationObject, sourceObject);
             CompositionManager.getInstance().addCompositionNode(destinationObject, additionalObject);
         }

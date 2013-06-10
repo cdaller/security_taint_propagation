@@ -31,7 +31,7 @@ public class TaintPropagation implements TaintPropagationMBean {
 
     @Override
     public void setCompositePropagationEnabled(boolean enabled) {
-        // not implemented yet!
+        Configuration.setTaintCompositionEnabled(enabled);
     }
 
 }

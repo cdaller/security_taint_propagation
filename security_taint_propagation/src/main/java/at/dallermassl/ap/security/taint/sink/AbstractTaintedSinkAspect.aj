@@ -83,7 +83,7 @@ public abstract aspect AbstractTaintedSinkAspect {
         messageBuilder.append(" value: '");
         messageBuilder.append(value);
         messageBuilder.append("'");
-        if (Configuration.TAINTED_COMPOSITION_TRACE_ENABLED) {
+        if (Configuration.isTaintCompositionEnabled()) {
             messageBuilder.append("\n");
             messageBuilder.append(CompositionManager.getInstance().getCompositionString(value));
         }

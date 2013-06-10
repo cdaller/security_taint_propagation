@@ -72,8 +72,8 @@ public privileged aspect StringTaintPropagationAspect extends AbstractTaintPropa
 
     /** Aspect for methods using a string as param */
     after(CharSequence regexp, CharSequence replacement, String targetObject) returning (String returnObject):
-      args(regexp, replacement) && target(targetObject) &&
-      !within(CompositionManager) && !within(CompositionTreeNode) && (
+      args(regexp, replacement) && target(targetObject)
+      && !within(CompositionManager) && !within(CompositionTreeNode) && (
         call(public String String.replace(CharSequence, CharSequence)) ||
         call(public String String.replaceAll(String, String)) ||
         call(public String String.replaceFirst(String, String))
