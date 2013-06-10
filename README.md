@@ -76,6 +76,7 @@ Sometimes eclipse gets confused and reports hundreds of errors:
 ### Tomcat setup
 Some libraries are needed to "arm" tomcat:
 * the load time weaver of aspectj (as a java agent on startup)
+* the aspectj runtime jar (aspectjrt-<version>.jar)
 * the modified String class (in tainted-rt.jar) as bootclasspath (replaces the original rt.jar from the jdk)
 * the aspect that ensures that the tainted flag is propagated on string operations (security.taint.propagation...jar)
 * the aspect instrumenting http sources and sinks (security.taint.propagation.http...jar)
@@ -89,10 +90,25 @@ If you want to start tomcat in eclipse with taint propagation you have to
 -javaagent:D:/PATH_TO/aspectjweaver-1.7.1.jar
   * Classpath tab: Add the two jar files in "User Entries": security.taint.propagation-VERSION.jar, security.taint.propagation.http-VERSION.jar
 
+If you want to start a stand-alone tomcat with taint propagation you have to
+1. create a setenv.sh/setenv.bat file to add the necesary jars:
+setenv.bat:
+```
+rem setenv.bat: adding taint propagation to tomcat:
+set JAVA_OPTS=-Xbootclasspath/p:F:/work/projects/security_taint_propagation/security_taint_extension/target/tainted-rt-1.6.jar %JAVA_OPTS%
+set JAVA_OPTS=-javaagent:<path_to_maven_repo>/org/aspectj/aspectjweaver/1.7.1/aspectjweaver-1.7.1.jar %JAVA_OPTS%
+
+set JAVA_ENDORSED_DIRS=<path_to_taintpropagation_project>/security_taint_propagation/target;%JAVA_ENDORSED_DIRS%
+set JAVA_ENDORSED_DIRS=<path_to_taintpropagation_project>/security_taint_propagation_http/target;%JAVA_ENDORSED_DIRS%
+set JAVA_ENDORSED_DIRS=<path_to_maven_repo>/org/aspectj/aspectjrt/1.7.1%JAVA_ENDORSED_DIRS%
+```
+setenv.sh is similar :-)
+2. start tomcat as usual
+
 ### Output
 The tools are configured to print a warning to system.out whenever a security leak was detected (line breaks added for better readability):
 ```
-SECURITY-TAINT-WARNING: Tainted value will be used in a sink![ 
+SECURITY-TAINT-WARNING: Tainted value will be used in a sink![
   type: XSS, sink code: org.apache.jsp.xxx.jsp:136/call(JspWriter.print(..)),
   tainted sources: JDBC Sql Result Set(5),
   value: '<TABLE><tr><td>Hugo von Hofmannsthal</td></tr></TABLE>'
