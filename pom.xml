@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>at.dallermassl</groupId>
   <artifactId>security.taint.propagation-reactor</artifactId>
-  <version>0.0.2-SNAPSHOT</version>
+  <version>0.0.3-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>Taint Propagation build reactor</name>
@@ -12,8 +12,8 @@
     <module>security_taint_extension</module>
     <module>security_taint_propagation</module>
     <module>security_taint_propagation_http</module>
-    <!-- module>security_taint_propagation_safehtml</module-->
-    <module>security_taint_propagation_trace</module>
+    <module>security_taint_propagation_safehtml</module>
+    <!--module>security_taint_propagation_trace</module-->
     <module>security_taint_webapp</module>
   </modules>
 

@@ -6,15 +6,22 @@ import java.util.List;
 public class CompositionTreeNode {
     private int objectId;
     private String componentValue;
-    private String sourceCodeInfo; // TODO: better datastructure, stacktrace??
+    private List<String> sourceCodeInfos; // TODO: better datastructure, stacktrace??
     private List<CompositionTreeNode> composites;
 
+
+    public CompositionTreeNode(int objectId, String componentValue) {
+        this(objectId, componentValue, null);
+    }
 
     public CompositionTreeNode(int objectId, String componentValue, String sourceCodeInfo) {
         super();
         this.objectId = objectId;
         this.componentValue = componentValue;
-        this.sourceCodeInfo = sourceCodeInfo;
+        sourceCodeInfos = new ArrayList<String>();
+        if (sourceCodeInfo != null) {
+            sourceCodeInfos.add(sourceCodeInfo);
+        }
         composites = new ArrayList<CompositionTreeNode>();
     }
 
@@ -39,13 +46,13 @@ public class CompositionTreeNode {
     }
 
 
-    public String getSourceCodeInfo() {
-        return sourceCodeInfo;
+    public List<String> getSourceCodeInfos() {
+        return sourceCodeInfos;
     }
 
 
-    public void setSourceCodeInfo(String sourceCodeInfo) {
-        this.sourceCodeInfo = sourceCodeInfo;
+    public void addSourceCodeInfo(String sourceCodeInfo) {
+        sourceCodeInfos.add(sourceCodeInfo);
     }
 
     public void addComposite(CompositionTreeNode composite) {
@@ -74,7 +81,7 @@ public class CompositionTreeNode {
         } else {
             builder.append("TAINTED!");
         }
-        builder.append(" @ ").append(sourceCodeInfo);
+        builder.append(" modified at ").append(sourceCodeInfos);
         return builder.toString();
     }
 
@@ -88,7 +95,7 @@ public class CompositionTreeNode {
         return "CompositionTreeNode [componentValue=" + componentValue
                         + ", objectId=" + objectId
                         + ", composites =" + compositeIds
-                        + ", sourceCodeInfo=" + sourceCodeInfo
+                        + ", sourceCodeInfos=" + sourceCodeInfos
                         + "]";
     }
 

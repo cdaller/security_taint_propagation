@@ -5,6 +5,8 @@ package at.dallermassl.ap.security.taint.sink;
 
 import org.aspectj.lang.JoinPoint;
 
+import at.dallermassl.ap.security.taint.Configuration;
+import at.dallermassl.ap.security.taint.composition.CompositionManager;
 import at.dallermassl.ap.security.taint.extension.TaintedObject;
 import at.dallermassl.ap.security.taint.source.TaintedSourceInfo;
 
@@ -81,6 +83,10 @@ public abstract aspect AbstractTaintedSinkAspect {
         messageBuilder.append(" value: '");
         messageBuilder.append(value);
         messageBuilder.append("'");
+        if (Configuration.TAINTED_COMPOSITION_TRACE_ENABLED) {
+            messageBuilder.append("\n");
+            messageBuilder.append(CompositionManager.getInstance().getCompositionString(value));
+        }
         messageBuilder.append("]");
         if (isBlockTainted()) {
             value.setTainted(true);

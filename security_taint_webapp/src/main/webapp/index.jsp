@@ -1,3 +1,4 @@
+<%@page import="at.dallermassl.ap.security.taint.webapp.StringModification"%>
 <%@page import="at.dallermassl.ap.security.taint.webapp.Sanitizer"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
@@ -30,7 +31,7 @@
                 sanitize = true;
                 checkedString = "checked";
             }
-            
+
             if (user == null) {
                 user = "";
             }
@@ -49,7 +50,7 @@
         parameters on demand (checkbox). If the web application is instrumented
         with the taint-propagation aspects and the parameters are not sanitized, the taint
         propagation sink aspects will print a warning message to the console as soon as the
-        tainted strings will be printed to the jsp writer. Actually it is not important what 
+        tainted strings will be printed to the jsp writer. Actually it is not important what
         the sanitizer does. The aspects will remove the tainted flag whenever the sanitation method
         is invoked.
         </p>
@@ -57,7 +58,7 @@
         If you cannot see anything on the console (sanitation off), the application server is
         not correctly instrumented with the aspects!
         </p>
-        
+
         <h2>Input parameters</h2>
         <p>
         <form name="input" action="./" method="get">
@@ -68,6 +69,9 @@
           <input type="submit" value="Submit"/>
         </form>
         </p>
+        <%
+        user = StringModification.appendDate(user);
+        %>
 
         <h2>Output parameters</h2>
         <h3>List of parameters printed with  "&lt;%= variablename %&gt;"</h3>

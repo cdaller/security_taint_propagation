@@ -38,14 +38,18 @@ public class CompositionManager {
     }
 
     public void addCompositionNode(TaintedObject component, TaintedObject composite) {
-        CompositionTreeNode componentNode = getNode(component, getStackTraceLine());
-        CompositionTreeNode compositeNode = getNode(composite, getStackTraceLine());
+        String stackTraceInfo = getStackTraceLine();
+        CompositionTreeNode componentNode = getNode(component);
+        componentNode.addSourceCodeInfo(stackTraceInfo);
+        CompositionTreeNode compositeNode = getNode(composite);
+        compositeNode.addSourceCodeInfo(stackTraceInfo);
+
         componentNode.addComposite(compositeNode);
     }
 
-    public void addCallerStackTrace(TaintedObject component) {
-        CompositionTreeNode node = getNode(component, getStackTraceLine());
-    }
+//    public void addCallerStackTrace(TaintedObject component) {
+//        CompositionTreeNode node = retrieveNode(component, getStackTraceLine());
+//    }
 
 
     private String getStackTraceLine() {
@@ -68,17 +72,16 @@ public class CompositionManager {
      * @param stackTraceInfo the info of the source code.
      * @return the node (created or retrieved from map).
      */
-    protected CompositionTreeNode getNode(TaintedObject component, String stackTraceInfo) {
+    public CompositionTreeNode getNode(TaintedObject component) {
         int id = component.getTaintedObjectId();
         CompositionTreeNode node = traceMap.get(id);
         if (node == null) {
             // create new node:
-            node = new CompositionTreeNode(id, component.toString(), stackTraceInfo);
+            node = new CompositionTreeNode(id, component.toString());
             traceMap.put(id, node);
         } else {
             // change existing node:
             node.setComponentValue(component.toString());
-            node.setSourceCodeInfo(stackTraceInfo);
         }
         return node;
     }
@@ -94,7 +97,7 @@ public class CompositionManager {
         return result.toString();
     }
 
-    protected StringBuilder getCompositionString(CompositionTreeNode componentNode, StringBuilder out, String prefix,
+    private StringBuilder getCompositionString(CompositionTreeNode componentNode, StringBuilder out, String prefix,
                     Set<CompositionTreeNode> allComposites) {
         out.append(prefix);
         out.append(componentNode.getNodeString());
@@ -152,8 +155,7 @@ public class CompositionManager {
     /**
      * Clears all stored composition mappings.
      */
-    protected void clear() {
-        System.out.println("--------");
+    public void clear() {
         traceMap.clear();
     }
 }
