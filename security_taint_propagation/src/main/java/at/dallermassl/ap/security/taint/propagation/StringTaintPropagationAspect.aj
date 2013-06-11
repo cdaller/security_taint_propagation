@@ -2,8 +2,6 @@ package at.dallermassl.ap.security.taint.propagation;
 
 import java.util.Locale;
 
-import at.dallermassl.ap.security.taint.composition.CompositionManager;
-import at.dallermassl.ap.security.taint.composition.CompositionTreeNode;
 import at.dallermassl.ap.security.taint.extension.TaintedObject;
 
 /**
@@ -29,7 +27,7 @@ public privileged aspect StringTaintPropagationAspect extends AbstractTaintPropa
     /** Aspect for {@link String#toString() or similar} */
     after(String targetObject) returning (String returnObject):
     target(targetObject) && target(java.lang.String) &&
-    !within(CompositionManager) && !within(CompositionTreeNode) && (
+    notInMyAdvice() && (
       call(public String Object.toString()) ||
       call(public String String.trim()) ||
       call(public String String.toLowerCase()) ||

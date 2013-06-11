@@ -1,7 +1,5 @@
 package at.dallermassl.ap.security.taint.propagation;
 
-import at.dallermassl.ap.security.taint.composition.CompositionManager;
-import at.dallermassl.ap.security.taint.composition.CompositionTreeNode;
 
 /**
  * @author cdaller
