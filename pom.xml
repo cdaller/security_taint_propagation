@@ -7,6 +7,32 @@
 
   <name>Taint Propagation build reactor</name>
   <description>Reactor POM for building taint propagation</description>
+  <url>https://github.com/cdaller/security_taint_propagation</url>
+  <licenses>
+    <license>
+        <name>The Apache Software License, Version 2.0</name>
+        <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        <distribution>repo</distribution>
+        <comments>A business-friendly OSS license</comments>
+      </license>
+  </licenses>
+  
+  <developers>
+      <developer>
+        <id>cdaller</id>
+        <name>Christof Dallermassl</name>
+        <email>christof@dallermassl.at</email>
+        <url>http://www.dallermassl.at</url>
+        <organization>dallermassl</organization>
+        <organizationUrl>http://www.dallermassl.at</organizationUrl>
+        <roles>
+          <role>architect</role>
+          <role>developer</role>
+        </roles>
+        <timezone>Europe/Vienna</timezone>
+      </developer>
+    </developers>
+  
 
   <modules>
     <module>security_taint_extension</module>
