@@ -8,6 +8,21 @@
   <name>Taint Propagation build reactor</name>
   <description>Reactor POM for building taint propagation</description>
   <url>https://github.com/cdaller/security_taint_propagation</url>
+
+  <!-- let me deploy to sonatype maven repository: -->
+  <parent>
+    <groupId>org.sonatype.oss</groupId>
+    <artifactId>oss-parent</artifactId>
+    <version>7</version>
+  </parent>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <compiler.version>1.6</compiler.version>
+    <aspectj.version>1.7.1</aspectj.version>
+    <scm.http.url>https://github.com/cdaller/security_taint_propagation.git</scm.http.url>
+  </properties>
+
   <licenses>
     <license>
         <name>The Apache Software License, Version 2.0</name>
@@ -19,20 +34,23 @@
   
   <developers>
       <developer>
-        <id>cdaller</id>
-        <name>Christof Dallermassl</name>
-        <email>christof@dallermassl.at</email>
-        <url>http://www.dallermassl.at</url>
-        <organization>dallermassl</organization>
-        <organizationUrl>http://www.dallermassl.at</organizationUrl>
-        <roles>
-          <role>architect</role>
-          <role>developer</role>
-        </roles>
-        <timezone>Europe/Vienna</timezone>
-      </developer>
-    </developers>
-  
+      <id>cdaller</id>
+      <name>Christof Dallermassl</name>
+      <email>christof@dallermassl.at</email>
+      <url>http://www.dallermassl.at</url>
+      <roles>
+        <role>architect</role>
+        <role>developer</role>
+      </roles>
+      <timezone>Europe/Vienna</timezone>
+    </developer>
+  </developers>
+
+  <scm>
+    <connection>scm:svn:${scm.http.url}</connection>
+    <developerConnection>scm:svn:${scm.http.url}</developerConnection>
+    <url>${scm.http.url}</url>
+  </scm>
 
   <modules>
     <module>security_taint_extension</module>
@@ -43,17 +61,5 @@
     <module>security_taint_webapp</module>
   </modules>
 
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <compiler.version>1.6</compiler.version>
-    <aspectj.version>1.7.1</aspectj.version>
-    <scm.http.url>https://github.com/cdaller/security_taint_propagation.git</scm.http.url>
-  </properties>
-
-  <scm>
-    <connection>scm:svn:${scm.http.url}</connection>
-    <developerConnection>scm:svn:${scm.http.url}</developerConnection>
-    <url>${scm.http.url}</url>
-  </scm>
 
 </project>
