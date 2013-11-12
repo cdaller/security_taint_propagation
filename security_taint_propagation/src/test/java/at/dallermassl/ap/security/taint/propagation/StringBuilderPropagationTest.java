@@ -94,6 +94,20 @@ public class StringBuilderPropagationTest {
         builder.setTainted(true);
         Assert.assertTrue("append StringBuffer null propagates tainted", builder.append((String) null).isTainted());
 
+        String baz = "foobarbaz";
+        baz.setTainted(false);
+        Object bazObj = baz;
+        builder.setTainted(false);
+        Assert.assertFalse("append StringBuilder Object propagates tainted", builder.append(bazObj).isTainted());
+        baz.setTainted(true);
+        Assert.assertTrue("append StringBuilder Object propagates tainted", builder.append(bazObj).isTainted());
+        baz.setTainted(false);
+        builder.setTainted(true);
+        Assert.assertTrue("append StringBuilder Object propagates tainted", builder.append(bazObj).isTainted());
+        baz.setTainted(true);
+        builder.setTainted(false);
+        Assert.assertTrue("append StringBuilder Object propagates tainted", builder.append(bazObj).isTainted());
+
     }
 
     @Test

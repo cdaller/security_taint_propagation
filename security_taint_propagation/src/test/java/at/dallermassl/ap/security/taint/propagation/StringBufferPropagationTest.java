@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package at.dallermassl.ap.security.taint.propagation;
 
@@ -13,7 +13,7 @@ import at.dallermassl.ap.security.taint.extension.TaintedObject;
  *
  */
 public class StringBufferPropagationTest {
-    
+
     @Test
     public void testConstructor() {
         String foo = "foo";
@@ -21,10 +21,10 @@ public class StringBufferPropagationTest {
         StringBuffer builder = new StringBuffer(foo);
         Assert.assertFalse("constructor StringBuffer propagates untainted", builder.isTainted());
 
-        foo.setTainted(true);        
+        foo.setTainted(true);
         builder = new StringBuffer(foo);
         Assert.assertTrue("constructor StringBuffer propagates tainted", builder.isTainted());
-        
+
         StringBuilder initBuilder = new StringBuilder("bar");
         initBuilder.setTainted(false);
         builder = new StringBuffer(initBuilder);
@@ -42,7 +42,7 @@ public class StringBufferPropagationTest {
         Assert.assertTrue("constructor StringBuffer propagates tainted", builder.isTainted());
 
     }
-    
+
     @Test
     public void testAppend() {
         String foo = "foo";
@@ -50,10 +50,10 @@ public class StringBufferPropagationTest {
         StringBuffer builder = new StringBuffer("bar").append(foo);
         Assert.assertFalse("append StringBuffer propagates untainted", builder.isTainted());
 
-        foo.setTainted(true);        
+        foo.setTainted(true);
         builder = new StringBuffer("bar").append(foo);
         Assert.assertTrue("append StringBuffer propagates tainted", builder.isTainted());
-        
+
         builder = new StringBuffer("foo");
         StringBuffer builder2 = new StringBuffer("bar");
         builder.setTainted(false);
@@ -73,8 +73,23 @@ public class StringBufferPropagationTest {
         builder.setTainted(true);
         Assert.assertTrue("append StringBuffer null propagates tainted", builder.append((String) null).isTainted());
 
+        String baz = "foobarbaz";
+        baz.setTainted(false);
+        Object bazObj = baz;
+        builder.setTainted(false);
+        Assert.assertFalse("append StringBuffer Object propagates tainted", builder.append(bazObj).isTainted());
+        baz.setTainted(true);
+        Assert.assertTrue("append StringBuffer Object propagates tainted", builder.append(bazObj).isTainted());
+        baz.setTainted(false);
+        builder.setTainted(true);
+        Assert.assertTrue("append StringBuffer Object propagates tainted", builder.append(bazObj).isTainted());
+        baz.setTainted(true);
+        builder.setTainted(false);
+        Assert.assertTrue("append StringBuffer Object propagates tainted", builder.append(bazObj).isTainted());
+
+
     }
-    
+
     @Test
     public void testInsert() {
         StringBuffer builder = new StringBuffer("bar");
@@ -83,11 +98,11 @@ public class StringBufferPropagationTest {
         foo.setTainted(false);
         builder.insert(0, foo);
         Assert.assertFalse("insert StringBuffer propagates untainted", builder.isTainted());
-        
+
         foo.setTainted(true);
         builder.insert(0, foo);
         Assert.assertTrue("insert StringBuffer propagates tainted", builder.isTainted());
-        
+
         builder.setTainted(false);
         builder.insert(0, (String) null);
         Assert.assertFalse("insert StringBuffer propagates tainted", builder.isTainted());
@@ -106,13 +121,13 @@ public class StringBufferPropagationTest {
         foo.setTainted(false);
         builder.replace(0, 2, foo);
         Assert.assertFalse("replace StringBuffer propagates untainted", builder.isTainted());
-        
+
         foo.setTainted(true);
         builder.replace(0, 2, foo);
-        Assert.assertTrue("replace StringBuffer propagates tainted", builder.isTainted());        
+        Assert.assertTrue("replace StringBuffer propagates tainted", builder.isTainted());
     }
-    
-    @Test 
+
+    @Test
     public void testToString() {
         StringBuffer foo = new StringBuffer("foo");
         foo.setTainted(false);
@@ -121,7 +136,7 @@ public class StringBufferPropagationTest {
         foo.setTainted(true);
         Assert.assertTrue("toString of tainted propagates taintedness", foo.toString().isTainted());
     }
-    
+
     @Test
     public void testSubsequence() {
         StringBuffer foo = new StringBuffer("foobar");
@@ -134,7 +149,7 @@ public class StringBufferPropagationTest {
         foo.setTainted(false);
         seq = foo.subSequence(0,  3);
         if (seq instanceof TaintedObject) {
-          Assert.assertFalse("subSequence propagates tainted", ((TaintedObject) seq).isTainted());       
+          Assert.assertFalse("subSequence propagates tainted", ((TaintedObject) seq).isTainted());
         }
     }
 

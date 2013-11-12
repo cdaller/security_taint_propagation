@@ -23,10 +23,13 @@ public privileged aspect StringBufferTaintPropagationAspect extends AbstractTain
 
     /** Aspect for {@link StringBuffer#append(String)} */
     after(String value, StringBuffer targetObject) returning (StringBuffer returnObject):
-        call(public StringBuffer StringBuffer.append(String)) && args(value) && target(targetObject)
-        && notInMyAdvice() {
+        args(value) && target(targetObject) && notInMyAdvice() && (
+          call(public StringBuffer StringBuffer.append(String)) ||
+          call(public StringBuffer StringBuffer.append(Object))
+        ){
         propagateTainted(targetObject, returnObject, value);
     }
+
 
     /** Aspect for {@link StringBuffer#append(StringBuffer)} */
     after(StringBuffer value, StringBuffer targetObject) returning (StringBuffer returnObject):
