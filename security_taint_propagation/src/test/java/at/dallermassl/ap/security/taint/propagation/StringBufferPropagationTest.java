@@ -87,7 +87,23 @@ public class StringBufferPropagationTest {
         builder.setTainted(false);
         Assert.assertTrue("append StringBuffer Object propagates tainted", builder.append(bazObj).isTainted());
 
+    }
 
+    @Test
+    public void testAppendObject() {
+        StringBuffer builder = new StringBuffer();
+        // test special case where the object is not a string, but String.valueOf/toString is used!
+        builder.setTainted(false);
+        Object obj = new Object() {
+            public String toString() {
+                String object = "taintedobject";
+                object.setTainted(true);
+                return object;
+            }
+        };
+        Assert.assertTrue("toString() propagates tainted", obj.toString().isTainted());
+        Assert.assertTrue("String.valueOf propagates tainted", String.valueOf(obj).isTainted());
+        Assert.assertTrue("appending StringBuffer.append(obj.toString) propagates tainted", builder.append(obj).isTainted());
     }
 
     @Test

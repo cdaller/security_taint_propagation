@@ -1,13 +1,12 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project-modules id="moduleCoreId" project-version="1.5.0">
+<?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
     <wb-module deploy-name="security.taint.webapp">
         <wb-resource deploy-path="/" source-path="/target/m2e-wtp/web-resources"/>
         <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
-        <dependent-module archiveName="security.taint.propagation-0.0.2-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/security.taint.propagation/security.taint.propagation">
+        <dependent-module archiveName="security.taint.propagation-0.0.3-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/security.taint.propagation/security.taint.propagation">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="security.taint.propagation.http-0.0.2-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/security.taint.propagation.http/security.taint.propagation.http">
+        <dependent-module archiveName="security.taint.propagation.http-0.0.3-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/security.taint.propagation.http/security.taint.propagation.http">
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <property name="context-root" value="taintwebapp"/>

@@ -24,10 +24,17 @@ public privileged aspect StringBuilderTaintPropagationAspect extends AbstractTai
     /** Aspect for {@link StringBuilder#append(String)} */
     after(String value, StringBuilder targetObject) returning (StringBuilder returnObject):
         args(value) && target(targetObject) && notInMyAdvice() && (
-          call(public StringBuilder StringBuilder.append(String)) ||
-          call(public StringBuilder StringBuilder.append(Object))
+          call(public StringBuilder StringBuilder.append(String))
         ) {
         propagateTainted(targetObject, returnObject, value);
+    }
+
+    /** Aspect for {@link StringBuilder#append(Object)} */
+    after(Object value, StringBuilder targetObject) returning (StringBuilder returnObject):
+        args(value) && target(targetObject) && notInMyAdvice() && (
+          call(public StringBuilder StringBuilder.append(Object))
+        ) {
+        propagateTainted(targetObject, returnObject, value.toString());
     }
 
 

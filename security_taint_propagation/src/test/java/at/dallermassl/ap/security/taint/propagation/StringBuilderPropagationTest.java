@@ -111,6 +111,23 @@ public class StringBuilderPropagationTest {
     }
 
     @Test
+    public void testAppendObject() {
+        StringBuilder builder = new StringBuilder();
+        // test special case where the object is not a string, but toString is used!
+        builder.setTainted(false);
+        Object obj = new Object() {
+            public String toString() {
+                String object = "taintedobject";
+                object.setTainted(true);
+                return object;
+            }
+        };
+        Assert.assertTrue("toString() propagates tainted", obj.toString().isTainted());
+        Assert.assertTrue("String.valueOf propagates tainted", String.valueOf(obj).isTainted());
+        Assert.assertTrue("appending StringBuilder.append(obj.toString) propagates tainted", builder.append(obj).isTainted());
+    }
+
+    @Test
     public void testInsert() {
         StringBuilder builder = new StringBuilder("bar");
         String foo = "foo";
