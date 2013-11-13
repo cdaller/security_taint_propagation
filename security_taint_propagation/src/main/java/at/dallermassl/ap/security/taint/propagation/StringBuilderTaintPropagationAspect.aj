@@ -34,7 +34,9 @@ public privileged aspect StringBuilderTaintPropagationAspect extends AbstractTai
         args(value) && target(targetObject) && notInMyAdvice() && (
           call(public StringBuilder StringBuilder.append(Object))
         ) {
-        propagateTainted(targetObject, returnObject, value.toString());
+        if (value != null) {
+            propagateTainted(targetObject, returnObject, value.toString());
+        }
     }
 
 

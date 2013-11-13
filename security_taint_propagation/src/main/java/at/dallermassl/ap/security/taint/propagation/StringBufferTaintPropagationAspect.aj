@@ -32,7 +32,9 @@ public privileged aspect StringBufferTaintPropagationAspect extends AbstractTain
     after(Object value, StringBuffer targetObject) returning (StringBuffer returnObject):
         call(public StringBuffer StringBuffer.append(Object)) && args(value)
         && target(targetObject) && notInMyAdvice() {
-        propagateTainted(targetObject, returnObject, value.toString());
+        if (value != null) {
+            propagateTainted(targetObject, returnObject, value.toString());
+        }
     }
 
 
