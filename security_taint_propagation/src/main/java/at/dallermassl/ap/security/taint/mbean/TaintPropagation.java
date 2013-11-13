@@ -34,4 +34,24 @@ public class TaintPropagation implements TaintPropagationMBean {
         Configuration.setTaintCompositionEnabled(enabled);
     }
 
+    @Override
+    public boolean isExceptionOnTaintedSink() {
+        return Configuration.isExceptionOnTaintedSink();
+    }
+
+    @Override
+    public void setExceptionOnTaintedSink(boolean exceptionOnTaintedSink) {
+        Configuration.setExceptionOnTaintedSink(exceptionOnTaintedSink);
+    }
+
+    @Override
+    public boolean isLogOnTaintedSink() {
+        return Configuration.isLogOnTaintedSink();
+    }
+
+    @Override
+    public void setLogOnTaintedSink(boolean logOnTaintedSink) {
+        Configuration.setLogOnTaintedSink(logOnTaintedSink);
+    }
+
 }

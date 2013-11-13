@@ -93,9 +93,9 @@ public abstract aspect AbstractTaintedObjectAspect implements TaintedObject {
     private final void TaintedObject.initTaintedObjectId() {
         if (taintedObjectId == 0) {
             taintedObjectId = ++objectCounter;
-            if (objectCounter % 1000 == 0) {
-                System.out.println("TaintedObjectId: " + taintedObjectId);
-            }
+//            if (objectCounter % 1000 == 0) {
+//                System.out.println("TaintedObjectId: " + taintedObjectId);
+//            }
         }
     }
 

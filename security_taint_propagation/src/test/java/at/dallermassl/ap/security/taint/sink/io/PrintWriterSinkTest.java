@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package at.dallermassl.ap.security.taint.sink.io;
 
@@ -11,6 +11,7 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
+import at.dallermassl.ap.security.taint.Configuration;
 import at.dallermassl.ap.security.taint.source.TaintedSourceInfo;
 
 /**
@@ -21,9 +22,9 @@ public class PrintWriterSinkTest {
 
     @Test
     public void testPrintString() throws IOException {
-        
-        boolean blockTainted = PrintWriterAspect.isBlockTainted();
-        PrintWriterAspect.setBlockTainted(true);
+
+        boolean exceptionOnTaintedSink = Configuration.isExceptionOnTaintedSink();
+        Configuration.setExceptionOnTaintedSink(true);
         int taintSourceId = TaintedSourceInfo.addSourceInfo("PrintWriterSinkTest");
 
         try {
@@ -39,7 +40,7 @@ public class PrintWriterSinkTest {
                 Assert.assertTrue("Security exception was thrown " + e.getMessage(), true);
             }
             Assert.assertTrue("print does not change taintedness", foo.isTainted());
-            
+
             try {
                 writer.println(foo);
                 Assert.fail("must throw a SecurityException");
@@ -54,7 +55,7 @@ public class PrintWriterSinkTest {
             writer.println(foo);
             writer.flush();
         } finally {
-            PrintWriterAspect.setBlockTainted(blockTainted);
+            Configuration.setExceptionOnTaintedSink(exceptionOnTaintedSink);
         }
     }
 

@@ -28,23 +28,6 @@ public abstract aspect AbstractTaintedSinkAspect {
         this.sinkType = sinkType;
     }
 
-    /**
-     * Returns <code>true</code> if a sink should throw an exception when received tainted content.
-     * @return <code>true</code> if a sink should throw an exception when received tainted content.
-     */
-    public static boolean isBlockTainted() {
-        return blockTainted;
-    }
-
-    /**
-     * If set to <code>true</code> an exception is thrown if a tainted string is passed to a sink.
-     * @param blockTainted if set to <code>true</code> an exception is thrown if a tainted string is
-     * passed to a sink.
-     */
-    public static void setBlockTainted(boolean blockTainted) {
-        AbstractTaintedSinkAspect.blockTainted = blockTainted;
-    }
-
 
     /**
      * Method called if a tainted value should be used.
@@ -88,13 +71,14 @@ public abstract aspect AbstractTaintedSinkAspect {
             messageBuilder.append(CompositionManager.getInstance().getCompositionString(value));
         }
         messageBuilder.append("]");
-        if (isBlockTainted()) {
-            value.setTainted(true);
-            throw new SecurityException(messageBuilder.toString());
-        } else {
+        value.setTainted(true);
+
+        if (Configuration.isLogOnTaintedSink()) {
             System.err.println(messageBuilder.toString());
         }
-        value.setTainted(true);
+        if (Configuration.isExceptionOnTaintedSink()) {
+            throw new SecurityException(messageBuilder.toString());
+        }
     }
 
 }

@@ -52,7 +52,7 @@ public class CompositionManagerTest {
         }
     }
 
-    @Test
+    //@Test
     public void testNodeCreation() {
         if (!Configuration.isTaintCompositionEnabled()) {
             Assert.fail("taint composition is not enabled!");
@@ -64,7 +64,7 @@ public class CompositionManagerTest {
         checkComposition(foo, (String[]) null);
     }
 
-    @Test
+    //@Test
     public void testNodeConstructor() {
         if (!Configuration.isTaintCompositionEnabled()) {
             Assert.fail("taint composition is not enabled!");
@@ -80,7 +80,7 @@ public class CompositionManagerTest {
 
 
 
-    @Test
+    //@Test
     public void testStringConcat() {
         if (!Configuration.isTaintCompositionEnabled()) {
             Assert.fail("taint composition is not enabled!");
@@ -100,7 +100,7 @@ public class CompositionManagerTest {
 
     }
 
-    @Test
+    //@Test
     public void testStringSubstring() {
         if (!Configuration.isTaintCompositionEnabled()) {
             Assert.fail("taint composition is not enabled!");
@@ -113,7 +113,7 @@ public class CompositionManagerTest {
         checkComposition(foo, foobar);
     }
 
-    @Test
+    //@Test
     public void testStringSequence() {
         if (!Configuration.isTaintCompositionEnabled()) {
             Assert.fail("taint composition is not enabled!");
@@ -126,7 +126,7 @@ public class CompositionManagerTest {
         checkComposition((TaintedObject) foo, foobar);
     }
 
-    @Test
+    //@Test
     public void testStringSplit() {
         if (!Configuration.isTaintCompositionEnabled()) {
             Assert.fail("taint composition is not enabled!");

@@ -12,7 +12,7 @@ public abstract aspect AbstractTaintPropagationAspect {
         MBeanStartup.startUp();
     }
 
-    pointcut notInMyAdvice() : !within(CompositionManager) && !within(CompositionTreeNode);
+    pointcut notInMyAdvice() : if(true);// : !within(CompositionManager) && !within(CompositionTreeNode);
 
     public void propagateTainted(CharSequence sourceObject, TaintedObject destinationObject) {
         if (sourceObject != null && sourceObject instanceof TaintedObject) {
