@@ -9,6 +9,7 @@ import at.dallermassl.ap.security.taint.Configuration;
 import at.dallermassl.ap.security.taint.composition.CompositionManager;
 import at.dallermassl.ap.security.taint.extension.TaintedObject;
 import at.dallermassl.ap.security.taint.source.TaintedSourceInfo;
+import at.dallermassl.ap.security.taint.util.TaintUtils;
 
 /**
  * Defines the behavior when a tainted content is passed to an armoured sink.
@@ -75,6 +76,9 @@ public abstract aspect AbstractTaintedSinkAspect {
 
         if (Configuration.isLogOnTaintedSink()) {
             System.err.println(messageBuilder.toString());
+            if (Configuration.isLogStackTraceOnTaintedSink()) {
+                System.err.println(TaintUtils.getStackTrace());
+            }
         }
         if (Configuration.isExceptionOnTaintedSink()) {
             throw new SecurityException(messageBuilder.toString());

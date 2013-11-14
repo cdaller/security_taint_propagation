@@ -54,4 +54,14 @@ public class TaintPropagation implements TaintPropagationMBean {
         Configuration.setLogOnTaintedSink(logOnTaintedSink);
     }
 
+    @Override
+    public boolean isLogStackTraceOnTaintedSink() {
+        return Configuration.isLogStackTraceOnTaintedSink();
+    }
+
+    @Override
+    public void setLogStackTraceOnTaintedSink(boolean logStackTraceOnTaintedSink) {
+        Configuration.setLogStackTraceOnTaintedSink(logStackTraceOnTaintedSink);
+    }
+
 }

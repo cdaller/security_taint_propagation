@@ -6,7 +6,8 @@ public class Configuration {
 
     public static boolean taintedCompositionTraceEnabled = false;
     public static boolean exceptionOnTaintedSink = false;
-    public static boolean logOnTaintedSink = true; // default
+    public static boolean logOnTaintedSink = true; // default is to print messages only
+    public static boolean logStackTraceOnTaintedSink = false;
 
     public static boolean isTaintCompositionEnabled() {
         return taintedCompositionTraceEnabled;
@@ -30,6 +31,14 @@ public class Configuration {
 
     public static void setLogOnTaintedSink(boolean logOnTaintedSink) {
         Configuration.logOnTaintedSink = logOnTaintedSink;
+    }
+
+    public static boolean isLogStackTraceOnTaintedSink() {
+        return logStackTraceOnTaintedSink;
+    }
+
+    public static void setLogStackTraceOnTaintedSink(boolean logStackTraceOnTaintedSink) {
+        Configuration.logStackTraceOnTaintedSink = logStackTraceOnTaintedSink;
     }
 
 }

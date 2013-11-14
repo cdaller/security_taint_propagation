@@ -1,6 +1,7 @@
 package at.dallermassl.ap.security.taint.mbean;
 
 
+
 public interface TaintPropagationMBean {
 
     int getCurrentObjectId();
@@ -16,5 +17,9 @@ public interface TaintPropagationMBean {
     boolean isLogOnTaintedSink();
 
     void setLogOnTaintedSink(boolean logOnTaintedSink);
+
+    boolean isLogStackTraceOnTaintedSink();
+
+    void setLogStackTraceOnTaintedSink(boolean logStackTraceOnTaintedSink);
 
 }
