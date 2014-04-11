@@ -19,7 +19,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <compiler.version>1.7</compiler.version>
-    <aspectj.version>1.7.1</aspectj.version>
+    <aspectj.version>1.7.4</aspectj.version>
     <scm.http.url>https://github.com/cdaller/security_taint_propagation.git</scm.http.url>
   </properties>
 
