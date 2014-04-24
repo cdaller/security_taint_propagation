@@ -22,7 +22,7 @@ I found some papers about this topic:
 * [A presentation at blackhat security conference](http://www.blackhat.com/presentations/bh-dc-08/Chess-West/Presentation/bh-dc-08-chess-west.pdf)
 * [Towards Fully Automatic Placement of Security
 Sanitizers and Declassifiers](http://research.microsoft.com/en-us/um/people/livshits/papers/tr/autosani_tr.pdf)
-* [Java Taint Propagation using agent transformations and ruby](http://conference.hitb.org/hitbsecconf2012kul/materials/D1T2%20-%20Meder%20Kydyraliev%20-%20Defibrilating%20Web%20Security.pdf)
+* [Meder Kydyraliev and Josh Deprez: Gravizapa - Ruby and Java Taint Propagation using agent transformations](http://conference.hitb.org/hitbsecconf2012kul/materials/D1T2%20-%20Meder%20Kydyraliev%20-%20Defibrilating%20Web%20Security.pdf)
 
 ### Other projects
 
