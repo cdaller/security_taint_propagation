@@ -101,7 +101,8 @@ If you want to start tomcat in eclipse with taint propagation you have to
 1. create a new tomcat server named "Tomcat 8 tainted" (or similar)
 2. start tomcat once (to get an entry in "Run/Debug configurations")
 3. settings in "Run/Debug configurations"
-  * Arguments:```
+  * Arguments:
+```
 -Xbootclasspath/p:D:/PATH_TO/tainted-rt-1.8.jar
 -javaagent:D:/PATH_TO/aspectjweaver-1.8.8.jar
   * Classpath tab: Add the two jar files in "User Entries": security.taint.propagation-VERSION.jar, security.taint.propagation.http-VERSION.jar
