@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>at.dallermassl</groupId>
   <artifactId>security.taint.propagation-reactor</artifactId>
-  <version>0.0.3-SNAPSHOT</version>
+  <version>0.0.4-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>Taint Propagation build reactor</name>
@@ -18,8 +18,8 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <compiler.version>1.7</compiler.version>
-    <aspectj.version>1.7.4</aspectj.version>
+    <compiler.version>1.8</compiler.version>
+    <aspectj.version>1.8.8</aspectj.version>
     <scm.http.url>https://github.com/cdaller/security_taint_propagation.git</scm.http.url>
   </properties>
 

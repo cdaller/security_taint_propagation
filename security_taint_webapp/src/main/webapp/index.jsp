@@ -69,14 +69,16 @@
           <input type="submit" value="Submit"/>
         </form>
         </p>
+
         <%
-        user = StringModification.appendDate(user);
-        %>
+        String modifiedUser = StringModification.appendDate(user);
+        %> 
 
         <h2>Output parameters</h2>
         <h3>List of parameters printed with  "&lt;%= variablename %&gt;"</h3>
         <ul>
           <li>User: <%=user%></li>
+          <li>Modified User (still tainted?): <%=modifiedUser%></li>
           <li>Password: <%=pass%></li>
         </ul>
         <h3>List of parameters printed directly to PrintWriter "out"</h3>

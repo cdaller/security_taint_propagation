@@ -29,11 +29,21 @@ Sanitizers and Declassifiers](http://research.microsoft.com/en-us/um/people/livs
 * [Taint propagation in python](https://github.com/felixgr/pytaint/)
 
 ## Note
-This project is in a early stage (but works!), do not expect an easy to use plugable thing you
-can use without deeper knowledge!
+This project is probably not stable for production systems but works quite well in development environment!
 
-Everyone is welcome to help to improve this project.
+Everyone is welcome to help to improve this project!
 
+## Quickstart
+
+* Clone the project from github
+* ```mvn install``` in the top level directory of the project
+* change to the project ```security_taint_webapp```
+* ```mvn jetty:run-forked``` starts a webserver 
+* browse to http://localhost:8080/taintwebapp
+* enter some values in the input fields and push the button
+* check the console where you started jetty for some warnings about tainted values in jsp page!
+  * warnings show that some user input (tainted) is output to the web page without sanitation! This
+    could be used for an XSS hacker attack.
 
 ## There are multiple parts in this project
 * **security_taint_extension**: contains aspects that extend java.lang.String (add property
@@ -47,8 +57,9 @@ Everyone is welcome to help to improve this project.
   Additionally it holds some definitions of sinks and sources.
 * **security_taint_propagation_http**: holds taint sources and sinks for web applications
 * **security_taint_webapp**: very simple example webapp that demonstrates sources, sinks
-  and sanitation of tainted strings. It needs to be deployed to an instrumented tomcat
-  server to work as expected (see Readme.md in the project).
+  and sanitation of tainted strings. It can either be started from a maven jetty with 
+  ```mvn jetty:run-forked``` or deployed to an an instrumented tomcat
+  server (see Readme.md in the project).
 
 ## Eclipse setup
 The projects can be used as maven nature projects. Beware that the tainted-rt-1.x.jar
@@ -57,9 +68,9 @@ will not be found! Use the projects properties, "Java Build Path"/"Order and Exp
 "JRE System Library" to the bottom. This needs to be done every time after "Maven/Update Project"
 was executed.
 
-Set the default jre to 1.6 (only tested with 1.6, might work with oters JREs as well).
+Set the default jre to 1.8 (project also works with java 1.6 and java 1.7 - change in parent pom.xml if needed).
 
-Do a "mvn package" first, so the modified tainted-rt-1.6.jar will be found in eclipse.
+Do a "mvn package" first, so the modified tainted-rt-1.8.jar will be found in eclipse.
 
 Please note that the security_taint_extension project will not build correctly in eclipse, as
 it needs the modified rt.jar which it produces (hen/egg problem). In maven it works.
@@ -83,29 +94,39 @@ Some libraries are needed to "arm" tomcat:
 * the load time weaver of aspectj (as a java agent on startup)
 * the aspectj runtime jar (aspectjrt-<version>.jar)
 * the modified String class (in tainted-rt.jar) as bootclasspath (replaces the original rt.jar from the jdk)
-* the aspect that ensures that the tainted flag is propagated on string operations (security.taint.propagation...jar)
-* the aspect instrumenting http sources and sinks (security.taint.propagation.http...jar)
+* the aspect that ensures that the tainted flag is propagated on string operations (security.taint.propagation-<version>.jar) and also contains the sink for sql classes (prevening sql injection attacks).
+* the aspect instrumenting http sources and sinks (security.taint.propagation.http-<version>.jar)
 
 If you want to start tomcat in eclipse with taint propagation you have to
-1. create a new tomcat server named "Tomcat 6 tainted" (or similar)
+1. create a new tomcat server named "Tomcat 8 tainted" (or similar)
 2. start tomcat once (to get an entry in "Run/Debug configurations")
 3. settings in "Run/Debug configurations"
-  * Arguments:
--Xbootclasspath/p:D:/PATH_TO/tainted-rt-1.6.jar
--javaagent:D:/PATH_TO/aspectjweaver-1.7.1.jar
+  * Arguments:```
+-Xbootclasspath/p:D:/PATH_TO/tainted-rt-1.8.jar
+-javaagent:D:/PATH_TO/aspectjweaver-1.8.8.jar
   * Classpath tab: Add the two jar files in "User Entries": security.taint.propagation-VERSION.jar, security.taint.propagation.http-VERSION.jar
+```
 
 If you want to start a stand-alone tomcat with taint propagation you have to
-1. create a setenv.sh/setenv.bat file to add the necesary jars:
+1. create a setenv.sh/setenv.bat file to add the neccessary jars.
 setenv.bat:
 ```
-rem setenv.bat: adding taint propagation to tomcat:
-set JAVA_OPTS=-Xbootclasspath/p:F:/work/projects/security_taint_propagation/security_taint_extension/target/tainted-rt-1.6.jar %JAVA_OPTS%
-set JAVA_OPTS=-javaagent:<path_to_maven_repo>/org/aspectj/aspectjweaver/1.7.1/aspectjweaver-1.7.1.jar %JAVA_OPTS%
+rem setenv.bat: adding taint propagation to tomcat: 
 
-set JAVA_ENDORSED_DIRS=<path_to_taintpropagation_project>/security_taint_propagation/target;%JAVA_ENDORSED_DIRS%
-set JAVA_ENDORSED_DIRS=<path_to_taintpropagation_project>/security_taint_propagation_http/target;%JAVA_ENDORSED_DIRS%
-set JAVA_ENDORSED_DIRS=<path_to_maven_repo>/org/aspectj/aspectjrt/1.7.1%JAVA_ENDORSED_DIRS%
+set BASE_DIR=<path_to_this_directory>/security_taint_propagation
+set MAVEN_REPO=F:/work/m2repo
+set ASPECTJ_VERSION=1.8.8
+
+set JAVA_OPTS=-Xbootclasspath/p:%BASE_DIR%/security_taint_extension/target/tainted-rt-1.8.jar %JAVA_OPTS%
+set JAVA_OPTS=-javaagent:%MAVEN_REPO%/org/aspectj/aspectjweaver/%ASPECTJ_VERSION%/aspectjweaver-%ASPECTJ_VERSION%.jar %JAVA_OPTS%
+
+set JAVA_OPTS=-Xms256m -Xmx1800M -XX:MaxPermSize=256m %JAVA_OPTS%
+
+set JAVA_ENDORSED_DIRS=%MAVEN_REPO%/org/aspectj/aspectjrt/%ASPECTJ_VERSION%/;%JAVA_ENDORSED_DIRS%
+set JAVA_ENDORSED_DIRS=%BASE_DIR%/security_taint_propagation_http/target/;%JAVA_ENDORSED_DIRS%
+set JAVA_ENDORSED_DIRS=%BASE_DIR%/security_taint_propagation/target/;%JAVA_ENDORSED_DIRS%
+
+rem set JAVA_ENDORSED_DIRS=%BASE_DIR%/security_taint_propagation_safehtml/target;%JAVA_ENDORSED_DIRS%
 ```
 setenv.sh is similar :-)
 2. start tomcat as usual

@@ -4,40 +4,36 @@ This is a simple web application that uses the taint propagation aspects.
 If deployed without aspects to a tomcat, the two jsp pages just print the userinput
 on the jsp page.
 
-But if deployed with the aspect libraries in use (and the modified rt.jar) the
+But if deployed with the aspect libraries in use (and the modified java runtime rt.jar) the
 aspect print a message that a tainted value will be used in the jsp page.
-You need a tomcat (tested with tomcat 6.0.35) and aspectj (1.7 used).
+Maven configuration allows a quick start with ```mvn jetty:run-forked``` in this project.
+Please do not forget to ```mvn install``` the main project first as otherwise the dependencies 
+are not found!
 
 ## Tomcat setup
 
 Use the following script as $CATALINA_HOME/bin/setenv.sh (please adopt filenames and paths):
 ```
-#!/bin/bash
-CATALINA_OPTS="$CATALINA_OPTS -Xbootclasspath/p:..//security_taint_extension/target/tainted-rt-1.6.jar"
-CATALINA_OPTS="$CATALINA_OPTS -javaagent:$HOME/java/aspectj1.7/lib/aspectjweaver.jar"
-export CATALINA_OPTS
-CLASSPATH="$CLASSPATH:$HOME/java/aspectj1.7/lib/aspectjrt.jar"
-CLASSPATH="$CLASSPATH:../security_taint_propagation/target/security.taint.propagation-0.0.2-SNAPSHOT.jar"
-CLASSPATH="$CLASSPATH:../security_taint_propagation_http/target/security.taint.propagation.http-0.0.2-SNAPSHOT.jar"
-export CLASSPATH
-echo "setenv.sh was read"
-echo "CATALINA_OPTS:$CATALINA_OPTS"
-echo "CLASSPATH:$CLASSPATH"
+rem setenv.bat: adding taint propagation to tomcat: 
+
+set BASE_DIR=<path_to_this_directory>/security_taint_propagation
+set MAVEN_REPO=F:/work/m2repo
+set ASPECTJ_VERSION=1.8.8
+
+set JAVA_OPTS=-Xbootclasspath/p:%BASE_DIR%/security_taint_extension/target/tainted-rt-1.8.jar %JAVA_OPTS%
+set JAVA_OPTS=-javaagent:%MAVEN_REPO%/org/aspectj/aspectjweaver/%ASPECTJ_VERSION%/aspectjweaver-%ASPECTJ_VERSION%.jar %JAVA_OPTS%
+
+set JAVA_OPTS=-Xms256m -Xmx1800M -XX:MaxPermSize=256m %JAVA_OPTS%
+
+set JAVA_ENDORSED_DIRS=%MAVEN_REPO%/org/aspectj/aspectjrt/%ASPECTJ_VERSION%/;%JAVA_ENDORSED_DIRS%
+set JAVA_ENDORSED_DIRS=%BASE_DIR%/security_taint_propagation_http/target/;%JAVA_ENDORSED_DIRS%
+set JAVA_ENDORSED_DIRS=%BASE_DIR%/security_taint_propagation/target/;%JAVA_ENDORSED_DIRS%
 ```
 
 ## Maven Jetty-Plugin setup
 
-You can use the configured jetty plugin to start the webapp. BUT you need to instrument
-the application server. Unfortunately this is not possible within maven, but needs to
-be setup on startup:
+You can use the configured jetty plugin to start the webapp by calling ```mvn jetty:run-forked```.
 
-### Linux
-Use the following 'start_jetty_with_aspects.sh' script:
-```
-export MAVEN_OPTS="-Xbootclasspath/p:../security_taint_extension/target/tainted-rt-1.6.jar -javaagent:$HOME/.m2/repository/org/aspectj/aspectjweaver/1.7.0/aspectjweaver-1.7.0.jar"
-echo "Using the following params: $MAVEN_OPTS"
-mvn jetty:run
-```
 It sets the modified rt.jar (for extending java.lang.String) as bootclasspath
 and adds the runtime weaver from aspectj as javaagent. The rest of the classpath
 is set up in maven's pom.xml.
@@ -45,7 +41,7 @@ is set up in maven's pom.xml.
 ## Result
 The aspects are configured to print a message as soon as a tainted resource reaches
 a defined sink. So when you start the application, open the browser at
-http://localhost:8080/security.taint.webapp and enter some values in the input fields,
+http://localhost:8080/taintwebapp and enter some values in the input fields,
 you'll see the following messages on the console:
 ```
 ....

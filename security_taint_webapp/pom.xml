@@ -9,16 +9,16 @@
   <parent>
     <groupId>at.dallermassl</groupId>
     <artifactId>security.taint.propagation-reactor</artifactId>
-    <version>0.0.3-SNAPSHOT</version>
+    <version>0.0.4-SNAPSHOT</version>
   <relativePath>../pom.xml</relativePath>
   </parent>
 
   <dependencies>
     <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>servlet-api</artifactId>
-      <version>2.3</version>
-      <scope>provided</scope>
+        <groupId>javax.servlet</groupId>
+        <artifactId>javax.servlet-api</artifactId>
+        <version>3.1.0</version>
+        <scope>provided</scope>
     </dependency>
     <!-- dependency for jetty:run: include taint-propagation aspects -->
     <dependency>
@@ -33,20 +33,19 @@
       <version>${project.version}</version>
       <scope>runtime</scope>
     </dependency>
-    <!--
-    <dependency>
-      <groupId>org.aspectj</groupId>
-      <artifactId>aspectjweaver</artifactId>
-      <version>${aspectj.version}</version>
-      <scope>runtime</scope>
-    </dependency>
     <dependency>
       <groupId>org.aspectj</groupId>
       <artifactId>aspectjrt</artifactId>
       <version>${aspectj.version}</version>
       <scope>runtime</scope>
     </dependency>
-     -->
+    <!-- not needed in webapp, needs to be added as javaagent, still here as dependency to force maven to download it -->
+    <dependency>
+      <groupId>org.aspectj</groupId>
+      <artifactId>aspectjweaver</artifactId>
+      <version>${aspectj.version}</version>
+      <scope>provided</scope>
+    </dependency>
   </dependencies>
 
   <build>
@@ -73,18 +72,18 @@
         </configuration>
       </plugin>
 
+      <!-- start jetty with mvn jetty:run-forked -->
       <plugin>
-        <groupId>org.mortbay.jetty</groupId>
-        <artifactId>maven-jetty-plugin</artifactId>
-        <version>6.1.26</version>
+        <groupId>org.eclipse.jetty</groupId>
+        <artifactId>jetty-maven-plugin</artifactId>
+        <version>9.3.0.v20150612</version>
         <configuration>
           <scanIntervalSeconds>10</scanIntervalSeconds>
-          <connectors>
-            <connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">
-              <port>8080</port>
-              <maxIdleTime>60000</maxIdleTime>
-            </connector>
-          </connectors>
+          <webApp>
+            <contextPath>/taintwebapp</contextPath>
+          </webApp>
+          <jvmArgs>-Xbootclasspath/p:../security_taint_extension/target/tainted-rt-${compiler.version}.jar 
+            -javaagent:${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar</jvmArgs>
         </configuration>
       </plugin>
 
