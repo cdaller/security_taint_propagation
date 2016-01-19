@@ -3,9 +3,9 @@
 This project defines some java aspects that allow to follow tainted strings from a
 source to a sink to find security leaks in software (SQL-Injection, Cross-Site-Scripting (XSS)).
 
-Therefore the java.lang.String class is extended with a "tainted" flag. This flag is
-set on all strings that come from defined sources (e.g. HttpServletRequest.getParameter())
-and passed to all strings that use the tainted string (e.g. String foo = "foo" + tainted;
+Therefore the ```java.lang.String``` class is extended with a "tainted" flag. This flag is
+set on all strings that come from defined sources (e.g. ```HttpServletRequest.getParameter()```)
+and passed to all strings that use the tainted string (e.g. ```String foo = "foo" + tainted;```
 results in tainted foo). When a tainted string reaches a sink, the system can react in
 different ways (log message, throw exception, ...).
 
@@ -70,7 +70,7 @@ was executed.
 
 Set the default jre to 1.8 (project also works with java 1.6 and java 1.7 - change in parent pom.xml if needed).
 
-Do a "mvn package" first, so the modified tainted-rt-1.8.jar will be found in eclipse.
+Do a ```mvn package``` first, so the modified tainted-rt-1.8.jar will be found in eclipse.
 
 Please note that the security_taint_extension project will not build correctly in eclipse, as
 it needs the modified rt.jar which it produces (hen/egg problem). In maven it works.
@@ -98,6 +98,7 @@ Some libraries are needed to "arm" tomcat:
 * the aspect instrumenting http sources and sinks (security.taint.propagation.http-<version>.jar)
 
 If you want to start tomcat in eclipse with taint propagation you have to
+
 1. create a new tomcat server named "Tomcat 8 tainted" (or similar)
 2. start tomcat once (to get an entry in "Run/Debug configurations")
 3. settings in "Run/Debug configurations"
