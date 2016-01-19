@@ -109,9 +109,9 @@ If you want to start tomcat in eclipse with taint propagation you have to
 ```
   * Classpath tab: Add the two jar files in "User Entries": security.taint.propagation-VERSION.jar, security.taint.propagation.http-VERSION.jar
 
-If you want to start a stand-alone tomcat with taint propagation you have to
+If you want to start a stand-alone tomcat with taint propagation you have to:
 
-1. create a setenv.sh/setenv.bat file to add the neccessary jars.
+first create a setenv.sh/setenv.bat file to add the neccessary jars.
 setenv.bat:
 
 ```
@@ -133,7 +133,8 @@ set JAVA_ENDORSED_DIRS=%BASE_DIR%/security_taint_propagation/target/;%JAVA_ENDOR
 rem set JAVA_ENDORSED_DIRS=%BASE_DIR%/security_taint_propagation_safehtml/target;%JAVA_ENDORSED_DIRS%
 ```
 setenv.sh is similar :-)
-2. start tomcat as usual
+
+then start tomcat as usual
 
 ### Output
 The tools are configured to print a warning to system.out whenever a security leak was detected (line breaks added for better readability):
