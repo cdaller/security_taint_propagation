@@ -106,12 +106,14 @@ If you want to start tomcat in eclipse with taint propagation you have to
 ```
 -Xbootclasspath/p:D:/PATH_TO/tainted-rt-1.8.jar
 -javaagent:D:/PATH_TO/aspectjweaver-1.8.8.jar
-  * Classpath tab: Add the two jar files in "User Entries": security.taint.propagation-VERSION.jar, security.taint.propagation.http-VERSION.jar
 ```
+  * Classpath tab: Add the two jar files in "User Entries": security.taint.propagation-VERSION.jar, security.taint.propagation.http-VERSION.jar
 
 If you want to start a stand-alone tomcat with taint propagation you have to
+
 1. create a setenv.sh/setenv.bat file to add the neccessary jars.
 setenv.bat:
+
 ```
 rem setenv.bat: adding taint propagation to tomcat: 
 
