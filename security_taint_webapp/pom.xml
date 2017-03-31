@@ -76,14 +76,13 @@
       <plugin>
         <groupId>org.eclipse.jetty</groupId>
         <artifactId>jetty-maven-plugin</artifactId>
-        <version>9.3.0.v20150612</version>
+        <version>9.4.3.v20170317</version>
         <configuration>
           <scanIntervalSeconds>10</scanIntervalSeconds>
           <webApp>
             <contextPath>/taintwebapp</contextPath>
           </webApp>
           <jvmArgs>-javaagent:${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar -Xbootclasspath/p:../security_taint_extension/target/tainted-rt-${compiler.version}.jar</jvmArgs>
-            <maxStartupLines>2000</maxStartupLines>
         </configuration>
       </plugin>
 
