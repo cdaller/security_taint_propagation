@@ -11,7 +11,7 @@
   <parent>
     <groupId>at.dallermassl</groupId>
     <artifactId>security.taint.propagation-reactor</artifactId>
-    <version>0.0.4-SNAPSHOT</version>
+    <version>0.0.5-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
@@ -112,7 +112,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>exec-maven-plugin</artifactId>
-        <version>1.2.1</version>
+        <version>1.6.0</version>
         <executions>
           <execution>
             <id>create instrumented rt.jar</id>
@@ -143,7 +143,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>2.12.3</version>
+        <version>${surefire.version}</version>
         <configuration>
           <argLine>-Xbootclasspath/p:${bootclasspath}</argLine>
         </configuration>
