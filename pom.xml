@@ -22,6 +22,7 @@
     <aspectj.version>1.8.10</aspectj.version>
     <scm.http.url>https://github.com/cdaller/security_taint_propagation.git</scm.http.url>
     <surefire.version>2.19.1</surefire.version>
+    <compiler-plugin.version>3.6.1</compiler-plugin.version>
   </properties>
 
   <licenses>
@@ -52,6 +53,10 @@
     <developerConnection>scm:svn:${scm.http.url}</developerConnection>
     <url>${scm.http.url}</url>
   </scm>
+
+  <prerequisites>
+    <maven>3.0</maven>
+  </prerequisites>
 
   <modules>
     <module>security_taint_extension</module>
