@@ -82,8 +82,8 @@
           <webApp>
             <contextPath>/taintwebapp</contextPath>
           </webApp>
-          <jvmArgs>-Xbootclasspath/p:../security_taint_extension/target/tainted-rt-${compiler.version}.jar 
-            -javaagent:${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar</jvmArgs>
+          <jvmArgs>-javaagent:${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar -Xbootclasspath/p:../security_taint_extension/target/tainted-rt-${compiler.version}.jar</jvmArgs>
+            <maxStartupLines>2000</maxStartupLines>
         </configuration>
       </plugin>
 
